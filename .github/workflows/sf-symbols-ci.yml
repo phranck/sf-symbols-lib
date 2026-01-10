@@ -23,6 +23,7 @@ jobs:
 
   typecheck:
     runs-on: ${{ matrix.os }}
+    needs: lint
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
@@ -37,6 +38,7 @@ jobs:
 
   build:
     runs-on: ${{ matrix.os }}
+    needs: typecheck
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
