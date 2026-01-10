@@ -5,6 +5,10 @@
 
 A React component library for SF Symbols icons. This library contains only a subset of Apple's original SF Symbols, specifically the "hierarchical" variants. These are monochrome symbols designed for use with custom colors.
 
+## Live Demo
+
+Explore all available SF Symbols in an interactive grid layout with support for light and dark modes. See the [live demo](https://phranck.github.io/sf-symbols-lib/) to browse the icons and their usage.
+
 ## Installation
 
 ```bash

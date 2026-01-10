@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   lint:
     runs-on: ${{ matrix.os }}
@@ -50,3 +55,21 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run build
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'npm'
+    - run: cd docs && npm ci
+    - run: cd docs && npm run build
+    - uses: actions/configure-pages@v5
+    - uses: actions/upload-pages-artifact@v3
+      with:
+        path: docs/dist
+    - uses: actions/deploy-pages@v4
