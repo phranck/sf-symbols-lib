@@ -12,7 +12,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
-      'sf-symbols-lib': resolve(__dirname, '../src')
+      'sf-symbols-lib': resolve(__dirname, '../dist')
     }
   }
 })
