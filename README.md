@@ -1,7 +1,8 @@
-[![Mastodon: @phranck](https://img.shields.io/badge/Mastodon-@LAYERED-6364ff.svg?style=flat)](https://oldbytes.space/@LAYERED)
-![CI](https://github.com/LAYEREDwork/sf-symbols-lib/actions/workflows/sf-symbols-ci.yml/badge.svg)
-![SF Symbols](https://img.shields.io/badge/SF%20Symbols-137-blue?style=flat&logo=apple&logoColor=white)
-[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+# SF Symbols Library
+
+![SF Symbols](https://img.shields.io/badge/SF%20Symbols-146-blue?style=flat-square&logo=apple&logoColor=white)
+
+A React component library for SF Symbols icons.
 
 # SF Symbols Library
 

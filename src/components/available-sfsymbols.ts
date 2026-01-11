@@ -1,7 +1,7 @@
 /**
  * Available SF Symbols from SVG Files
  * 
- * SOURCE OF TRUTH: This enum is generated directly from SVG filenames in sf-symbols/svgs/
+ * SOURCE OF TRUTH: This enum is generated directly from SVG filenames in src/components/svgs/
  * All symbol references throughout the app should use keys from this enum.
  * This ensures type-safety and prevents referencing non-existent symbols.
  * 
@@ -20,6 +20,8 @@
 export enum AvailableSFSymbol {
   AirplayVideo = 'airplay.video',
   AirplayVideoCircle = 'airplay.video.circle',
+  AppleTerminal = 'apple.terminal',
+  AppleTerminalFill = 'apple.terminal.fill',
   ArrowDownDocumentFill = 'arrow.down.document.fill',
   ArrowTrianglehead2ClockwiseRotate90 = 'arrow.trianglehead.2.clockwise.rotate.90',
   ArrowTrianglehead2ClockwiseRotate90Circle = 'arrow.trianglehead.2.clockwise.rotate.90.circle',
@@ -27,6 +29,8 @@ export enum AvailableSFSymbol {
   ArrowUpDocumentFill = 'arrow.up.document.fill',
   Autostartstop = 'autostartstop',
   Bonjour = 'bonjour',
+  BookPages = 'book.pages',
+  BookPagesFill = 'book.pages.fill',
   Checkmark = 'checkmark',
   CheckmarkApp = 'checkmark.app',
   CheckmarkAppFill = 'checkmark.app.fill',
@@ -38,6 +42,8 @@ export enum AvailableSFSymbol {
   CheckmarkMessageFill = 'checkmark.message.fill',
   CheckmarkSeal = 'checkmark.seal',
   CheckmarkSealFill = 'checkmark.seal.fill',
+  CheckmarkSealTextPage = 'checkmark.seal.text.page',
+  CheckmarkSealTextPageFill = 'checkmark.seal.text.page.fill',
   ChevronDown = 'chevron.down',
   ChevronDown2 = 'chevron.down.2',
   ChevronDownCircle = 'chevron.down.circle',
@@ -75,6 +81,7 @@ export enum AvailableSFSymbol {
   InfoBubbleFill = 'info.bubble.fill',
   InfoCircle = 'info.circle',
   InfoCircleFill = 'info.circle.fill',
+  InfoCircleTextPage = 'info.circle.text.page',
   InfoSquare = 'info.square',
   InfoSquareFill = 'info.square.fill',
   InfoTriangle = 'info.triangle',
@@ -110,6 +117,8 @@ export enum AvailableSFSymbol {
   PencilAndListClipboard = 'pencil.and.list.clipboard',
   Printer = 'printer',
   PrinterFill = 'printer.fill',
+  Receipt = 'receipt',
+  ReceiptFill = 'receipt.fill',
   RestartCircle = 'restart.circle',
   RestartCircleFill = 'restart.circle.fill',
   ScribbleVariable = 'scribble.variable',
