@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "cd .. && npm run build && vite build",
+    "build": "npm ci --prefix .. && npm run build --prefix .. && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
