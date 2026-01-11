@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "rm -rf dist && mkdir -p dist && cp index.html dist/index.html",
+    "build": "rm -rf dist && npm run build --prefix .. && mkdir -p dist && cp -R ../dist/* dist/ || true && cp index.html dist/index.html && node ./scripts/generate-icons-data.js",
     "preview": "vite preview"
   },
   "dependencies": {},

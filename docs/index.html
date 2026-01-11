@@ -5,61 +5,309 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SF Symbols — Demo</title>
 
-    <!-- Google Font: Barlow -->
-    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Google Font: Roboto Condensed -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
 
-    <!-- Tailwind Play CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              barlow: ['Barlow', 'sans-serif']
-            }
-          }
-        }
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUa6zYk5v5Qv1mKkQ6Q1uFQZ6bQ5Y5b5Q5b5Q5b5Q5b5Q5b5Q5b5Q5b5Q5b" crossorigin="anonymous">
+
+    <style>
+      :root { --control-height: 38px; --header-height: 88px; }
+      /* Use Roboto Condensed for the page */
+      body { font-family: 'Roboto Condensed', Arial, sans-serif; }
+
+      /* Frosted header */
+      .frosted-header { background-color: rgba(250,250,250,0.82); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 2rem 1rem; border-bottom: 1px solid rgba(0,0,0,0.05); }
+      .frosted-header.dark { background-color: rgba(18,20,22,0.82); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 2rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.03); }
+
+      .header-title h1 { margin: 0; line-height: 1.05; }
+      .header-title { display: flex; flex-direction: column; justify-content: center; }
+      .header-title h1 { margin: 0; line-height: 1.05; }
+      .header-title .subtext { margin-top: 0.125rem; color: #6b7280; }
+      .header-title .subsubtext { margin-top: 0.125rem; color: #6b7280; font-size: 0.9rem; }
+      .dark-mode .header-title .subsubtext { color: #9aa0a6; }
+
+      /* Theme toggle: no gradient, rounded, theme-aware */
+      .theme-toggle { border-radius: 0.75rem; padding: 0.45rem 0.9rem; font-size: 1.05rem; display:inline-flex; align-items:center; gap:0.5rem; border:1px solid rgba(0,0,0,0.08); background: transparent; height: var(--control-height); }
+      .theme-toggle:hover { transform: translateY(-1px); }
+      .theme-toggle:focus { outline: none; box-shadow: 0 0 0 4px rgba(107,114,128,0.12); border-color: rgba(107,114,128,0.22); }
+      #theme-toggle-icon { display:inline-flex; width:22px; height:22px; align-items:center; justify-content:center; }
+      /* Light / dark variants */
+      .dark-mode .theme-toggle { background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.06); color: #f8fafc; }
+      .theme-toggle { background: rgba(0,0,0,0.02); color: #111827; }
+
+      /* Search input (same height as theme toggle) */
+      .search-input { height: var(--control-height); border-radius: 0.75rem; padding: 0 0.75rem; font-size: 1rem; border: 1px solid rgba(0,0,0,0.08); background: transparent; color: inherit; }
+      .search-input::placeholder { color: rgba(107,114,128,0.6); }
+      .search-count { color: rgba(17,24,39,0.8); }
+      .dark-mode .search-count { color: #cbd5e1; }
+
+      /* Card hover lift */
+      .card-hover { transition: transform 0.35s ease, box-shadow 0.35s ease; }
+      .card-hover:hover { transform: translateY(-6px); box-shadow: 0 12px 24px rgba(0,0,0,0.12); }
+
+      /* Dark mode overrides: deep charcoal page, slightly lighter card surfaces */
+      .dark-mode { background-color: #0b0d10; color: #e6eef8; }
+      .dark-mode .card { background-color: #121416; color: #e6eef8; border-color: #0f1113; box-shadow: 0 6px 18px rgba(2,4,8,0.6); }
+      .dark-mode .card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(2,6,12,0.65); }
+      .dark-mode .header-title .subtext { color: #9aa0a6; }
+      .dark-mode footer { color: #9aa0a6; background-color: rgba(18,20,22,0.82); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border-top: 1px solid rgba(255,255,255,0.03); }
+
+      /* Site footer: match header background and center content */
+      .site-footer { background-color: rgba(250,250,250,0.82); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 0.75rem 2rem; min-height: 64px; border-top: 1px solid rgba(0,0,0,0.06); }
+      .site-footer a { color: inherit; font-weight: 600; text-decoration: none; margin-left: 0.25rem; }
+      .site-footer a:hover { text-decoration: underline; }
+
+      /* Ensure icons grid has comfortable gutters */
+      #icons { margin-top: 0.75rem; display: grid; grid-template-columns: repeat(auto-fill, 420px); gap: 1rem; justify-content: center; }
+
+      @media (max-width: 576px) {
+        #icons { grid-template-columns: 1fr; padding: 0 1rem; justify-items: center; }
+        /* When layout is single-column, make cards span the available width (respecting the icons padding) */
+        .card { width: 100%; max-width: none; }
       }
-    </script>
+
+      /* Card styles */
+      .card { width: 420px; height: 190px; background-color: rgba(250,250,250,0.92); border: 1px solid #e5e7eb; border-radius: 1rem; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 1.25rem; box-shadow: 0 1px 2px rgba(16,24,40,0.02); cursor: pointer; }
+
+      /* Toast notification (subtle) */
+      /* Toast centered horizontally and vertically inside the header */
+      .sf-toast { position: fixed; left: 50%; top: calc(var(--header-height, 88px) / 2); transform: translate(-50%, -30px); background: rgba(17,24,39,0.68); color: #fff; padding: 1rem 1.25rem; border-radius: 10px; font-size: 0.95rem; opacity: 0; pointer-events: none; transition: opacity 260ms ease-in-out, transform 260ms ease-in-out; will-change: opacity, transform; z-index: 1100; backdrop-filter: blur(6px); max-width: 90%; text-align: center; }
+      .sf-toast.show { opacity: 1; transform: translate(-50%, -50%); pointer-events: auto; }
+      .dark-mode .sf-toast { background: rgba(255,255,255,0.04); color: #e6eef8; }
+
+      /* border handled above for dark cards */
+    </style>
 
     <meta name="description" content="SF Symbols static demo using Tailwind and Barlow font" />
   </head>
-  <body class="min-h-screen bg-gray-50 text-gray-900 font-barlow">
-    <main class="max-w-4xl mx-auto p-8">
-      <header class="mb-6">
-        <h1 class="text-3xl font-semibold">SF Symbols — Static Demo</h1>
-        <p class="mt-2 text-gray-600">A minimal static preview using Vanilla JS and Tailwind CSS (Barlow).</p>
-      </header>
+  <body>
+    <!-- Fixed header: takes space at top, main content padded to avoid overlap -->
+    <header class="frosted-header rounded-3" style="position:fixed; top:0; left:0; right:0; z-index:1030; height:88px;">
+      <div class="header-title">
+        <h1 class="h4 mb-0">SFSymbol Library Preview</h1>
+        <div class="subtext small text-muted">Dynamically generated content — displays the SF Symbols currently available in this package.</div>
+        <div id="available-count" class="subsubtext small text-muted" aria-live="polite">&nbsp;</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:0.75rem;">
+        <div id="search-count" class="search-count" aria-live="polite" style="display:none; font-size:0.95rem; color:inherit; min-width:120px; text-align:right;">&nbsp;</div>
+        <input id="symbols-search" class="search-input" type="search" placeholder="Filter symbols" aria-label="Filter symbols">
+        <button id="theme-toggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle theme">
+          <span id="theme-toggle-icon">🌙</span>
+        </button>
+      </div>
+    </header>
 
-      <section id="icons" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-        <!-- Icons will be injected here by simple JS -->
+    <main class="container" style="padding-top:108px; padding-bottom:2rem;">
+      <section id="icons">
+        <!-- Icons will be injected here by simple JS as grid items -->
       </section>
-
-      <footer class="mt-8 text-sm text-gray-500">Built with Tailwind CDN • Barlow</footer>
     </main>
 
-    <script>
-      // Minimal demo: load a few SVG icons from the dist bundle if available
-      (function renderDemoIcons(){
-        const iconsContainer = document.getElementById('icons');
-        const sampleNames = ['SFCheckmark', 'SFChevronDown', 'SFArrowUpDocumentFill'];
-        sampleNames.forEach(function(iconName){
-          const card = document.createElement('div');
-          card.className = 'p-4 bg-white rounded shadow flex flex-col items-center gap-2';
+    <footer class="site-footer mt-5 small text-body-secondary">
+      <div>made with ❤️ by <a href="https://LAYERED.work" target="_blank" rel="noopener noreferrer">LAYERED</a></div>
+    </footer>
 
-          const svgHolder = document.createElement('div');
-          svgHolder.className = 'w-12 h-12';
-          svgHolder.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="w-full h-full"><circle cx="12" cy="12" r="10" stroke-width="2"/></svg>';
+    <!-- subtle toast for copy feedback -->
+    <div id="sf-toast" class="sf-toast" role="status" aria-live="polite" aria-atomic="true" hidden></div>
 
-          const label = document.createElement('div');
-          label.className = 'text-xs text-gray-600 font-mono';
-          label.textContent = iconName;
+    <script type="module">
+      // Theme toggle button: persist selection in localStorage
+      const themeToggleButton = document.getElementById('theme-toggle');
+      const themeToggleIcon = document.getElementById('theme-toggle-icon');
+      const searchInputElement = document.getElementById('symbols-search');
 
-          card.appendChild(svgHolder);
-          card.appendChild(label);
-          iconsContainer.appendChild(card);
+      /**
+       * Filter visible cards in `#icons` by search query (case-insensitive substring match).
+       */
+      const searchCountElement = document.getElementById('search-count');
+      function applySymbolsFilter() {
+        const query = (searchInputElement && searchInputElement.value || '').trim().toLowerCase();
+        const allCards = Array.from(document.querySelectorAll('#icons .card'));
+        if (!query) {
+          allCards.forEach(card => { card.style.display = ''; });
+          if (searchCountElement) searchCountElement.style.display = 'none';
+          return;
+        }
+        let matched = 0;
+        allCards.forEach(card => {
+          const name = (card.dataset && card.dataset.search) || '';
+          const matches = name.includes(query);
+          card.style.display = matches ? '' : 'none';
+          if (matches) matched += 1;
         });
-      })();
+        if (searchCountElement) {
+          searchCountElement.style.display = 'block';
+          searchCountElement.textContent = `Found ${matched} SFSymbols`;
+        }
+      }
+      if (searchInputElement) searchInputElement.addEventListener('input', applySymbolsFilter);
+
+      /**
+       * Apply the selected theme to the document and persist it.
+       * @param {string} mode - 'light' or 'dark'
+       */
+      function applyTheme(mode) {
+        const nav = document.querySelector('.frosted-header');
+        if (mode === 'dark') {
+          document.body.classList.add('dark-mode');
+          if (nav) nav.classList.add('dark');
+        } else {
+          document.body.classList.remove('dark-mode');
+          if (nav) nav.classList.remove('dark');
+        }
+        localStorage.setItem('sf-theme', mode);
+        themeToggleButton.setAttribute('aria-pressed', mode === 'dark' ? 'true' : 'false');
+        themeToggleIcon.textContent = mode === 'dark' ? '🌙' : '☀️';
+      }
+
+      // Initialize from storage
+      const savedThemeMode = localStorage.getItem('sf-theme') || (document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+      applyTheme(savedThemeMode === 'dark' ? 'dark' : 'light');
+
+      // Toggle on click
+      themeToggleButton.addEventListener('click', () => {
+        const isDarkNow = document.body.classList.toggle('dark-mode');
+        const newMode = isDarkNow ? 'dark' : 'light';
+        localStorage.setItem('sf-theme', newMode);
+        applyTheme(newMode);
+      });
+
+      // Load a generated runtime icons export `sf-icons-data.js` first (created during docs build).
+      // If it's missing, fall back to the library bundle `index.js`.
+      try {
+        let module;
+        try {
+          module = await import('./sf-icons-data.js');
+        } catch (err) {
+          module = await import('./index.js');
+        }
+
+        const iconsContainer = document.getElementById('icons');
+        const maybeExport = module.sfIconsData || (module.default && module.default.sfIconsData) || module.default;
+        const iconMap = maybeExport && (maybeExport.sfIconsData || maybeExport);
+        const viewBoxMap = module.sfIconsViewBox || (module.default && module.default.sfIconsViewBox) || {};
+        const componentNamesMap = module.sfIconComponentNames || (module.default && module.default.sfIconComponentNames) || {};
+
+          // Inject SF Symbol svgs into the theme toggle button (if available)
+          try {
+            // prefer component-style export names if present
+            const preferredLightKeys = ['SFSunMax', 'SFSunmax', 'sun.max'];
+            const preferredDarkKeys = ['SFMoonStars', 'SFMoonstars', 'moon.stars'];
+
+            function findFirstAvailable(keys) {
+              for (const k of keys) {
+                if (iconMap && iconMap[k]) return k;
+              }
+              return null;
+            }
+
+            function setToggleIconForMode(mode) {
+              const lightKey = findFirstAvailable(preferredLightKeys);
+              const darkKey = findFirstAvailable(preferredDarkKeys);
+              if (mode === 'dark' && darkKey) {
+                const vb = viewBoxMap && viewBoxMap[darkKey] ? viewBoxMap[darkKey] : '0 0 24 24';
+                themeToggleIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" fill="currentColor" width="18" height="18">${iconMap[darkKey]}</svg>`;
+                return;
+              }
+              if (mode === 'light' && lightKey) {
+                const vb = viewBoxMap && viewBoxMap[lightKey] ? viewBoxMap[lightKey] : '0 0 24 24';
+                themeToggleIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" fill="currentColor" width="18" height="18">${iconMap[lightKey]}</svg>`;
+                return;
+              }
+              // fallback to emoji
+              themeToggleIcon.textContent = mode === 'dark' ? '🌙' : '☀️';
+            }
+
+            // set initial icon based on current mode
+            const currentMode = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+            setToggleIconForMode(currentMode);
+
+            // update icon on subsequent theme toggles
+            themeToggleButton.addEventListener('click', () => {
+              const newMode = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+              setToggleIconForMode(newMode);
+            });
+          } catch (err) {
+            // ignore
+          }
+
+        if (!iconMap || Object.keys(iconMap).length === 0) {
+          iconsContainer.innerHTML = '<div class="col-12 p-3 small text-danger">No icon data found.</div>';
+          const availEl = document.getElementById('available-count');
+          if (availEl) availEl.textContent = 'Currently 0 SFSymbols available';
+        } else {
+          const availEl = document.getElementById('available-count');
+          if (availEl) availEl.textContent = `Currently ${Object.keys(iconMap).length} SFSymbols available`;
+          Object.entries(iconMap).forEach(([exportName, svgInner]) => {
+            // Create grid item
+            const item = document.createElement('div');
+            item.className = 'card text-center card-hover';
+
+            const svgHolder = document.createElement('div');
+            svgHolder.style.width = '70px';
+            svgHolder.style.height = '70px';
+            const vb = (viewBoxMap && viewBoxMap[exportName]) || '0 0 24 24';
+            svgHolder.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" fill="currentColor" width="100%" height="100%">${svgInner}</svg>`;
+
+            const title = document.createElement('div');
+            title.className = 'fw-semibold font-monospace small text-truncate';
+            // Show the SF Symbol component name, e.g. SFVideoprojectorFill
+            let displayName = componentNamesMap[exportName] || exportName;
+            title.textContent = displayName;
+
+            item.appendChild(svgHolder);
+            item.appendChild(title);
+            // store searchable text on the card for fast filtering
+            item.dataset.search = ((componentNamesMap[exportName] || exportName) + ' ' + exportName).toLowerCase();
+                  // copy-to-clipboard on click, show subtle toast
+                  item.addEventListener('click', async (ev) => {
+                    ev.stopPropagation();
+                    const nameToCopy = (componentNamesMap[exportName] || exportName);
+                    try {
+                      await navigator.clipboard.writeText(nameToCopy);
+                      showSfToast(`Copied "${nameToCopy}" to clipboard`);
+                    } catch (err) {
+                      // fallback: try old execCommand (rare)
+                      try {
+                        const textarea = document.createElement('textarea');
+                        textarea.value = nameToCopy;
+                        textarea.style.position = 'fixed'; textarea.style.left = '-9999px';
+                        document.body.appendChild(textarea);
+                        textarea.select();
+                        document.execCommand('copy');
+                        textarea.remove();
+                        showSfToast(`Copied "${nameToCopy}" to clipboard`);
+                      } catch (err2) {
+                        showSfToast('Copy failed');
+                      }
+                    }
+                  });
+                  iconsContainer.appendChild(item);
+          });
+        }
+      } catch (error) {
+        const iconsContainer = document.getElementById('icons');
+        iconsContainer.innerHTML = `<div class="col-12 p-3 small text-danger">Error loading icons: ${error.message}</div>`;
+        // eslint-disable-next-line no-console
+        console.error('Failed to import icons bundle', error);
+      }
+
+      // Toast helper
+      const sfToastElement = document.getElementById('sf-toast');
+      let sfToastTimer = null;
+      function showSfToast(message, duration = 2800) {
+        if (!sfToastElement) return;
+        sfToastElement.hidden = false;
+        sfToastElement.textContent = message;
+        sfToastElement.classList.add('show');
+        if (sfToastTimer) clearTimeout(sfToastTimer);
+        sfToastTimer = setTimeout(() => {
+          sfToastElement.classList.remove('show');
+            // hide after transition (match/slightly exceed CSS transition duration)
+            setTimeout(() => { sfToastElement.hidden = true; }, 320);
+        }, duration);
+      }
     </script>
   </body>
 </html>
