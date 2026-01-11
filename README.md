@@ -4,7 +4,7 @@
 
 # SF Symbols Library
 
-A React component library for SF Symbols icons. This library contains only a subset of Apple's original SF Symbols, specifically the "hierarchical" variants. These are monochrome symbols designed for use with custom colors.
+A React component library for SF Symbols icons. This library contains only a subset of Apple's original SF Symbols, specifically the "hierarchical" variants.
 
 ## Live Demo
 
