@@ -37,8 +37,17 @@ jobs:
         node-version: '22'
         cache: 'npm'
     - run: npm ci
-    - run: npm run generate
-
+    - run: npm run generate    - name: Commit updated README if changed
+      run: |
+        if git diff --quiet README.md; then
+          echo "README.md not changed"
+        else
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add README.md
+          git commit -m "Update SF Symbols badge count"
+          git push
+        fi
   build:
     runs-on: ${{ matrix.os }}
     needs: generate
