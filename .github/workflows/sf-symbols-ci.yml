@@ -37,7 +37,8 @@ jobs:
         node-version: '22'
         cache: 'npm'
     - run: npm ci
-    - run: npm run generate    - name: Commit updated README if changed
+    - run: npm run generate
+    - name: Commit updated README if changed
       run: |
         if git diff --quiet README.md; then
           echo "README.md not changed"
