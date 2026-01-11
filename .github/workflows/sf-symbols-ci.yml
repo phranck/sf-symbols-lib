@@ -81,6 +81,7 @@ jobs:
         node-version: '22'
         cache: 'npm'
     - run: npm ci
+    - run: npm run build
     - run: cd docs && npm run generate
     - run: cd docs && npm run build
     - uses: actions/configure-pages@v5
