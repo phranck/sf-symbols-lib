@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx depcheck:*)"
+      "Bash(npx depcheck:*)",
+      "Bash(npm run docs:build:*)"
     ]
   }
 }

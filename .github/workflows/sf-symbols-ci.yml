@@ -104,8 +104,7 @@ jobs:
       with:
         name: package-dist
         path: dist
-    - run: cd docs && npm ci
-    - run: cd docs && npm run build
+    - run: npm run docs:build
     - uses: actions/configure-pages@v5
     - uses: actions/upload-pages-artifact@v3
       with:
