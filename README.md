@@ -27,7 +27,7 @@ npm install sf-symbols-lib
 ## Quick Start
 
 ```tsx
-import { SFSymbol, Checkmark } from 'sf-symbols-lib/hierarchical/primary';
+import { SFSymbol, Checkmark } from 'sf-symbols-lib/hierarchical';
 
 function App() {
   return <SFSymbol name={Checkmark} size={24} />;
@@ -39,7 +39,7 @@ function App() {
 ### Basic Usage
 
 ```tsx
-import { SFSymbol, Checkmark, CheckmarkCircleFill, Trash } from 'sf-symbols-lib/hierarchical/primary';
+import { SFSymbol, Checkmark, CheckmarkCircleFill, Trash } from 'sf-symbols-lib/hierarchical';
 
 function MyComponent() {
   return (
@@ -71,7 +71,7 @@ import { SFSymbol, Folder } from 'sf-symbols-lib/monochrome';
 
 ### Default Import
 
-If you don't specify a subpath, you get `hierarchical/primary`:
+If you don't specify a subpath, you get `hierarchical`:
 
 ```tsx
 // These are equivalent:
@@ -82,7 +82,7 @@ import { SFSymbol, Checkmark } from 'sf-symbols-lib/hierarchical';
 ### Styling Examples
 
 ```tsx
-import { SFSymbol, Heart, HeartFill, Star } from 'sf-symbols-lib/hierarchical/primary';
+import { SFSymbol, Heart, HeartFill, Star } from 'sf-symbols-lib/hierarchical';
 
 function StyledSymbols() {
   return (
@@ -105,7 +105,7 @@ function StyledSymbols() {
 Available size presets: `xs`, `sm`, `md`, `lg`, `xl`
 
 ```tsx
-import { SFSymbol, Bell } from 'sf-symbols-lib/hierarchical/primary';
+import { SFSymbol, Bell } from 'sf-symbols-lib/hierarchical';
 
 function SizeExamples() {
   return (
@@ -126,7 +126,7 @@ function SizeExamples() {
 ### Using with Buttons
 
 ```tsx
-import { SFSymbol, Plus, Trash, PencilLine } from 'sf-symbols-lib/hierarchical/primary';
+import { SFSymbol, Plus, Trash, PencilLine } from 'sf-symbols-lib/hierarchical';
 
 function ButtonExamples() {
   return (
@@ -155,7 +155,7 @@ function ButtonExamples() {
 ### Using with Lists
 
 ```tsx
-import { SFSymbol, CheckmarkCircleFill, Circle, ExclamationmarkTriangleFill } from 'sf-symbols-lib/hierarchical/primary';
+import { SFSymbol, CheckmarkCircleFill, Circle, ExclamationmarkTriangleFill } from 'sf-symbols-lib/hierarchical';
 
 type Status = 'done' | 'pending' | 'warning';
 
@@ -185,7 +185,7 @@ function StatusList({ items }: { items: { text: string; status: Status }[] }) {
 ### Dynamic Symbol Selection
 
 ```tsx
-import { SFSymbol, SFSymbolName, Folder, FolderFill } from 'sf-symbols-lib/hierarchical/primary';
+import { SFSymbol, SFSymbolName, Folder, FolderFill } from 'sf-symbols-lib/hierarchical';
 
 function DynamicIcon({ isOpen }: { isOpen: boolean }) {
   return (
@@ -202,7 +202,7 @@ function DynamicIcon({ isOpen }: { isOpen: boolean }) {
 For cases where you need to work with symbol names programmatically:
 
 ```tsx
-import { SFSymbol, SFSymbolName, getAvailableSymbols, isAvailableSymbol } from 'sf-symbols-lib/hierarchical/primary';
+import { SFSymbol, SFSymbolName, getAvailableSymbols, isAvailableSymbol } from 'sf-symbols-lib/hierarchical';
 
 // Using enum
 <SFSymbol name={SFSymbolName.Checkmark} />
@@ -228,7 +228,7 @@ For shorter imports throughout your project, configure a path alias:
 {
   "compilerOptions": {
     "paths": {
-      "sf-symbols": ["node_modules/sf-symbols-lib/dist/hierarchical/primary"]
+      "sf-symbols": ["node_modules/sf-symbols-lib/dist/hierarchical"]
     }
   }
 }
@@ -239,7 +239,7 @@ For shorter imports throughout your project, configure a path alias:
 export default defineConfig({
   resolve: {
     alias: {
-      'sf-symbols': 'sf-symbols-lib/hierarchical/primary'
+      'sf-symbols': 'sf-symbols-lib/hierarchical'
     }
   }
 });
@@ -256,7 +256,7 @@ Create a local re-export file:
 
 **src/lib/sf-symbols.ts:**
 ```tsx
-export * from 'sf-symbols-lib/hierarchical/primary';
+export * from 'sf-symbols-lib/hierarchical';
 ```
 
 **Usage:**
@@ -294,14 +294,12 @@ Symbols are named using PascalCase derived from their SF Symbol names:
 
 ## Bundle Size
 
-Each variant/color combination is a separate bundle:
+Each variant is a separate bundle:
 
 | Import Path | Size (gzip) |
 |-------------|-------------|
-| `sf-symbols-lib/hierarchical/primary` | ~3.1 MB |
-| `sf-symbols-lib/hierarchical/secondary` | ~3.1 MB |
-| `sf-symbols-lib/monochrome/primary` | ~3.1 MB |
-| `sf-symbols-lib/monochrome/secondary` | ~3.1 MB |
+| `sf-symbols-lib/hierarchical` | ~3.1 MB |
+| `sf-symbols-lib/monochrome` | ~3.1 MB |
 
 Import only the variant you need to minimize bundle size.
 
@@ -345,12 +343,9 @@ npm run check
    ```
    src/components/svgs/
    ├── hierarchical/
-   │   ├── primary/
-   │   │   └── your-symbol.svg
-   │   └── secondary/
-   │       └── your-symbol.svg
+   │   └── your-symbol.svg
    ├── monochrome/
-   │   └── ...
+   │   └── your-symbol.svg
    ```
 
 2. Run the generator:
@@ -368,9 +363,9 @@ npm run check
 The generator creates:
 
 - `src/components/sf-symbol-name.ts` - Enum and constants for all symbol names
-- `src/{variant}/{color}/data.ts` - SVG content for each variant/color
-- `src/{variant}/{color}/index.tsx` - Entry point with SFSymbol component
-- `src/index.ts` - Main entry (re-exports hierarchical/primary)
+- `src/{variant}/data.ts` - SVG content for each variant
+- `src/{variant}/index.tsx` - Entry point with SFSymbol component
+- `src/index.ts` - Main entry (re-exports hierarchical)
 
 ## Contributing
 
