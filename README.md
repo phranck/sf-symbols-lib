@@ -377,6 +377,6 @@ This repository has been published under the [CC-BY-NC-SA 4.0](https://creativec
 
 ---
 
-<center>
+<div style="text-align: center;">
   Made with ❤️ by <a href="https://oldbytes.space/@LAYERED" target="_blank">@LAYERED</a>
-<center>
+<div>
