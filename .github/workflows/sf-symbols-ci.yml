@@ -19,6 +19,8 @@ jobs:
         os: [ubuntu-latest, macos-latest]
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
     - uses: actions/setup-node@v4
       with:
         node-version: '22'
@@ -40,15 +42,35 @@ jobs:
     - run: npm run generate
     - name: Commit updated files if changed
       run: |
-        if git diff --quiet src/components/available-sfsymbols.ts src/components/icons-data.ts src/components/icons-map.ts src/components/index.tsx README.md; then
-          echo "No changes to commit"
-        else
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add src/components/available-sfsymbols.ts src/components/icons-data.ts src/components/icons-map.ts src/components/index.tsx README.md
-          git commit -m "Update SF Symbols components and badge"
-          git push
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+        # collect changes relative to HEAD (if any) and also untracked files
+        changed=""
+        if git rev-parse --verify HEAD >/dev/null 2>&1; then
+          changed=$(git diff --name-only HEAD -- || true)
         fi
+        untracked=$(git ls-files --others --exclude-standard || true)
+        all_changes=$(printf "%s\n%s" "$changed" "$untracked" | sort -u)
+
+        # filter for files we care about (any file under src/components or README.md)
+        matches=$(printf "%s" "$all_changes" | grep -E '^src/components/|^README.md' || true)
+
+        if [ -z "$matches" ]; then
+          echo "No changes in src/components or README.md to commit"
+          exit 0
+        fi
+
+        # stage deletions/adds/renames under the components dir and README
+        git add -A src/components README.md
+        # create commit if there are staged changes
+        if git diff --cached --quiet; then
+          echo "No staged changes to commit"
+          exit 0
+        fi
+
+        git commit -m "Update SF Symbols components and badge"
+        git push
   build:
     runs-on: ubuntu-latest
     needs: generate
