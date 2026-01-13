@@ -975,19 +975,7 @@
               </button>
             </div>
             <div id="search-help-popover" class="search-help-popover" role="dialog" aria-hidden="true">
-              <div style="font-weight:600; margin-bottom:6px;">Search syntax</div>
-              <div class="ph">Use <code>|</code> for OR, <code>&amp;</code> or spaces for AND.</div>
-              <pre>
-
-<strong>folder|file</strong>
--> matches items containing "folder" OR "file"
-
-<strong>chevron up</strong>
--> matches items containing both "chevron" AND "up"
-
-<strong>person|user & circle</strong>
--> matches items containing "person & circle" OR "user & circle"
-              </pre>
+              <!-- SEARCH_CONTENT -->
             </div>
           </div>
           <button id="theme-toggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle theme">
@@ -1207,21 +1195,7 @@
       // Render provided Markdown as HTML inside the about box
       const aboutContent = document.createElement('div');
       aboutContent.className = 'about-content';
-      aboutContent.innerHTML = `
-        <p>
-          This content was created entirely automatically with the help of LLMs. The result, the SF Symbols displayed,
-          were manually extracted from Apple's <a href="https://developer.apple.com/sf-symbols/" target="_blank" rel="noopener noreferrer">SF Symbols app</a>
-          (version 7) and processed automatically.
-        </p>
-        <p>
-          The aim was to make these icons available in React with Typescript. For this reason, I created a package with
-          these SF symbols extracted as SVGs, which can be used with any React frontend.
-        </p>
-        <p>
-          Further information can be found in the
-          <a href="https://github.com/LAYEREDwork/sf-symbols-lib" target="_blank" rel="noopener noreferrer">package repository on GitHub</a>.
-        </p>
-      `;
+      aboutContent.innerHTML = `<!-- ABOUT_CONTENT -->`;
 
       const okWrap = document.createElement('div');
       okWrap.style.display = 'flex';

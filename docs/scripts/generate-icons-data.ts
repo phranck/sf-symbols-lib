@@ -8,6 +8,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import CleanCSS from 'clean-css';
+import { marked } from 'marked';
 
 // Type definitions
 type Variant = 'hierarchical' | 'monochrome';
@@ -200,6 +201,23 @@ function generateLoaderScript(): string {
 }
 
 /**
+ * Read a markdown file and convert it to HTML
+ *
+ * @param filePath - Path to the markdown file
+ * @returns HTML string or empty string if file not found
+ */
+async function readMarkdownAsHtml(filePath: string): Promise<string> {
+  try {
+    const markdown = await fs.readFile(filePath, 'utf8');
+    const html = await marked(markdown);
+    return html;
+  } catch (error) {
+    console.warn(`⚠ Could not read markdown file ${filePath}:`, error);
+    return '';
+  }
+}
+
+/**
  * Minify CSS content
  */
 function minifyCss(htmlContent: string): string {
@@ -364,6 +382,19 @@ async function main(): Promise<void> {
 
     // Read HTML template
     let htmlContent = await fs.readFile(htmlInputFile, 'utf8');
+
+    // Read and inject markdown content
+    const aboutMdPath = path.join(repoDocsDir, 'about.md');
+    const searchMdPath = path.join(repoDocsDir, 'search.md');
+
+    const aboutHtml = await readMarkdownAsHtml(aboutMdPath);
+    const searchHtml = await readMarkdownAsHtml(searchMdPath);
+
+    // Replace placeholders with rendered markdown content
+    htmlContent = htmlContent.replace('<!-- ABOUT_CONTENT -->', aboutHtml);
+    htmlContent = htmlContent.replace('<!-- SEARCH_CONTENT -->', searchHtml);
+
+    console.log('✓ Injected markdown content (about.md, search.md)');
 
     // Replace module import + initialization code in template with a small loader
     const importPattern =
