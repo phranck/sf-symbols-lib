@@ -5,11 +5,20 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src'),
+    },
+  },
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
+      entry: {
+        'index': resolve(__dirname, 'src/index.ts'),
+        'hierarchical/index': resolve(__dirname, 'src/hierarchical/index.tsx'),
+        'monochrome/index': resolve(__dirname, 'src/monochrome/index.tsx'),
+        'multicolor/index': resolve(__dirname, 'src/multicolor/index.tsx'),
+      },
       name: 'SFSymbolsLib',
-      fileName: 'index',
       formats: ['es']
     },
     rollupOptions: {
@@ -18,7 +27,9 @@ export default defineConfig({
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM'
-        }
+        },
+        preserveModules: false,
+        entryFileNames: '[name].js',
       }
     },
     sourcemap: true,

@@ -2,7 +2,7 @@
  * Icon sizes mapping for SF Symbols components
  * Pixel values for different size presets
  */
-export const PAIconSize: Record<string, number> = {
+export const SFSymbolSize: Record<string, number> = {
   xs: 12,
   sm: 16,
   md: 20,

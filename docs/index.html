@@ -5,308 +5,1669 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SF Symbols — Demo</title>
 
-    <!-- Google Font: Roboto Condensed -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+    <!-- Google Font: Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUa6zYk5v5Qv1mKkQ6Q1uFQZ6bQ5Y5b5Q5b5Q5b5Q5b5Q5b5Q5b5Q5b5Q5b" crossorigin="anonymous">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
-      :root { --control-height: 38px; --header-height: 88px; }
-      /* Use Roboto Condensed for the page */
-      body { font-family: 'Roboto Condensed', Arial, sans-serif; }
-
-      /* Frosted header */
-      .frosted-header { background-color: rgba(250,250,250,0.82); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 2rem 1rem; border-bottom: 1px solid rgba(0,0,0,0.05); }
-      .frosted-header.dark { background-color: rgba(18,20,22,0.82); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 2rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.03); }
-
-      .header-title h1 { margin: 0; line-height: 1.05; }
-      .header-title { display: flex; flex-direction: column; justify-content: center; }
-      .header-title h1 { margin: 0; line-height: 1.05; }
-      .header-title .subtext { margin-top: 0.125rem; color: #6b7280; }
-      .header-title .subsubtext { margin-top: 0.125rem; color: #6b7280; font-size: 0.9rem; }
-      .dark-mode .header-title .subsubtext { color: #9aa0a6; }
-
-      /* Theme toggle: no gradient, rounded, theme-aware */
-      .theme-toggle { border-radius: 0.75rem; padding: 0.45rem 0.9rem; font-size: 1.05rem; display:inline-flex; align-items:center; gap:0.5rem; border:1px solid rgba(0,0,0,0.08); background: transparent; height: var(--control-height); }
-      .theme-toggle:hover { transform: translateY(-1px); }
-      .theme-toggle:focus { outline: none; box-shadow: 0 0 0 4px rgba(107,114,128,0.12); border-color: rgba(107,114,128,0.22); }
-      #theme-toggle-icon { display:inline-flex; width:22px; height:22px; align-items:center; justify-content:center; }
-      /* Light / dark variants */
-      .dark-mode .theme-toggle { background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.06); color: #f8fafc; }
-      .theme-toggle { background: rgba(0,0,0,0.02); color: #111827; }
-
-      /* Search input (same height as theme toggle) */
-      .search-input { height: var(--control-height); border-radius: 0.75rem; padding: 0 0.75rem; font-size: 1rem; border: 1px solid rgba(0,0,0,0.08); background: transparent; color: inherit; }
-      .search-input::placeholder { color: rgba(107,114,128,0.6); }
-      .search-count { color: rgba(17,24,39,0.8); }
-      .dark-mode .search-count { color: #cbd5e1; }
-
-      /* Card hover lift */
-      .card-hover { transition: transform 0.35s ease, box-shadow 0.35s ease; }
-      .card-hover:hover { transform: translateY(-6px); box-shadow: 0 12px 24px rgba(0,0,0,0.12); }
-
-      /* Dark mode overrides: deep charcoal page, slightly lighter card surfaces */
-      .dark-mode { background-color: #0b0d10; color: #e6eef8; }
-      .dark-mode .card { background-color: #121416; color: #e6eef8; border-color: #0f1113; box-shadow: 0 6px 18px rgba(2,4,8,0.6); }
-      .dark-mode .card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(2,6,12,0.65); }
-      .dark-mode .header-title .subtext { color: #9aa0a6; }
-      .dark-mode footer { color: #9aa0a6; background-color: rgba(18,20,22,0.82); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border-top: 1px solid rgba(255,255,255,0.03); }
-
-      /* Site footer: match header background and center content */
-      .site-footer { background-color: rgba(250,250,250,0.82); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 0.75rem 2rem; min-height: 64px; border-top: 1px solid rgba(0,0,0,0.06); }
-      .site-footer a { color: inherit; font-weight: 600; text-decoration: none; margin-left: 0.25rem; }
-      .site-footer a:hover { text-decoration: underline; }
-
-      /* Ensure icons grid has comfortable gutters */
-      #icons { margin-top: 0.75rem; display: grid; grid-template-columns: repeat(auto-fill, 420px); gap: 1rem; justify-content: center; }
-
-      @media (max-width: 576px) {
-        #icons { grid-template-columns: 1fr; padding: 0 1rem; justify-items: center; }
-        /* When layout is single-column, make cards span the available width (respecting the icons padding) */
-        .card { width: 100%; max-width: none; }
+      :root {
+        --control-height: 38px;
+        --header-height: 140px;
+        --card-size: 140px;
+        --symbol-color: #000000;
+        --drawer-height: 250px;
+        --footer-height: 64px;
       }
 
-      /* Card styles */
-      .card { width: 420px; height: 190px; background-color: rgba(250,250,250,0.92); border: 1px solid #e5e7eb; border-radius: 1rem; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 1.25rem; box-shadow: 0 1px 2px rgba(16,24,40,0.02); cursor: pointer; }
+      /* During theme switching temporarily disable transitions to avoid expensive painted animations */
+      .theme-switching * {
+        transition: none !important;
+        -webkit-transition: none !important;
+      }
 
-      /* Toast notification (subtle) */
-      /* Toast centered horizontally and vertically inside the header */
-      .sf-toast { position: fixed; left: 50%; top: calc(var(--header-height, 88px) / 2); transform: translate(-50%, -30px); background: rgba(17,24,39,0.68); color: #fff; padding: 1rem 1.25rem; border-radius: 10px; font-size: 0.95rem; opacity: 0; pointer-events: none; transition: opacity 260ms ease-in-out, transform 260ms ease-in-out; will-change: opacity, transform; z-index: 1100; backdrop-filter: blur(6px); max-width: 90%; text-align: center; }
-      .sf-toast.show { opacity: 1; transform: translate(-50%, -50%); pointer-events: auto; }
-      .dark-mode .sf-toast { background: rgba(255,255,255,0.04); color: #e6eef8; }
+      body {
+        font-family: 'Roboto', Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
 
-      /* border handled above for dark cards */
+      /* Frosted header */
+      .frosted-header {
+        background-color: rgba(250,250,250,0.92);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        display: flex;
+        flex-direction: column;
+        padding: 1rem 2rem;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        gap: 0.75rem;
+      }
+
+      .frosted-header.dark {
+        background-color: rgba(18,20,22,0.92);
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+      }
+
+      .header-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .header-controls {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+
+      .header-title h1 {
+        margin: 0;
+        line-height: 1.05;
+      }
+
+      .header-title .subtext {
+        margin-top: 0.125rem;
+        color: #6b7280;
+      }
+
+      .dark-mode .header-title .subtext {
+        color: #9aa0a6;
+      }
+
+      /* Dropdowns */
+      .control-select {
+        height: var(--control-height);
+        border-radius: 0.75rem;
+        padding: 0 0.75rem;
+        font-size: 0.95rem;
+        border: 1px solid rgba(0,0,0,0.08);
+        background: rgba(255,255,255,0.8);
+        color: inherit;
+        cursor: pointer;
+        min-width: 140px;
+      }
+
+      .control-select:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        border-color: rgba(59, 130, 246, 0.5);
+      }
+
+      .dark-mode .control-select {
+        background: rgba(255,255,255,0.05);
+        border-color: rgba(255,255,255,0.08);
+        color: #f8fafc;
+      }
+
+      .control-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #6b7280;
+        margin-bottom: 0.25rem;
+      }
+
+      .dark-mode .control-label {
+        color: #9aa0a6;
+      }
+
+      .control-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Color selector */
+      .color-selector {
+        position: relative;
+        width: 140px;
+        height: var(--control-height);
+        border-radius: 0.75rem;
+        border: 1px solid rgba(0,0,0,0.08);
+        background: rgba(255,255,255,0.8);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        padding: 0 0.75rem;
+      }
+
+      .color-selector:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        border-color: rgba(59, 130, 246, 0.5);
+      }
+
+      .dark-mode .color-selector {
+        background: rgba(255,255,255,0.05);
+        border-color: rgba(255,255,255,0.08);
+      }
+
+      .color-selected {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 2px solid rgba(0,0,0,0.1);
+        flex-shrink: 0;
+      }
+
+      .color-dropdown {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 50%;
+        right: auto;
+        transform: translate(-50%, -10px);
+        background: rgba(255,255,255,0.95);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-radius: 0.75rem;
+        border: 1px solid rgba(0,0,0,0.08);
+        padding: 0.75rem;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.18s ease;
+        z-index: 1000;
+        box-sizing: border-box;
+        max-width: 260px;
+        min-width: 180px;
+        overflow: visible;
+      }
+
+      .dark-mode .color-dropdown {
+        background: rgba(18,20,22,0.95);
+        border-color: rgba(255,255,255,0.08);
+      }
+
+      .color-selector.open .color-dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-50%, 0);
+      }
+
+      /* Input group button: match Theme Toggle background & border (theme-aware) */
+      .input-group .btn {
+        position: relative;
+        z-index: 2;
+        border: 1px solid rgba(0,0,0,0.08);
+        border-left: none;
+        background: rgba(0,0,0,0.02);
+        color: #111827;
+      }
+
+      .input-group .btn:focus {
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(107,114,128,0.12);
+      }
+
+      .dark-mode .input-group .btn {
+        border: 1px solid rgba(255,255,255,0.06);
+        border-left: none;
+        background: rgba(255,255,255,0.03);
+        color: #f8fafc;
+      }
+
+      /* Drawer copy button theme-aware styles */
+      .drawer-copy-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 28px;
+        padding: 0;
+        margin-left: 8px;
+        border: 1px solid rgba(0,0,0,0.08);
+        background: transparent;
+        cursor: pointer;
+        border-radius: 6px;
+        color: inherit;
+      }
+
+      .drawer-copy-btn:focus {
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(59,130,246,0.12);
+      }
+
+      .drawer-copy-btn:hover {
+        background: rgba(0,0,0,0.04);
+      }
+
+      .dark-mode .drawer-copy-btn {
+        border-color: rgba(255,255,255,0.06);
+        background: rgba(255,255,255,0.02);
+        color: #f8fafc;
+      }
+
+      .dark-mode .drawer-copy-btn:hover {
+        background: rgba(255,255,255,0.04);
+      }
+
+      /* Drawer labels: secondary text color and normal weight */
+      .drawer-label {
+        font-weight: 400;
+        color: #6b7280;
+      }
+
+      .dark-mode .drawer-label {
+        color: #9aa0a6;
+      }
+
+      .color-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 24px);
+        grid-auto-rows: 24px;
+        gap: 8px;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .color-option {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: transform 0.12s ease, border-color 0.12s ease;
+        margin: 0; /* spacing handled by grid gap */
+        box-sizing: border-box;
+      }
+
+      .color-option:hover {
+        border-color: rgba(0,0,0,0.26);
+        transform: scale(1.05);
+      }
+
+      .dark-mode .color-option:hover {
+        border-color: rgba(255,255,255,0.3);
+      }
+
+      .color-option.selected {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+      }
+
+      /* Theme toggle */
+      .theme-toggle {
+        border-radius: 0.75rem;
+        padding: 0.45rem 0.9rem;
+        font-size: 1.05rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        border: 1px solid rgba(0,0,0,0.08);
+        background: transparent;
+        height: var(--control-height);
+        cursor: pointer;
+      }
+
+      .theme-toggle:hover {
+        transform: translateY(-1px);
+      }
+
+      .theme-toggle:focus {
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(107,114,128,0.12);
+        border-color: rgba(107,114,128,0.22);
+      }
+
+      #theme-toggle-icon {
+        display: inline-flex;
+        width: 22px;
+        height: 22px;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .dark-mode .theme-toggle {
+        background: rgba(255,255,255,0.03);
+        border-color: rgba(255,255,255,0.06);
+        color: #f8fafc;
+      }
+
+      .theme-toggle {
+        background: rgba(0,0,0,0.02);
+        color: #111827;
+      }
+
+      /* About modal styles */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        padding: 1rem;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 220ms ease, visibility 220ms ease;
+      }
+
+      .modal-overlay.show {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      /* Apply a subtle blur to the page content behind the modal when shown */
+      .modal-overlay.show {
+        -webkit-backdrop-filter: blur(6px);
+        backdrop-filter: blur(6px);
+      }
+
+      .about-modal {
+        background: rgba(255,255,255,0.98);
+        border-radius: 12px;
+        max-width: 560px;
+        width: 100%;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+        padding: 2rem;
+        box-sizing: border-box;
+        transform: translateY(8px) scale(0.99);
+        opacity: 0;
+        transition: transform 260ms cubic-bezier(.2,.9,.2,1), opacity 220ms ease;
+      }
+
+      .modal-overlay.show .about-modal {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+
+      .about-modal h2 {
+        margin: 0 0 1rem 0;
+        text-align: center;
+      }
+
+      .about-modal p { margin: 0 0 1rem 0; }
+
+      .dark-mode .about-modal {
+        background: rgba(18,20,22,0.98);
+        color: #e6eef8;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+        border: 1px solid rgba(255,255,255,0.04);
+      }
+
+      /* Bottom drawer */
+      #bottom-drawer {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: var(--drawer-height);
+        width: 100%;
+        background: rgba(250,250,250,0.92);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-top: 1px solid rgba(0,0,0,0.05);
+        box-shadow: 0 -6px 18px rgba(0,0,0,0.08);
+        transform: translateY(100%);
+        transition: transform 360ms cubic-bezier(.2,.8,.2,1);
+        z-index: 1040;
+        box-sizing: border-box;
+        padding: 0 0 0 1.25rem; /* no vertical padding so inner codebox can dock to top/bottom */
+      }
+
+      .dark-mode #bottom-drawer {
+        background: rgba(22,26,28,0.92);
+        border-top-color: rgba(255,255,255,0.06);
+      }
+
+      /* Drawer content empty view vertical center */
+      #drawer-content.empty {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 1rem;
+      }
+
+      /* When drawer is open, add bottom padding so content is pushed up */
+      body.drawer-open {
+        padding-bottom: var(--drawer-height);
+        transition: padding-bottom 360ms cubic-bezier(.2,.8,.2,1);
+      }
+
+      body.drawer-open #bottom-drawer {
+        transform: translateY(0);
+      }
+
+      /* Search input */
+      .search-input {
+        height: var(--control-height);
+        border-radius: 0.75rem;
+        padding: 0 0.75rem;
+        font-size: 1rem;
+        border: 1px solid rgba(0,0,0,0.08);
+        background: transparent;
+        color: #111827;
+        width: 350px;
+      }
+
+      .search-input::placeholder {
+        color: #6b7280;
+      }
+
+      .search-input:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        border-color: rgba(59, 130, 246, 0.5);
+      }
+
+      .dark-mode .search-input {
+        background: rgba(255,255,255,0.03);
+        border-color: rgba(255,255,255,0.06);
+        color: #f8fafc;
+      }
+
+      .dark-mode .search-input::placeholder {
+        color: #9aa0a6;
+      }
+
+      /* Search help popover */
+      .search-help-popover {
+        position: absolute;
+        right: 0;
+        top: calc(100% + 8px);
+        z-index: 1200;
+        min-width: 600px;
+        max-width: 600px;
+        background: rgba(255,255,255,0.98);
+        color: inherit;
+        border: 1px solid rgba(0,0,0,0.08);
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        padding: 0.75rem;
+        display: none;
+        box-sizing: border-box;
+        white-space: normal;
+      }
+
+      .search-help-popover.show {
+        display: block;
+      }
+
+      .search-help-popover pre { margin: 0; white-space: pre-wrap; font-family: monospace; font-size: 0.9rem; }
+
+      .search-help-popover .ph { color: #6b7280; font-size: 0.85rem; }
+
+      .dark-mode .search-help-popover {
+        background: rgba(35,37,39,0.92);
+        border: 1px solid rgba(255,255,255,0.08);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+      }
+
+      .dark-mode .search-help-popover .ph {
+        color: #9ca3af;
+      }
+
+      @media (max-width: 768px) {
+        .search-input { width: 220px; min-width: 160px; }
+      }
+
+      .search-count {
+        color: rgba(17,24,39,0.8);
+        font-size: 0.9rem;
+      }
+
+      .dark-mode .search-count {
+        color: #cbd5e1;
+      }
+
+      /* Icons grid */
+      #icons {
+        margin-top: 1rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, var(--card-size));
+        gap: 1rem;
+        justify-content: center;
+      }
+
+      /* Card styles - square 160x160, no text */
+      .card {
+        width: var(--card-size);
+        height: var(--card-size);
+        background-color: rgba(250,250,250,0.92);
+        border: 1px solid #e5e7eb;
+        border-radius: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: none;
+        cursor: pointer;
+        transition: box-shadow 240ms cubic-bezier(.2,.8,.2,1), transform 200ms cubic-bezier(.2,.8,.2,1), border-color 240ms;
+      }
+      /* Disable hover lift globally for consistent feel; keep minimal feedback via selected state */
+      .card:hover {
+        transform: none;
+        box-shadow: none;
+      }
+
+        /* Stronger selected card ring without glow, wider, always #4ec8fe */
+        .card.selected {
+          border: 4px solid #4ec8fe;
+          box-shadow: none;
+        }
+
+        /* Ensure selection ring is visible in dark mode with same color */
+        .dark-mode .card.selected {
+          border: 4px solid #4ec8fe;
+          box-shadow: none;
+        }
+      .card svg {
+        width: 60px;
+        height: 60px;
+        color: var(--symbol-color);
+      }
+
+      /* Dark mode */
+      .dark-mode {
+        /* slightly lighter dark background for improved contrast */
+        background-color: #0f1417;
+        color: #e9f0f6;
+      }
+
+      .dark-mode .card {
+        background-color: #15181a;
+        color: #e9f0f6;
+        border-color: #2a2f33;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.55);
+      }
+
+      /* Remove individual hover transformations in dark mode to keep interactions consistent */
+
+      /* Footer */
+      .site-footer {
+        background-color: rgba(250,250,250,0.82);
+        backdrop-filter: blur(4px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.75rem 2rem;
+        min-height: var(--footer-height);
+        border-top: 1px solid rgba(0,0,0,0.06);
+        color: #111827;
+      }
+
+      .site-footer a {
+        color: #111827;
+        font-weight: 600;
+        text-decoration: none;
+        margin-left: 0.25rem;
+        transition: color 160ms ease;
+      }
+
+      .dark-mode .site-footer {
+        background-color: rgba(18,20,22,0.82);
+        border-top-color: rgba(255,255,255,0.08);
+        color: #cbd5e1;
+      }
+
+      .site-footer a:hover {
+        text-decoration: underline;
+        color: #0b1220;
+      }
+
+      .dark-mode .site-footer a {
+        color: #cbd5e1;
+      }
+
+      .dark-mode .site-footer a:hover {
+        color: #e6eef8;
+      }
+
+      /* Toast */
+      .sf-toast {
+        position: fixed;
+        left: 50%;
+        top: calc(var(--header-height) / 2);
+        transform: translate(-50%, -30px);
+        background: rgba(17,24,39,0.85);
+        color: #fff;
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 260ms ease, transform 260ms ease;
+        z-index: 1100;
+        backdrop-filter: blur(8px);
+        max-width: 90%;
+        text-align: center;
+      }
+
+      .sf-toast.show {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+        pointer-events: auto;
+      }
+
+      .dark-mode .sf-toast {
+        background: rgba(255,255,255,0.1);
+        color: #e6eef8;
+      }
+
+      /* Stats bar */
+      .stats-bar {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        font-size: 0.85rem;
+        color: #6b7280;
+      }
+
+      .dark-mode .stats-bar {
+        color: #9aa0a6;
+      }
+
+      .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+
+      .stat-value {
+        font-weight: 600;
+        color: #111827;
+      }
+
+      .dark-mode .stat-value {
+        color: #e6eef8;
+      }
+
+      @media (max-width: 768px) {
+        .header-top {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.75rem;
+        }
+
+        .header-controls {
+          width: 100%;
+          justify-content: flex-start;
+        }
+
+        #icons {
+          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
+
+        .card {
+          width: 100%;
+          height: 200px;
+        }
+      }
+
+      /* Ensure main grows to fill available space so footer sticks to bottom when content is short */
+      main.container-fluid {
+        flex: 1 1 auto;
+        min-height: 0; /* allow flex to shrink when needed */
+        box-sizing: border-box;
+      }
     </style>
+      <style>
+        /* Drawer selected layout -> responsive behavior */
+        #drawer-content {
+          height: 100%;
+          box-sizing: border-box;
+          overflow: auto;
+        }
 
-    <meta name="description" content="SF Symbols static demo using Tailwind and Barlow font" />
+        #drawer-content .drawer-selected {
+          display: flex;
+          flex-direction: row;
+          align-items: stretch;
+          justify-content: space-between;
+          gap: 24px; /* increased spacing between SF Symbol and text */
+          height: 100%;
+        }
+
+        #drawer-content .drawer-code {
+          margin: 0;
+          flex: 0 0 50%;
+          max-width: 50%;
+          min-width: 28%;
+          height: auto; /* make height flexible */
+          overflow: auto;
+          padding-top: 0; /* ensure codebox docks to top */
+          padding-bottom: 0; /* ensure codebox docks to bottom */
+          position: relative;
+        }
+
+        /* Add a left border to the drawer code box that matches the footer top border */
+        #drawer-content .drawer-code {
+          border-left: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .dark-mode #drawer-content .drawer-code {
+          border-left-color: rgba(255,255,255,0.08);
+        }
+
+        /* Dock code box to top/right/bottom by removing extra spacing inside */
+        #drawer-content .drawer-code pre { margin: 0; }
+
+        .codebox-bg {
+          background: #efefef;
+        }
+
+        .dark-mode .codebox-bg {
+          background: #1c2327;
+        }
+
+        /* On narrow viewports stack code box under preview/info */
+        @media (max-width: 900px) {
+          #drawer-content .drawer-selected {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 12px;
+          }
+
+          #drawer-content .drawer-code {
+            flex: 0 0 auto;
+            max-width: 100%;
+            min-width: 100%;
+            order: 3;
+            height: auto;
+            min-height: 120px;
+          }
+        }
+      </style>
   </head>
   <body>
-    <!-- Fixed header: takes space at top, main content padded to avoid overlap -->
-    <header class="frosted-header rounded-3" style="position:fixed; top:0; left:0; right:0; z-index:1030; height:88px;">
-      <div class="header-title">
-        <h1 class="h4 mb-0">SFSymbol Library Preview</h1>
-        <div class="subtext small text-muted">Dynamically generated content — displays the SF Symbols currently available in this package.</div>
-        <div id="available-count" class="subsubtext small text-muted" aria-live="polite">&nbsp;</div>
+    <!-- Fixed header -->
+    <header class="frosted-header" style="position:fixed; top:0; left:0; right:0; z-index:1030;">
+      <div class="header-top">
+        <div class="header-title">
+          <h1 class="h4 mb-0">SF Symbols Library Preview</h1>
+          <div class="subtext small">Interactive preview of all available SF Symbols</div>
+        </div>
+        <div class="header-controls">
+          <div style="position:relative; display:flex; align-items:center; gap:0.5rem;">
+            <div class="input-group" style="max-width:720px; width:100%;">
+              <input id="symbols-search" class="search-input form-control" type="search" placeholder="Search symbols..." aria-label="Search symbols">
+              <button id="search-help-button" class="btn btn-outline-secondary" type="button" aria-label="Search help" title="Search help">
+                <i class="bi bi-info-circle" aria-hidden="true" style="font-size:16px; line-height:1;"></i>
+              </button>
+            </div>
+            <div id="search-help-popover" class="search-help-popover" role="dialog" aria-hidden="true">
+              <div style="font-weight:600; margin-bottom:6px;">Search syntax</div>
+              <div class="ph">Use <code>|</code> for OR, <code>&amp;</code> or spaces for AND.</div>
+              <pre>
+
+<strong>folder|file</strong>
+-> matches items containing "folder" OR "file"
+
+<strong>chevron up</strong>
+-> matches items containing both "chevron" AND "up"
+
+<strong>person|user & circle</strong>
+-> matches items containing "person & circle" OR "user & circle"
+              </pre>
+            </div>
+          </div>
+          <button id="theme-toggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle theme">
+            <span id="theme-toggle-icon"></span>
+          </button>
+          <button id="about-button" class="theme-toggle" aria-haspopup="dialog" aria-controls="about-modal" aria-label="About">
+            <span id="about-button-icon"><i class="bi bi-info-square" aria-hidden="true" style="font-size:18px; line-height:1;"></i></span>
+          </button>
+        </div>
       </div>
-      <div style="display:flex; align-items:center; gap:0.75rem;">
-        <div id="search-count" class="search-count" aria-live="polite" style="display:none; font-size:0.95rem; color:inherit; min-width:120px; text-align:right;">&nbsp;</div>
-        <input id="symbols-search" class="search-input" type="search" placeholder="Filter symbols" aria-label="Filter symbols">
-        <button id="theme-toggle" class="theme-toggle" aria-pressed="false" aria-label="Toggle theme">
-          <span id="theme-toggle-icon">🌙</span>
-        </button>
+
+      <div class="header-controls">
+        <div class="control-group">
+          <label class="control-label" for="variant-select">Variant</label>
+          <select id="variant-select" class="control-select">
+            <option value="hierarchical" selected>Hierarchical</option>
+            <option value="monochrome">Monochrome</option>
+            <option value="multicolor">Multicolor</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="color-selector">Color</label>
+          <div class="color-selector" id="color-selector">
+            <div class="color-selected" id="color-selected"></div>
+            <div class="color-dropdown" id="color-dropdown">
+              <div class="color-grid">
+                <!-- Colors will be added by JavaScript -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-bar" style="margin-left: auto;">
+          <div class="stat-item">
+            <span>Showing:</span>
+            <span id="visible-count" class="stat-value">0</span>
+          </div>
+          <div class="stat-item">
+            <span>Total:</span>
+            <span id="total-count" class="stat-value">0</span>
+          </div>
+        </div>
       </div>
     </header>
 
-    <main class="container" style="padding-top:108px; padding-bottom:2rem;">
+    <main class="container-fluid" style="padding-top: 160px; padding-bottom: 2rem; padding-left: 2rem; padding-right: 2rem;">
       <section id="icons">
-        <!-- Icons will be injected here by simple JS as grid items -->
+        <!-- Symbols will be injected here -->
       </section>
     </main>
 
-    <footer class="site-footer mt-5 small text-body-secondary">
-      <div>made with ❤️ by <a href="https://LAYERED.work" target="_blank" rel="noopener noreferrer">LAYERED</a></div>
+    <footer class="site-footer mt-5 small">
+      <div>Made with ❤️ by <a href="https://layered.work" target="_blank" rel="noopener noreferrer">LAYERED</a></div>
     </footer>
 
-    <!-- subtle toast for copy feedback -->
-    <div id="sf-toast" class="sf-toast" role="status" aria-live="polite" aria-atomic="true" hidden></div>
+    <!-- Toast notification -->
+    <div id="sf-toast" class="sf-toast" role="status" aria-live="polite" hidden></div>
 
     <script type="module">
-      // Theme toggle button: persist selection in localStorage
+      // Elements
       const themeToggleButton = document.getElementById('theme-toggle');
       const themeToggleIcon = document.getElementById('theme-toggle-icon');
-      const searchInputElement = document.getElementById('symbols-search');
+      const bottomDrawer = document.createElement('aside');
+      bottomDrawer.id = 'bottom-drawer';
+      bottomDrawer.setAttribute('aria-hidden', 'true');
+      bottomDrawer.innerHTML = `<div id="drawer-content" class="drawer-content"></div>`;
+      document.body.appendChild(bottomDrawer);
+      bottomDrawer.addEventListener('wheel', (e) => {
+        if (!e.target.closest('.drawer-code')) {
+          e.preventDefault();
+        }
+      });
+      const searchInput = document.getElementById('symbols-search');
+      const searchHelpButton = document.getElementById('search-help-button');
+      const searchHelpPopover = document.getElementById('search-help-popover');
+      const variantSelect = document.getElementById('variant-select');
+      const iconsContainer = document.getElementById('icons');
+      const visibleCountEl = document.getElementById('visible-count');
+      const totalCountEl = document.getElementById('total-count');
+      const sfToastElement = document.getElementById('sf-toast');
+
+      let currentData = {};
+      let currentViewBox = {};
+      let allSymbolsData = globalThis.allSymbolsData || {};
+      let allViewBoxData = globalThis.allViewBoxData || {};
+      let selectedSymbolKey = null;
+
+      // Performance tuning
+      const FLIP_MEASURE_THRESHOLD = 300; // only run expensive FLIP measurements for small sets
 
       /**
-       * Filter visible cards in `#icons` by search query (case-insensitive substring match).
+       * Simple debounce helper to avoid re-rendering on every keystroke
        */
-      const searchCountElement = document.getElementById('search-count');
-      function applySymbolsFilter() {
-        const query = (searchInputElement && searchInputElement.value || '').trim().toLowerCase();
-        const allCards = Array.from(document.querySelectorAll('#icons .card'));
-        if (!query) {
-          allCards.forEach(card => { card.style.display = ''; });
-          if (searchCountElement) searchCountElement.style.display = 'none';
-          return;
-        }
-        let matched = 0;
-        allCards.forEach(card => {
-          const name = (card.dataset && card.dataset.search) || '';
-          const matches = name.includes(query);
-          card.style.display = matches ? '' : 'none';
-          if (matches) matched += 1;
-        });
-        if (searchCountElement) {
-          searchCountElement.style.display = 'block';
-          searchCountElement.textContent = `Found ${matched} SFSymbols`;
-        }
+      function debounce(func, wait = 150) {
+        let timeoutId = null;
+        return function debounced(...args) {
+          if (timeoutId) clearTimeout(timeoutId);
+          timeoutId = setTimeout(() => func.apply(this, args), wait);
+        };
       }
-      if (searchInputElement) searchInputElement.addEventListener('input', applySymbolsFilter);
 
-      /**
-       * Apply the selected theme to the document and persist it.
-       * @param {string} mode - 'light' or 'dark'
-       */
+      // Theme management
       function applyTheme(mode) {
-        const nav = document.querySelector('.frosted-header');
-        if (mode === 'dark') {
-          document.body.classList.add('dark-mode');
-          if (nav) nav.classList.add('dark');
-        } else {
-          document.body.classList.remove('dark-mode');
-          if (nav) nav.classList.remove('dark');
-        }
-        localStorage.setItem('sf-theme', mode);
-        themeToggleButton.setAttribute('aria-pressed', mode === 'dark' ? 'true' : 'false');
-        themeToggleIcon.textContent = mode === 'dark' ? '🌙' : '☀️';
+        const header = document.querySelector('.frosted-header');
+        // Add temporary class to suppress transitions/animations during theme switch
+        document.body.classList.add('theme-switching');
+
+        // Toggle classes on next frame to avoid triggering transitions
+        requestAnimationFrame(() => {
+          if (mode === 'dark') {
+            document.body.classList.add('dark-mode');
+            if (header) header.classList.add('dark');
+          } else {
+            document.body.classList.remove('dark-mode');
+            if (header) header.classList.remove('dark');
+          }
+          localStorage.setItem('sf-theme', mode);
+          themeToggleButton.setAttribute('aria-pressed', mode === 'dark' ? 'true' : 'false');
+          updateThemeIcon(mode);
+
+          // Remove the suppression class shortly after to re-enable transitions
+          requestAnimationFrame(() => {
+            setTimeout(() => document.body.classList.remove('theme-switching'), 120);
+          });
+        });
       }
 
-      // Initialize from storage
-      const savedThemeMode = localStorage.getItem('sf-theme') || (document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-      applyTheme(savedThemeMode === 'dark' ? 'dark' : 'light');
+      function updateThemeIcon(mode) {
+        // Use Bootstrap Icons for theme toggle: moon-stars (dark) and sun (light)
+        if (mode === 'dark') {
+          themeToggleIcon.innerHTML = '<i class="bi bi-moon-stars" aria-hidden="true" style="font-size:18px; line-height:1;"></i>';
+        } else {
+          themeToggleIcon.innerHTML = '<i class="bi bi-sun" aria-hidden="true" style="font-size:18px; line-height:1;"></i>';
+        }
+      }
 
-      // Toggle on click
+      // (drawer icon removed) - previously tried to render `filemenu.and.selection`
+
+      // Initialize theme
+      const savedTheme = localStorage.getItem('sf-theme') || 'light';
+      applyTheme(savedTheme);
+
       themeToggleButton.addEventListener('click', () => {
-        const isDarkNow = document.body.classList.toggle('dark-mode');
-        const newMode = isDarkNow ? 'dark' : 'light';
-        localStorage.setItem('sf-theme', newMode);
+        const newMode = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
         applyTheme(newMode);
       });
 
-      // Load a generated runtime icons export `sf-icons-data.js` first (created during docs build).
-      // If it's missing, fall back to the library bundle `index.js`.
-      try {
-        let module;
-        try {
-          module = await import('./sf-icons-data.js');
-        } catch (err) {
-          module = await import('./index.js');
-        }
+      // About modal: create DOM once and control via show/hide
+      const aboutButton = document.getElementById('about-button');
+      const aboutModalOverlay = document.createElement('div');
+      aboutModalOverlay.className = 'modal-overlay';
+      aboutModalOverlay.id = 'about-modal';
+      aboutModalOverlay.setAttribute('role', 'dialog');
+      aboutModalOverlay.setAttribute('aria-modal', 'true');
+      aboutModalOverlay.setAttribute('aria-hidden', 'true');
 
-        const iconsContainer = document.getElementById('icons');
-        const maybeExport = module.sfIconsData || (module.default && module.default.sfIconsData) || module.default;
-        const iconMap = maybeExport && (maybeExport.sfIconsData || maybeExport);
-        const viewBoxMap = module.sfIconsViewBox || (module.default && module.default.sfIconsViewBox) || {};
-        const componentNamesMap = module.sfIconComponentNames || (module.default && module.default.sfIconComponentNames) || {};
+      const aboutModal = document.createElement('div');
+      aboutModal.className = 'about-modal';
 
-          // Inject SF Symbol svgs into the theme toggle button (if available)
-          try {
-            // prefer component-style export names if present
-            const preferredLightKeys = ['SFSunMax', 'SFSunmax', 'sun.max'];
-            const preferredDarkKeys = ['SFMoonStars', 'SFMoonstars', 'moon.stars'];
+      const aboutTitle = document.createElement('h2');
+      aboutTitle.textContent = 'SF Symbols Library';
 
-            function findFirstAvailable(keys) {
-              for (const k of keys) {
-                if (iconMap && iconMap[k]) return k;
-              }
-              return null;
-            }
+      // Render provided Markdown as HTML inside the about box
+      const aboutContent = document.createElement('div');
+      aboutContent.className = 'about-content';
+      aboutContent.innerHTML = `
+        <p>
+          This content was created entirely automatically with the help of LLMs. The result, the SF Symbols displayed,
+          were manually extracted from Apple's <a href="https://developer.apple.com/sf-symbols/" target="_blank" rel="noopener noreferrer">SF Symbols app</a>
+          (version 7) and processed automatically.
+        </p>
+        <p>
+          The aim was to make these icons available in React with Typescript. For this reason, I created a package with
+          these SF symbols extracted as SVGs, which can be used with any React frontend.
+        </p>
+        <p>
+          Further information can be found in the
+          <a href="https://github.com/LAYEREDwork/sf-symbols-lib" target="_blank" rel="noopener noreferrer">package repository on GitHub</a>.
+        </p>
+      `;
 
-            function setToggleIconForMode(mode) {
-              const lightKey = findFirstAvailable(preferredLightKeys);
-              const darkKey = findFirstAvailable(preferredDarkKeys);
-              if (mode === 'dark' && darkKey) {
-                const vb = viewBoxMap && viewBoxMap[darkKey] ? viewBoxMap[darkKey] : '0 0 24 24';
-                themeToggleIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" fill="currentColor" width="18" height="18">${iconMap[darkKey]}</svg>`;
-                return;
-              }
-              if (mode === 'light' && lightKey) {
-                const vb = viewBoxMap && viewBoxMap[lightKey] ? viewBoxMap[lightKey] : '0 0 24 24';
-                themeToggleIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" fill="currentColor" width="18" height="18">${iconMap[lightKey]}</svg>`;
-                return;
-              }
-              // fallback to emoji
-              themeToggleIcon.textContent = mode === 'dark' ? '🌙' : '☀️';
-            }
+      const okWrap = document.createElement('div');
+      okWrap.style.display = 'flex';
+      okWrap.style.justifyContent = 'center';
+      okWrap.style.marginTop = '12px';
 
-            // set initial icon based on current mode
-            const currentMode = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
-            setToggleIconForMode(currentMode);
+      const okButton = document.createElement('button');
+      okButton.className = 'theme-toggle';
+      okButton.type = 'button';
+      okButton.textContent = 'OK';
+      okButton.addEventListener('click', () => closeAboutModal());
 
-            // update icon on subsequent theme toggles
-            themeToggleButton.addEventListener('click', () => {
-              const newMode = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
-              setToggleIconForMode(newMode);
-            });
-          } catch (err) {
-            // ignore
-          }
+      okWrap.appendChild(okButton);
 
-        if (!iconMap || Object.keys(iconMap).length === 0) {
-          iconsContainer.innerHTML = '<div class="col-12 p-3 small text-danger">No icon data found.</div>';
-          const availEl = document.getElementById('available-count');
-          if (availEl) availEl.textContent = 'Currently 0 SFSymbols available';
-        } else {
-          const availEl = document.getElementById('available-count');
-          if (availEl) availEl.textContent = `Currently ${Object.keys(iconMap).length} SFSymbols available`;
-          Object.entries(iconMap).forEach(([exportName, svgInner]) => {
-            // Create grid item
-            const item = document.createElement('div');
-            item.className = 'card text-center card-hover';
+      aboutModal.appendChild(aboutTitle);
+      aboutModal.appendChild(aboutContent);
+      aboutModal.appendChild(okWrap);
 
-            const svgHolder = document.createElement('div');
-            svgHolder.style.width = '70px';
-            svgHolder.style.height = '70px';
-            const vb = (viewBoxMap && viewBoxMap[exportName]) || '0 0 24 24';
-            svgHolder.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" fill="currentColor" width="100%" height="100%">${svgInner}</svg>`;
+      aboutModalOverlay.appendChild(aboutModal);
+      document.body.appendChild(aboutModalOverlay);
 
-            const title = document.createElement('div');
-            title.className = 'fw-semibold font-monospace small text-truncate';
-            // Show the SF Symbol component name, e.g. SFVideoprojectorFill
-            let displayName = componentNamesMap[exportName] || exportName;
-            title.textContent = displayName;
-
-            item.appendChild(svgHolder);
-            item.appendChild(title);
-            // store searchable text on the card for fast filtering
-            item.dataset.search = ((componentNamesMap[exportName] || exportName) + ' ' + exportName).toLowerCase();
-                  // copy-to-clipboard on click, show subtle toast
-                  item.addEventListener('click', async (ev) => {
-                    ev.stopPropagation();
-                    const nameToCopy = (componentNamesMap[exportName] || exportName);
-                    try {
-                      await navigator.clipboard.writeText(nameToCopy);
-                      showSfToast(`Copied "${nameToCopy}" to clipboard`);
-                    } catch (err) {
-                      // fallback: try old execCommand (rare)
-                      try {
-                        const textarea = document.createElement('textarea');
-                        textarea.value = nameToCopy;
-                        textarea.style.position = 'fixed'; textarea.style.left = '-9999px';
-                        document.body.appendChild(textarea);
-                        textarea.select();
-                        document.execCommand('copy');
-                        textarea.remove();
-                        showSfToast(`Copied "${nameToCopy}" to clipboard`);
-                      } catch (err2) {
-                        showSfToast('Copy failed');
-                      }
-                    }
-                  });
-                  iconsContainer.appendChild(item);
-          });
-        }
-      } catch (error) {
-        const iconsContainer = document.getElementById('icons');
-        iconsContainer.innerHTML = `<div class="col-12 p-3 small text-danger">Error loading icons: ${error.message}</div>`;
-        // eslint-disable-next-line no-console
-        console.error('Failed to import icons bundle', error);
+      function openAboutModal() {
+        aboutModalOverlay.classList.add('show');
+        aboutModalOverlay.setAttribute('aria-hidden', 'false');
+        // small timeout to ensure transitions can run; focus OK button
+        setTimeout(() => okButton.focus(), 60);
       }
 
+      function closeAboutModal() {
+        aboutModalOverlay.classList.remove('show');
+        aboutModalOverlay.setAttribute('aria-hidden', 'true');
+        aboutButton.focus();
+      }
+
+      if (aboutButton) {
+        aboutButton.addEventListener('click', (ev) => {
+          ev.stopPropagation();
+          openAboutModal();
+        });
+      }
+
+      // Close modal on overlay click outside content
+      aboutModalOverlay.addEventListener('click', (ev) => {
+        if (ev.target === aboutModalOverlay) closeAboutModal();
+      });
+
+      // Close modal on Escape
+      document.addEventListener('keydown', (ev) => {
+        if ((ev.key === 'Escape' || ev.key === 'Esc') && aboutModalOverlay.classList.contains('show')) {
+          closeAboutModal();
+        }
+      });
+
       // Toast helper
-      const sfToastElement = document.getElementById('sf-toast');
-      let sfToastTimer = null;
-      function showSfToast(message, duration = 2800) {
+      let toastTimer = null;
+      function showToast(message, duration = 2500) {
         if (!sfToastElement) return;
         sfToastElement.hidden = false;
         sfToastElement.textContent = message;
         sfToastElement.classList.add('show');
-        if (sfToastTimer) clearTimeout(sfToastTimer);
-        sfToastTimer = setTimeout(() => {
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
           sfToastElement.classList.remove('show');
-            // hide after transition (match/slightly exceed CSS transition duration)
-            setTimeout(() => { sfToastElement.hidden = true; }, 320);
+          setTimeout(() => { sfToastElement.hidden = true; }, 300);
         }, duration);
+      }
+
+      // Render symbols
+      function renderSymbols() {
+        const query = (searchInput.value || '').trim().toLowerCase();
+
+        // Prepare entries and decide whether to run expensive FLIP measurements
+        const entries = Object.entries(currentData);
+        const totalEntries = entries.length;
+        const existingCards = iconsContainer.querySelectorAll('.card');
+        let oldRects = null;
+        const shouldMeasureFlip = existingCards.length > 0 && existingCards.length <= FLIP_MEASURE_THRESHOLD && totalEntries <= FLIP_MEASURE_THRESHOLD;
+        if (shouldMeasureFlip) {
+          oldRects = new Map();
+          existingCards.forEach(node => {
+            const titleKey = node.title || '';
+            oldRects.set(titleKey, node.getBoundingClientRect());
+          });
+        }
+
+        // Build new content into a DocumentFragment to minimize reflows
+        const fragment = document.createDocumentFragment();
+        let visibleCount = 0;
+
+        entries.forEach(([key, svgContent]) => {
+          const name = (globalThis.symbolNames || {})[key] || key;
+          const searchText = (name + ' ' + key).toLowerCase();
+
+          // Advanced search parsing:
+          // - '|' splits OR segments: match any segment
+          // - within a segment, '&' or whitespace indicates AND: all tokens must match
+          if (query) {
+            const orSegments = query.split('|').map(s => s.trim()).filter(Boolean);
+            // If there are OR segments, a symbol matches if any segment matches
+            const matchesOr = orSegments.some(segment => {
+              // Split by '&' first, then by whitespace to support both 'a & b' and 'a b'
+              const andParts = segment.split('&').map(p => p.trim()).filter(Boolean);
+              // Expand whitespace-separated tokens inside each andPart
+              const tokens = andParts.flatMap(p => p.split(/\s+/).map(t => t.trim()).filter(Boolean));
+              // All tokens in this segment must be present
+              return tokens.every(token => searchText.includes(token));
+            });
+            if (!matchesOr) return;
+          }
+
+          visibleCount++;
+
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.title = name;
+          card.dataset.sfKey = key;
+
+          const vb = currentViewBox[key] || '0 0 24 24';
+          // Preserve multicolor SVGs by not forcing a top-level fill when the selected
+          // variant is "multicolor". For other variants, keep the legacy behavior.
+          const shouldForceCardFill = variantSelect.value !== 'multicolor';
+          card.innerHTML = shouldForceCardFill
+            ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" fill="currentColor">${svgContent}</svg>`
+            : `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}">${svgContent}</svg>`;
+
+          card.addEventListener('click', () => {
+            // Mark selected symbol (no clipboard copy)
+            selectedSymbolKey = key;
+            // update visuals
+            document.querySelectorAll('.card.selected').forEach(n => n.classList.remove('selected'));
+            card.classList.add('selected');
+            renderDrawerContent();
+            // Open bottom drawer automatically when selecting a symbol
+            openDrawer();
+          });
+
+          fragment.appendChild(card);
+        });
+
+        // Replace nodes
+        iconsContainer.innerHTML = '';
+        iconsContainer.appendChild(fragment);
+
+        // After new nodes are in the DOM, run FLIP if we measured old positions
+        if (oldRects) {
+          const newNodes = Array.from(iconsContainer.querySelectorAll('.card'));
+          newNodes.forEach(node => {
+            const titleKey = node.title || '';
+            const newRect = node.getBoundingClientRect();
+            const oldRect = oldRects.get(titleKey);
+            if (oldRect) {
+              const deltaX = oldRect.left - newRect.left;
+              const deltaY = oldRect.top - newRect.top;
+              // Apply inverse transform
+              node.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+              node.style.transition = 'transform 320ms cubic-bezier(.2,.8,.2,1)';
+              // Force reflow then play
+              requestAnimationFrame(() => {
+                node.style.transform = '';
+              });
+              // Cleanup after animation
+              node.addEventListener('transitionend', function cleanup() {
+                node.style.transition = '';
+                node.removeEventListener('transitionend', cleanup);
+              });
+            }
+          });
+        }
+
+        visibleCountEl.textContent = visibleCount.toLocaleString();
+        totalCountEl.textContent = entries.length.toLocaleString();
+      }
+
+      // Update data when variant changes
+      function updateData() {
+        const variant = variantSelect.value;
+
+        currentData = globalThis.allSymbolsData[variant] || {};
+        currentViewBox = globalThis.allViewBoxData[variant] || {};
+
+        // Defer heavy rendering to the next animation frame to keep UI responsive
+        requestAnimationFrame(() => renderSymbols());
+        updateThemeIcon(document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        // Re-render drawer content in case icon keys changed
+        renderDrawerContent();
+      }
+
+      // Make updateData globally accessible for the loader
+      globalThis.updateData = updateData;
+
+      // 42 Color palette (sorted by hex value ascending)
+      const colors = [
+        '#000000', '#00008B', '#0000FF', '#006400', '#00BFFF', '#00CED1', '#00FF00', '#00FFFF',
+        '#1E90FF', '#2F4F4F', '#32CD32', '#696969', '#778899', '#800080', '#808080', '#8B0000',
+        '#8FBC8F', '#90EE90', '#98FB98', '#9932CC', '#A52A2A', '#ADD8E6', '#B0C4DE', '#BC8F8F',
+        '#C0C0C0', '#CD853F', '#D2691E', '#D3D3D3', '#DDA0DD', '#DEB887', '#F0E68C', '#F5DEB3',
+        '#FF0000', '#FF00FF', '#FF1493', '#FF6347', '#FFA500', '#FFC0CB', '#FFD700', '#FFDAB9',
+        '#FFFF00', '#FFFFFF'
+      ];
+
+      let currentColor = '#000000';
+
+      // Initialize color selector
+      function initColorSelector() {
+        const colorSelector = document.getElementById('color-selector');
+        const colorSelected = document.getElementById('color-selected');
+        const colorDropdown = document.getElementById('color-dropdown');
+        const colorGrid = colorDropdown.querySelector('.color-grid');
+        // Create a theme-aware option that uses CSS `currentColor`.
+        // This option makes symbols theme-aware and will be the default on first visit.
+        const themeOption = document.createElement('div');
+        themeOption.className = 'color-option';
+        themeOption.dataset.color = 'currentColor';
+        themeOption.title = 'Theme color (currentColor)';
+        themeOption.style.display = 'flex';
+        themeOption.style.alignItems = 'center';
+        themeOption.style.justifyContent = 'center';
+        themeOption.style.fontSize = '10px';
+        themeOption.style.color = 'inherit';
+        themeOption.textContent = 'T';
+        if (currentColor === 'currentColor') themeOption.classList.add('selected');
+        themeOption.addEventListener('click', () => { selectColor('currentColor'); closeColorDropdown(); });
+        colorGrid.appendChild(themeOption);
+
+        // Create color options
+        colors.forEach(color => {
+          const colorOption = document.createElement('div');
+          colorOption.className = 'color-option';
+          colorOption.style.backgroundColor = color;
+          colorOption.dataset.color = color;
+
+          if (color === currentColor) {
+            colorOption.classList.add('selected');
+          }
+
+          colorOption.addEventListener('click', () => {
+            selectColor(color);
+            closeColorDropdown();
+          });
+
+          colorGrid.appendChild(colorOption);
+        });
+
+        // Toggle dropdown
+        colorSelector.addEventListener('click', (e) => {
+          e.stopPropagation();
+          colorSelector.classList.toggle('open');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+          if (!colorSelector.contains(e.target)) {
+            closeColorDropdown();
+          }
+        });
+
+        // Update selected color display
+        updateColorDisplay();
+      }
+
+      // Search help popover handlers
+      if (searchHelpButton && searchHelpPopover) {
+        searchHelpButton.addEventListener('click', (ev) => {
+          ev.stopPropagation();
+          const willShow = !searchHelpPopover.classList.contains('show');
+          if (willShow) {
+            searchHelpPopover.classList.add('show');
+            searchHelpPopover.setAttribute('aria-hidden', 'false');
+          } else {
+            searchHelpPopover.classList.remove('show');
+            searchHelpPopover.setAttribute('aria-hidden', 'true');
+          }
+        });
+
+        // Clicking outside closes the popover
+        document.addEventListener('click', (ev) => {
+          if (!searchHelpPopover.classList.contains('show')) return;
+          if (searchHelpPopover.contains(ev.target) || searchHelpButton.contains(ev.target)) return;
+          searchHelpPopover.classList.remove('show');
+          searchHelpPopover.setAttribute('aria-hidden', 'true');
+        });
+
+        // Close popover on Escape
+        document.addEventListener('keydown', (ev) => {
+          if (ev.key === 'Escape' || ev.key === 'Esc') {
+            if (searchHelpPopover.classList.contains('show')) {
+              searchHelpPopover.classList.remove('show');
+              searchHelpPopover.setAttribute('aria-hidden', 'true');
+            }
+          }
+        });
+      }
+
+      function selectColor(color) {
+        currentColor = color;
+        updateColorDisplay();
+        updateColor();
+
+        // Update selected state
+        const colorOptions = document.querySelectorAll('.color-option');
+        colorOptions.forEach(option => {
+          option.classList.toggle('selected', option.dataset.color === color);
+        });
+
+        // Save to localStorage
+        localStorage.setItem('sf-color', color);
+      }
+
+      function updateColorDisplay() {
+        const colorSelected = document.getElementById('color-selected');
+        if (currentColor === 'currentColor') {
+          // Visual indicator for theme-aware selection
+          colorSelected.style.background = 'transparent';
+          colorSelected.style.border = '2px dashed rgba(0,0,0,0.12)';
+          colorSelected.textContent = 'T';
+          colorSelected.style.color = 'inherit';
+        } else {
+          colorSelected.style.background = currentColor;
+          colorSelected.style.border = '';
+          colorSelected.textContent = '';
+        }
+      }
+
+      function closeColorDropdown() {
+        document.getElementById('color-selector').classList.remove('open');
+      }
+
+      // Update symbol color
+      function updateColor() {
+        // If using the special 'currentColor' token, set the CSS custom property
+        // to the literal 'currentColor' so SVGs inherit the theme-aware color.
+        if (currentColor === 'currentColor') {
+          document.documentElement.style.setProperty('--symbol-color', 'currentColor');
+        } else {
+          document.documentElement.style.setProperty('--symbol-color', currentColor);
+        }
+        updateThemeIcon(document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+      }
+
+      /**
+       * Render drawer content depending on selection state.
+       */
+      function renderDrawerContent() {
+        const container = document.getElementById('drawer-content');
+        if (!container) return;
+        container.innerHTML = '';
+        // mark empty state class for vertical centering when nothing selected
+        container.classList.toggle('empty', !selectedSymbolKey);
+
+        if (!selectedSymbolKey) {
+          // Empty view centered
+          const emptyWrap = document.createElement('div');
+          emptyWrap.style.height = '100%';
+          emptyWrap.style.display = 'flex';
+          emptyWrap.style.flexDirection = 'column';
+          emptyWrap.style.alignItems = 'center';
+          emptyWrap.style.justifyContent = 'center';
+          emptyWrap.style.textAlign = 'center';
+          emptyWrap.style.color = 'inherit';
+
+          // questionmark icon
+          const qKey = 'questionmark.app.dashed';
+          const iconEl = document.createElement('div');
+          iconEl.style.marginBottom = '0.6rem';
+          if (currentData[qKey]) {
+            const vb = currentViewBox[qKey] || '0 0 24 24';
+            iconEl.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" fill="currentColor" width="64" height="64">${currentData[qKey]}</svg>`;
+          } else {
+            iconEl.textContent = '?';
+            iconEl.style.fontSize = '64px';
+          }
+
+          const titleEl = document.createElement('div');
+          titleEl.style.marginTop = '8px';
+          titleEl.style.fontWeight = '600';
+          titleEl.textContent = 'No SF Symbol selected';
+
+          emptyWrap.appendChild(iconEl);
+          emptyWrap.appendChild(titleEl);
+          container.appendChild(emptyWrap);
+          return;
+        }
+
+        // Selected view - horizontal layout: preview | labels | codebox
+        const displayName = (globalThis.symbolNames || {})[selectedSymbolKey] || selectedSymbolKey;
+        const contentWrap = document.createElement('div');
+        contentWrap.className = 'drawer-selected';
+        contentWrap.style.width = '100%';
+        contentWrap.style.paddingTop = '0';
+
+        // Left: framed preview
+        const leftCol = document.createElement('div');
+        leftCol.className = 'drawer-left';
+        leftCol.style.flex = '0 0 140px';
+        leftCol.style.display = 'flex';
+        leftCol.style.flexDirection = 'column';
+        leftCol.style.alignItems = 'center';
+        leftCol.style.justifyContent = 'center';
+
+        const previewBox = document.createElement('div');
+        previewBox.style.width = '180px';
+        previewBox.style.height = '180px';
+        previewBox.style.border = '1px solid rgba(0,0,0,0.12)';
+        previewBox.style.borderRadius = '8px';
+        previewBox.style.display = 'flex';
+        previewBox.style.alignItems = 'center';
+        previewBox.style.justifyContent = 'center';
+        // 40px margin around the SF Symbol inside the preview box
+        previewBox.style.padding = '40px';
+        previewBox.style.boxSizing = 'border-box';
+        previewBox.style.background = 'transparent';
+
+        const svgKey = selectedSymbolKey;
+        if (currentData[svgKey]) {
+          const vb = currentViewBox[svgKey] || '0 0 24 24';
+          // For multicolor variant do not force a fill attribute so the original
+          // multi-filled artwork is preserved. For other variants, apply the
+          // selected color to the preview SVG.
+          const shouldForcePreviewFill = variantSelect.value !== 'multicolor';
+          previewBox.innerHTML = shouldForcePreviewFill
+            ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" fill="${currentColor}" width="100%" height="100%">${currentData[svgKey]}</svg>`
+            : `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" width="100%" height="100%">${currentData[svgKey]}</svg>`;
+        } else {
+          previewBox.textContent = 'SFSym';
+          previewBox.style.fontSize = '18px';
+          previewBox.style.color = 'inherit';
+        }
+
+        leftCol.appendChild(previewBox);
+
+        // Middle: labels and values
+        const infoCol = document.createElement('div');
+        infoCol.className = 'drawer-info';
+        infoCol.style.flex = '1 1 auto';
+        infoCol.style.display = 'flex';
+        infoCol.style.flexDirection = 'column';
+        infoCol.style.gap = '8px';
+        infoCol.style.fontSize = '0.95rem';
+        // vertically center the text group relative to the preview symbol
+        infoCol.style.justifyContent = 'center';
+
+        const pkgLabel = document.createElement('div');
+        pkgLabel.className = 'drawer-label';
+        pkgLabel.textContent = 'Package Symbol Name';
+        const pkgValue = document.createElement('div');
+        pkgValue.textContent = displayName;
+        // Increase the value font size for better readability
+        pkgValue.style.fontSize = '1.15rem';
+        pkgValue.style.lineHeight = '1.2';
+
+        const appleLabel = document.createElement('div');
+        appleLabel.className = 'drawer-label';
+        appleLabel.textContent = 'Apple Symbol Name';
+        const appleValue = document.createElement('div');
+        appleValue.textContent = selectedSymbolKey;
+        // Increase the value font size for better readability
+        appleValue.style.fontSize = '1.05rem';
+        appleValue.style.lineHeight = '1.2';
+
+        // Build rows with copy buttons for package and apple names
+        function makeCopyButton(copyText, titleText, toastText) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'drawer-copy-btn btn btn-sm';
+          btn.style.width = '36px';
+          btn.style.height = '28px';
+          btn.title = titleText;
+          btn.setAttribute('aria-label', titleText);
+
+          // Try to render the SF Symbol 'document.on.clipboard.fill' from the loaded data if available,
+          // otherwise fall back to a Bootstrap icon.
+          const sfKey = 'document.on.clipboard.fill';
+          if (currentData && currentData[sfKey]) {
+            const vb = currentViewBox[sfKey] || '0 0 24 24';
+            const svgSpan = document.createElement('span');
+            svgSpan.style.display = 'inline-flex';
+            svgSpan.style.width = '18px';
+            svgSpan.style.height = '18px';
+            svgSpan.innerHTML = `<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"${vb}\" fill=\"currentColor\" width=\"18\" height=\"18\">${currentData[sfKey]}</svg>`;
+            btn.appendChild(svgSpan);
+          } else {
+            btn.innerHTML = '<i class="bi bi-clipboard" aria-hidden="true" style="font-size:16px; line-height:1;"></i>';
+          }
+
+          btn.addEventListener('click', (ev) => {
+            ev.stopPropagation();
+            navigator.clipboard.writeText(copyText).then(() => {
+              showToast((toastText) ? toastText : (copyText + ' copied to clipboard'), 3000);
+            }).catch(() => {
+              showToast('Failed to copy', 3000);
+            });
+          });
+
+          return btn;
+        }
+
+        // Package row
+        const pkgRow = document.createElement('div');
+        pkgRow.style.display = 'flex';
+        pkgRow.style.alignItems = 'center';
+        pkgRow.style.justifyContent = 'space-between';
+
+        const pkgLeft = document.createElement('div');
+        pkgLeft.appendChild(pkgLabel);
+        pkgLeft.appendChild(pkgValue);
+
+        const pkgCopyBtn = makeCopyButton(displayName, 'Copy Package Symbol Name to Clipboard');
+        pkgRow.appendChild(pkgLeft);
+        pkgRow.appendChild(pkgCopyBtn);
+
+        // Apple row
+        const appleRow = document.createElement('div');
+        appleRow.style.display = 'flex';
+        appleRow.style.alignItems = 'center';
+        appleRow.style.justifyContent = 'space-between';
+
+        const appleLeft = document.createElement('div');
+        appleLeft.appendChild(appleLabel);
+        appleLeft.appendChild(appleValue);
+
+        const appleCopyBtn = makeCopyButton(selectedSymbolKey, 'Copy Apple Symbol Name to Clipboard');
+        appleRow.appendChild(appleLeft);
+        appleRow.appendChild(appleCopyBtn);
+
+        infoCol.appendChild(pkgRow);
+        infoCol.appendChild(appleRow);
+
+        // Right: code box placeholder
+        const codeCol = document.createElement('div');
+        codeCol.className = 'drawer-code codebox-bg';
+        codeCol.style.flex = '0 0 50%';
+        codeCol.style.borderRadius = '0';
+        codeCol.style.padding = '12px';
+        codeCol.style.minHeight = '88px';
+        codeCol.style.boxSizing = 'border-box';
+        codeCol.style.background = 'transparent';
+        // make codeCol itself non-scrolling; create an inner scroll container so the copy button can stay fixed
+        codeCol.style.overflow = 'visible';
+        codeCol.style.margin = '0';
+
+        const codeInner = document.createElement('pre');
+        codeInner.style.fontFamily = 'monospace';
+        codeInner.style.fontSize = '0.9rem';
+        codeInner.style.lineHeight = '1.4';
+        codeInner.style.margin = '0';
+
+        // Build example code with the selected package symbol name
+        const importedName = displayName || 'SelectedSymbol';
+        const exampleCode = `import { SFSymbol, ${importedName} } from 'sf-symbols-lib/hierarchical/primary';\n\nfunction MyComponent() {\n  return (\n    <div>\n      {/* Basic usage */}\n      <SFSymbol name={${importedName}} />\n\n      {/* With size */}\n      <SFSymbol name={${importedName}} size={32} />\n\n      {/* With size preset */}\n      <SFSymbol name={${importedName}} size=\"lg\" />\n    </div>\n  );\n}\n`;
+
+        // Add line numbers
+        const lines = exampleCode.split('\n');
+        const numberedCode = lines.map((line, index) => `${(index + 1).toString().padStart(2, ' ')} ${line}`).join('\n');
+
+        // Minimal syntax coloring (keywords, strings, JSX tags)
+        function escapeHtml(str) {
+          return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        let highlighted = escapeHtml(numberedCode);
+        // strings
+        highlighted = highlighted.replace(/'(.*?)'|\"(.*?)\"/g, '<span style="color:#ce9178">$&</span>');
+        // keywords
+        highlighted = highlighted.replace(/\b(import|from|function|return|const|let)\b/g, '<span style="color:#569cd6">$1</span>');
+        // JSX components (SFSymbol, MyComponent)
+        highlighted = highlighted.replace(/\b(SFSymbol|MyComponent|div)\b/g, '<span style="color:#4ec9b0">$1</span>');
+
+        codeInner.innerHTML = highlighted;
+
+        // Add copy button (use same styled button as drawer copy buttons)
+        const codeCopyBtn = makeCopyButton(exampleCode, 'Copy Code to Clipboard', 'Code copied to clipboard');
+        codeCopyBtn.style.position = 'absolute';
+        codeCopyBtn.style.top = '8px';
+        codeCopyBtn.style.right = '8px';
+        codeCopyBtn.style.zIndex = '10';
+        // ensure the button does not interfere with clicking the code area
+        codeCopyBtn.addEventListener('click', (ev) => ev.stopPropagation());
+
+        // Create inner scroll container for the code so the absolute button stays fixed
+        const codeScroll = document.createElement('div');
+        codeScroll.style.overflow = 'auto';
+        codeScroll.style.height = '100%';
+        codeScroll.style.boxSizing = 'border-box';
+        codeScroll.appendChild(codeInner);
+
+        codeCol.appendChild(codeCopyBtn);
+        codeCol.appendChild(codeScroll);
+
+        contentWrap.appendChild(leftCol);
+        contentWrap.appendChild(infoCol);
+        contentWrap.appendChild(codeCol);
+
+        container.appendChild(contentWrap);
+      }
+
+      // Make renderDrawerContent globally accessible for the loader
+      globalThis.renderDrawerContent = renderDrawerContent;
+
+      // Event listeners
+      variantSelect.addEventListener('change', updateData);
+      const debouncedRender = debounce(renderSymbols, 160);
+      searchInput.addEventListener('input', debouncedRender);
+
+      // Drawer control helpers: open/close drawer programmatically
+      function openDrawer() {
+        document.body.classList.add('drawer-open');
+        bottomDrawer.setAttribute('aria-hidden', 'false');
+      }
+
+      function closeDrawer() {
+        document.body.classList.remove('drawer-open');
+        bottomDrawer.setAttribute('aria-hidden', 'true');
+        // clear visual selection
+        document.querySelectorAll('.card.selected').forEach(n => n.classList.remove('selected'));
+      }
+
+      // Close drawer and clear selection on Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' || e.key === 'Esc') {
+          if (selectedSymbolKey) {
+            selectedSymbolKey = null;
+            renderDrawerContent();
+            closeDrawer();
+          }
+        }
+      });
+
+      // Initialize color selector (will be called after saved state is restored)
+
+      // Load data
+      try {
+        const module = await import('./sf-symbols-data.js');
+
+        allSymbolsData = module.sfSymbolsData || {};
+        allViewBoxData = module.sfSymbolsViewBox || {};
+        symbolNames = module.sfSymbolNames || {};
+
+        // Restore saved variant and color
+        const savedVariant = localStorage.getItem('sf-variant') || 'hierarchical';
+        // If no saved color exists yet, default to theme-aware `currentColor`
+        const savedColorRaw = localStorage.getItem('sf-color');
+        const savedColor = (savedColorRaw !== null) ? savedColorRaw : 'currentColor';
+        variantSelect.value = savedVariant;
+        currentColor = savedColor;
+
+        // Apply initial color
+        updateColor();
+
+        // Save selection on change
+        variantSelect.addEventListener('change', () => localStorage.setItem('sf-variant', variantSelect.value));
+
+        updateData();
+
+        // Initialize color selector after restoring saved color so selected state shows correctly
+        initColorSelector();
+        // After data is loaded, prefer SF Symbol `InfoBubble` for the About button if available
+        (function setAboutButtonIcon() {
+          const aboutBtnIconEl = document.getElementById('about-button-icon');
+          const aboutBtn = document.getElementById('about-button');
+          if (!aboutBtnIconEl || !aboutBtn) return;
+          const candidateKeys = ['info.bubble', 'info.bubble.fill', 'info.bubble.circle', 'infoBubble'];
+          let replaced = false;
+          for (const candidate of candidateKeys) {
+            if (currentData && currentData[candidate]) {
+              const vb = currentViewBox[candidate] || '0 0 24 24';
+              aboutBtnIconEl.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" fill="currentColor" width="18" height="18">${currentData[candidate]}</svg>`;
+              replaced = true;
+              break;
+            }
+          }
+          if (!replaced) {
+            // keep bootstrap fallback (info-square)
+            aboutBtnIconEl.innerHTML = '<i class="bi bi-info-square" aria-hidden="true" style="font-size:18px; line-height:1;"></i>';
+          }
+        })();
+      } catch (error) {
+        iconsContainer.innerHTML = `<div class="p-4 text-danger">Error loading symbols: ${error.message}</div>`;
+        console.error('Failed to load symbols data:', error);
       }
     </script>
   </body>
