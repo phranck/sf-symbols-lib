@@ -1,34 +1,34 @@
-# NPM Commands Übersicht
+# NPM Commands Overview
 
-Diese Datei enthält eine automatische Übersicht aller verfügbaren `npm run` Commands für das SF-Symbols-Lib Projekt.
+This file contains an automatic overview of all available `npm run` commands for the SF-Symbols-Lib project.
 
-## Package Commands (für die React-Komponenten-Bibliothek)
+## Package Commands (for the React components library)
 
-| Command | Beschreibung | Vollständiger Befehl |
-|---------|-------------|---------------------|
-| `npm run build` | Baut die Library (TypeScript + Vite + Declaration Files) | `tsc && vite build && tsc --emitDeclarationOnly` |
-| `npm run dev` | Watch-Mode für Entwicklung (kontinuierlicher Build) | `vite build --watch` |
-| `npm run lint` | ESLint Linting für Code-Qualität | `eslint .` |
-| `npm run typecheck` | TypeScript Type-Checking ohne Build | `tsc --noEmit` |
-| `npm run generate` | Generiert SF Symbols aus SVG-Dateien | `tsx scripts/generate-sfsymbols.ts` |
-| `npm run clean` | Bereinigt alle generierten Dateien (src/ + dist/ + docs/dist/) | `rm -rf src/hierarchical src/monochrome src/components/sf-symbol-name.ts src/index.ts docs/dist dist` |
-| `npm run check` | Vollständige Qualitätsprüfung (lint + typecheck + build) | `npm run lint && npm run typecheck && npm run build` |
+| Command | Description | Full command |
+|---------|-------------|-------------|
+| `npm run build` | Builds the library (TypeScript + Vite + Declaration Files) | `tsc && vite build && tsc --emitDeclarationOnly` |
+| `npm run dev` | Watch mode for development (continuous build) | `vite build --watch` |
+| `npm run lint` | ESLint linting for code quality | `eslint .` |
+| `npm run typecheck` | TypeScript type-checking without build | `tsc --noEmit` |
+| `npm run generate` | Generates SF Symbols from SVG files | `tsx scripts/generate-sfsymbols.ts` |
+| `npm run clean` | Cleans all generated files (src/ + dist/ + docs/dist/) | `rm -rf src/hierarchical src/monochrome src/components/sf-symbol-name.ts src/index.ts docs/dist dist` |
+| `npm run check` | Complete quality check (lint + typecheck + build) | `npm run lint && npm run typecheck && npm run build` |
 
-## Preview Page Commands (für die GitHub Pages Preview-Seite)
+## Preview Page Commands (for the GitHub Pages preview site)
 
-| Command | Beschreibung | Vollständiger Befehl |
-|---------|-------------|---------------------|
-| `npm run docs:generate` | Generiert Daten für die Preview-Seite | `tsx scripts/generate-docs-data.ts` |
-| `npm run docs:serve` | Startet lokalen Server für Preview (ohne Generierung) | `browser-sync start --server docs/dist --files docs/dist/index.html --no-open` |
-| `npm run docs:preview` | Vollständige Preview (generiert + startet Server) | `npm run docs:generate && npm run docs:serve` |
+| Command | Description | Full command |
+|---------|-------------|-------------|
+| `npm run docs:generate` | Generates data for the preview site | `tsx scripts/generate-docs-data.ts` |
+| `npm run docs:serve` | Starts local server for preview (without generation) | `browser-sync start --server docs/dist --files docs/dist/index.html --no-open` |
+| `npm run docs:preview` | Complete preview (generates + starts server) | `npm run docs:generate && npm run docs:serve` |
 
-## Verwendungshinweise
+## Usage Notes
 
-- **Package Commands** werden aus dem Projekt-Root aufgerufen und betreffen die Entwicklung der React-Komponenten-Bibliothek
-- **Preview Page Commands** betreffen die statische GitHub Pages Preview-Seite im `docs/` Ordner
-- Alle Commands sind so gestaltet, dass sie aus dem Document-Root (`/`) aufgerufen werden können
-- Die Preview-Seite ist vollständig statisch und enthält nur `index.html`, `scripts/`, `styles/`, Markdown-Dateien und `info.txt`
+- **Package Commands** are called from the project root and affect the development of the React components library
+- **Preview Page Commands** affect the static GitHub Pages preview site in the `docs/` folder
+- All commands are designed to be callable from the document root (`/`)
+- The preview site is completely static and contains only `index.html`, `scripts/`, `styles/`, Markdown files, and `info.txt`
 
-## Letzte Aktualisierung
+## Last Update
 
-Diese Übersicht wird automatisch aktualisiert, wenn sich die `npm run` Commands in `package.json` ändern.
+This overview is automatically updated when the `npm run` commands in `package.json` change.

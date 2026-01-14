@@ -1,6 +1,6 @@
 // Symbol rendering and management for SF Symbols demo
 import { FLIP_MEASURE_THRESHOLD, debounce, copyToClipboard, getVisibleCards, kebabToPascalCase } from './utils.js';
-import { currentData, currentViewBox, allSymbolsData, allViewBoxData, state, searchInput, variantSelect, iconsContainer, visibleCountEl, totalCountEl, infoSymbols } from './data.js';
+import { currentData, currentViewBox, allSymbolsData, allViewBoxData, state, searchInput, variantSelect, iconsContainer, visibleCountEl, totalCountEl, infoSymbols, symbolNames } from './data.js';
 import { openCopyModal } from './modals.js';
 import { currentColor } from './colors.js';
 
@@ -31,7 +31,7 @@ export function renderSymbols() {
   if (shouldMeasureFlip) {
     oldRects = new Map();
     existingCards.forEach(node => {
-      const titleKey = node.title || '';
+      const titleKey = node.dataset.sfKey || '';
       oldRects.set(titleKey, node.getBoundingClientRect());
     });
   }
@@ -41,7 +41,7 @@ export function renderSymbols() {
   let visibleCount = 0;
 
   entries.forEach(([key, svgContent]) => {
-    const name = (globalThis.symbolNames || {})[key] || key;
+    const name = key;
     const searchText = (name + ' ' + key).toLowerCase();
 
     // Advanced search parsing:
@@ -65,7 +65,9 @@ export function renderSymbols() {
 
     const card = document.createElement('div');
     card.className = 'card';
-    card.title = name;
+    // Use package name for tooltip if available, otherwise Apple name
+    const packageNameForCard = (symbolNames || {})[key] || kebabToPascalCase(key);
+    card.title = packageNameForCard;
     card.dataset.sfKey = key;
 
     const vb = currentViewBox[key] || '0 0 24 24';
@@ -145,7 +147,7 @@ export function renderSymbols() {
   if (oldRects) {
     const newNodes = Array.from(iconsContainer.querySelectorAll('.card'));
     newNodes.forEach(node => {
-      const titleKey = node.title || '';
+      const titleKey = node.dataset.sfKey || '';
       const newRect = node.getBoundingClientRect();
       const oldRect = oldRects.get(titleKey);
       if (oldRect) {
@@ -235,9 +237,9 @@ export function renderDrawerContent() {
   }
 
   // Selected view - horizontal layout: preview | labels | codebox
-  const displayName = (globalThis.symbolNames || {})[state.selectedSymbolKey] || state.selectedSymbolKey;
+  const displayName = state.selectedSymbolKey;
   // Prefer the package export name when available; fall back to PascalConversion of the apple key.
-  const packageName = (globalThis.symbolNames || {})[state.selectedSymbolKey] || kebabToPascalCase(state.selectedSymbolKey);
+  const packageName = (symbolNames || {})[state.selectedSymbolKey] || kebabToPascalCase(state.selectedSymbolKey);
   const contentWrap = document.createElement('div');
   contentWrap.className = 'drawer-selected';
   contentWrap.style.width = '100%';
@@ -296,8 +298,8 @@ export function renderDrawerContent() {
   pkgLabel.className = 'drawer-label';
   pkgLabel.textContent = 'Package Symbol Name';
   const pkgValue = document.createElement('div');
-  // Use PascalCase conversion for the package symbol name
-  pkgValue.textContent = kebabToPascalCase(state.selectedSymbolKey);
+  // Use the package name (with SF prefix)
+  pkgValue.textContent = packageName;
   pkgValue.style.fontSize = '1.3rem';
   pkgValue.style.fontWeight = 'bold';
   pkgValue.style.lineHeight = '1.2';

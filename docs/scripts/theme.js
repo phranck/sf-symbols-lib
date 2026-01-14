@@ -39,7 +39,7 @@ export function updateThemeIcon(mode) {
 }
 
 // Initialize theme
-const savedTheme = localStorage.getItem('sf-theme') || 'light';
+const savedTheme = localStorage.getItem('sf-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 applyTheme(savedTheme);
 
 themeToggleButton.addEventListener('click', () => {

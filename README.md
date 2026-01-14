@@ -28,10 +28,10 @@ npm install sf-symbols-lib
 ## Quick Start
 
 ```tsx
-import { SFSymbol, Checkmark } from 'sf-symbols-lib/hierarchical';
+import { SFSymbol, SFCheckmark } from 'sf-symbols-lib/hierarchical';
 
 function App() {
-  return <SFSymbol name={Checkmark} size={24} />;
+  return <SFSymbol name={SFCheckmark} size={24} />;
 }
 ```
 
@@ -40,19 +40,19 @@ function App() {
 ### Basic Usage
 
 ```tsx
-import { SFSymbol, Checkmark, CheckmarkCircleFill, Trash } from 'sf-symbols-lib/hierarchical';
+import { SFSymbol, SFCheckmark, SFCheckmarkCircleFill, SFTrash } from 'sf-symbols-lib/hierarchical';
 
 function MyComponent() {
   return (
     <div>
       {/* Basic usage */}
-      <SFSymbol name={Checkmark} />
+      <SFSymbol name={SFCheckmark} />
 
       {/* With size */}
-      <SFSymbol name={CheckmarkCircleFill} size={32} />
+      <SFSymbol name={SFCheckmarkCircleFill} size={32} />
 
-      {/* With size preset */}
-      <SFSymbol name={Trash} size="lg" />
+      {/* With custom styling */}
+      <SFSymbol name={SFTrash} className="text-red-500" />
     </div>
   );
 }
@@ -76,8 +76,8 @@ If you don't specify a subpath, you get `hierarchical`:
 
 ```tsx
 // These are equivalent:
-import { SFSymbol, Checkmark } from 'sf-symbols-lib';
-import { SFSymbol, Checkmark } from 'sf-symbols-lib/hierarchical';
+import { SFSymbol, SFCheckmark } from 'sf-symbols-lib';
+import { SFSymbol, SFCheckmark } from 'sf-symbols-lib/hierarchical';
 ```
 
 ### Styling Examples
@@ -156,15 +156,15 @@ function ButtonExamples() {
 ### Using with Lists
 
 ```tsx
-import { SFSymbol, CheckmarkCircleFill, Circle, ExclamationmarkTriangleFill } from 'sf-symbols-lib/hierarchical';
+import { SFSymbol, SFCheckmarkCircleFill, SFCircle, SFExclamationmarkTriangleFill } from 'sf-symbols-lib/hierarchical';
 
 type Status = 'done' | 'pending' | 'warning';
 
 function StatusList({ items }: { items: { text: string; status: Status }[] }) {
   const statusIcons = {
-    done: { symbol: CheckmarkCircleFill, className: 'text-green-500' },
-    pending: { symbol: Circle, className: 'text-gray-400' },
-    warning: { symbol: ExclamationmarkTriangleFill, className: 'text-yellow-500' },
+    done: { symbol: SFCheckmarkCircleFill, className: 'text-green-500' },
+    pending: { symbol: SFCircle, className: 'text-gray-400' },
+    warning: { symbol: SFExclamationmarkTriangleFill, className: 'text-yellow-500' },
   };
 
   return (
@@ -206,7 +206,7 @@ For cases where you need to work with symbol names programmatically:
 import { SFSymbol, SFSymbolName, getAvailableSymbols, isAvailableSymbol } from 'sf-symbols-lib/hierarchical';
 
 // Using enum
-<SFSymbol name={SFSymbolName.Checkmark} />
+<SFSymbol name={SFSymbolName.SFCheckmark} />
 
 // Check if a symbol exists
 if (isAvailableSymbol('checkmark.circle.fill')) {
@@ -248,7 +248,7 @@ export default defineConfig({
 
 Then use it:
 ```tsx
-import { SFSymbol, Checkmark } from 'sf-symbols';
+import { SFSymbol, SFCheckmark } from 'sf-symbols';
 ```
 
 ### Barrel File Alternative
@@ -262,7 +262,7 @@ export * from 'sf-symbols-lib/hierarchical';
 
 **Usage:**
 ```tsx
-import { SFSymbol, Checkmark } from '@/lib/sf-symbols';
+import { SFSymbol, SFCheckmark } from '@/lib/sf-symbols';
 ```
 
 This approach makes it easy to switch variants later by changing just one file.
@@ -284,14 +284,14 @@ Symbols are named using PascalCase derived from their SF Symbol names:
 
 | SF Symbol Name | Constant |
 |----------------|----------|
-| `checkmark` | `Checkmark` |
-| `checkmark.circle` | `CheckmarkCircle` |
-| `checkmark.circle.fill` | `CheckmarkCircleFill` |
-| `square.and.arrow.up` | `SquareAndArrowUp` |
-| `0.circle.fill` | `N0CircleFill` |
-| `42.square` | `N42Square` |
+| `checkmark` | `SFCheckmark` |
+| `checkmark.circle` | `SFCheckmarkCircle` |
+| `checkmark.circle.fill` | `SFCheckmarkCircleFill` |
+| `square.and.arrow.up` | `SFSquareAndArrowUp` |
+| `0.circle.fill` | `SFN0CircleFill` |
+| `42.square` | `SFN42Square` |
 
-**Note:** Symbols starting with numbers are prefixed with `N`.
+**Note:** All constants are prefixed with `SF`. Symbols starting with numbers are additionally prefixed with `N`.
 
 ## Bundle Size
 

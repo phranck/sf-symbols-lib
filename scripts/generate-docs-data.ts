@@ -10,6 +10,9 @@ import { fileURLToPath } from 'url';
 import CleanCSS from 'clean-css';
 import { marked } from 'marked';
 
+// Import the generated symbol names directly from the package
+import { SFSymbolName } from '../src/components/sf-symbol-name.js';
+
 // Type definitions
 type Variant = 'hierarchical' | 'monochrome';
 
@@ -40,20 +43,15 @@ interface MetaManifest {
 const VARIANTS = ['hierarchical', 'monochrome'] as const;
 
 /**
- * Parse enum entries from sf-symbol-name.ts
+ * Create reverse enum map from the imported SFSymbolName enum
  */
-function parseEnumMap(content: string): SymbolData {
-  const enumMap: SymbolData = {};
-  const lines = content.split('\n');
-
-  for (const line of lines) {
-    const match = line.match(/^\s*(\w+)\s*=\s*['"]([^'"]+)['"]/);
-    if (match) {
-      enumMap[match[2]] = match[1];
-    }
+function createReverseEnumMap(): SymbolData {
+  const reverseEnumMap: SymbolData = {};
+  // Iterate through all enum values to create reverse mapping
+  for (const [key, value] of Object.entries(SFSymbolName)) {
+    reverseEnumMap[key] = value;
   }
-
-  return enumMap;
+  return reverseEnumMap;
 }
 
 /**
@@ -207,16 +205,8 @@ async function main(): Promise<void> {
   const htmlOutputFile = path.join(distDir, 'index.html');
 
   try {
-    // Read the sf-symbol-name.ts to get enum values
-    const symbolNameTs = path.join(repoRootDir, 'src', 'components', 'sf-symbol-name.ts');
-    const symbolNameContent = await fs.readFile(symbolNameTs, 'utf8');
-    const enumMap = parseEnumMap(symbolNameContent);
-
-    // Build reverse map for O(1) lookups: enumKey -> strKey
-    const reverseEnumMap: SymbolData = {};
-    for (const [strKey, enumKey] of Object.entries(enumMap)) {
-      reverseEnumMap[enumKey] = strKey;
-    }
+    // Use the imported SFSymbolName enum to build reverse map for O(1) lookups: enumKey -> strKey
+    const reverseEnumMap = createReverseEnumMap();
 
     // Build data structure for all variants
     const allData: VariantData = {
@@ -251,9 +241,9 @@ async function main(): Promise<void> {
     console.log('Final allData keys:', Object.keys(allData));
     console.log('hierarchical data keys count:', Object.keys(allData.hierarchical || {}).length);
 
-    // Build component names map
+    // Build component names map from imported enum
     const componentNames: SymbolData = {};
-    for (const [strKey, enumKey] of Object.entries(enumMap)) {
+    for (const [enumKey, strKey] of Object.entries(SFSymbolName)) {
       componentNames[strKey] = enumKey;
     }
 
@@ -321,7 +311,7 @@ async function main(): Promise<void> {
     await fs.copyFile(path.join(repoDocsDir, 'about.md'), path.join(distDir, 'about.md'));
     await fs.copyFile(path.join(repoDocsDir, 'search.md'), path.join(distDir, 'search.md'));
 
-    const totalSymbols = Object.keys(enumMap).length;
+    const totalSymbols = Object.keys(SFSymbolName).length;
     const fileSize = (Buffer.byteLength(htmlContent, 'utf8') / 1024 / 1024).toFixed(1);
     console.log(`\n✅ Generated ${htmlOutputFile}`);
     console.log(`   ${totalSymbols} symbols × ${VARIANTS.length} variants`);

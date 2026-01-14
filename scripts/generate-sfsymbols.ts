@@ -8,10 +8,10 @@ const VARIANTS = ['hierarchical', 'monochrome'] as const;
 type Variant = typeof VARIANTS[number];
 
 /**
- * Convert kebab-case and dot-notation to PascalCase
- * e.g., "checkmark-circle-fill" -> "CheckmarkCircleFill"
- * e.g., "square.and.arrow.down.on.square" -> "SquareAndArrowDownOnSquare"
- * e.g., "0.circle.fill" -> "N0CircleFill" (prefix with N for numeric starts)
+ * Convert kebab-case and dot-notation to PascalCase with SF prefix
+ * e.g., "checkmark-circle-fill" -> "SFCheckmarkCircleFill"
+ * e.g., "square.and.arrow.down.on.square" -> "SFSquareAndArrowDownOnSquare"
+ * e.g., "0.circle.fill" -> "SF0CircleFill"
  */
 function kebabToPascalCase(kebabStr: string): string {
   const result = kebabStr
@@ -23,12 +23,8 @@ function kebabToPascalCase(kebabStr: string): string {
     })
     .join('');
 
-  // If the result starts with a number, prefix with 'N' to make it a valid identifier
-  if (/^\d/.test(result)) {
-    return 'N' + result;
-  }
-
-  return result;
+  // Add SF prefix (no need for N prefix since SF makes it a valid identifier)
+  return 'SF' + result;
 }
 
 /**
