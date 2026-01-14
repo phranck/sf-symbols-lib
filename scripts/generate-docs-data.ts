@@ -317,6 +317,10 @@ async function main(): Promise<void> {
       await fs.copyFile(path.join(repoDocsDir, 'scripts', file), path.join(scriptsDir, file));
     }
 
+    // Copy Markdown files to dist/
+    await fs.copyFile(path.join(repoDocsDir, 'about.md'), path.join(distDir, 'about.md'));
+    await fs.copyFile(path.join(repoDocsDir, 'search.md'), path.join(distDir, 'search.md'));
+
     const totalSymbols = Object.keys(enumMap).length;
     const fileSize = (Buffer.byteLength(htmlContent, 'utf8') / 1024 / 1024).toFixed(1);
     console.log(`\n✅ Generated ${htmlOutputFile}`);
