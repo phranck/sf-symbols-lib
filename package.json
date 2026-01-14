@@ -26,16 +26,14 @@
   "scripts": {
     "build": "tsc && vite build && tsc --emitDeclarationOnly",
     "dev": "vite build --watch",
+    "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "generate": "tsx scripts/generate-sfsymbols.ts",
-    "minify:dist": "node scripts/minify-dist.js",
-    "generate:prod": "npm run generate && npm run minify:dist",
-    "lint": "eslint .",
-    "clean:generated": "rm -rf src/hierarchical src/monochrome src/components/sf-symbol-name.ts src/index.ts docs/dist",
-    "page": "npm run generate && browser-sync start --server docs/dist --files docs/dist/index.html --no-open",
-    "page:only": "browser-sync start --server docs/dist --files docs/dist/index.html --no-open",
+    "clean": "rm -rf src/hierarchical src/monochrome src/components/sf-symbol-name.ts src/index.ts docs/dist dist",
     "check": "npm run lint && npm run typecheck && npm run build",
-    "docs:build": "tsx docs/scripts/generate-icons-data.ts"
+    "docs:generate": "tsx scripts/generate-docs-data.ts",
+    "docs:serve": "browser-sync start --server docs/dist --files docs/dist/index.html --no-open",
+    "docs:preview": "npm run docs:generate && npm run docs:serve"
   },
   "dependencies": {
     "@types/react": "^18.3.0",

@@ -334,7 +334,7 @@ async function generateSFSymbols() {
 
   // Generate docs data and preview page
   console.log('\n📄 Generating docs data and preview page...');
-  execSync('tsx ./docs/scripts/generate-icons-data.ts', { stdio: 'inherit' });
+  execSync('tsx ./scripts/generate-docs-data.ts', { stdio: 'inherit' });
 
   console.log(`\n📊 Summary: ${symbolFileNames.length} symbols × ${VARIANTS.length} variants = ${totalProcessed} SVGs processed\n`);
 }

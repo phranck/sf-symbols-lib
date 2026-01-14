@@ -200,8 +200,8 @@ async function writeChunks(
  */
 async function main(): Promise<void> {
   const __filename = fileURLToPath(import.meta.url);
-  const repoDocsDir = path.resolve(path.dirname(__filename), '..');
-  const repoRootDir = path.resolve(repoDocsDir, '..');
+  const repoRootDir = path.resolve(path.dirname(__filename), '..');
+  const repoDocsDir = path.resolve(repoRootDir, 'docs');
   const distDir = path.join(repoDocsDir, 'dist');
   const htmlInputFile = path.join(repoDocsDir, 'index.html');
   const htmlOutputFile = path.join(distDir, 'index.html');
