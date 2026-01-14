@@ -1,0 +1,14 @@
+/* Shared CSS Variables */
+:root {
+  /* Syntax highlighting defaults */
+  --codebox-background: #efefef;
+  --syntax-keyword-color: #3b6ea8; /* soft blue */
+  --syntax-string-color: #2f8f6e; /* soft green */
+  --syntax-component-color: #b3613a; /* warm terracotta */
+  --syntax-comment-color: #6b7280; /* muted slate */
+  --syntax-number-color: #a96bd6; /* soft purple */
+  --syntax-constant-color: #d18b2f; /* amber */
+  --syntax-operator-color: #5f6b77; /* subdued gray */
+  --syntax-property-color: #3178c6; /* property blue */
+  --syntax-punctuation-color: #667085; /* muted */
+}

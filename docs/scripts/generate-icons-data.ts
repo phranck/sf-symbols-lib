@@ -416,6 +416,13 @@ async function main(): Promise<void> {
     // Write the modified HTML
     await fs.writeFile(htmlOutputFile, htmlContent, 'utf8');
 
+    // Copy CSS files to dist/styles/
+    const stylesDir = path.join(distDir, 'styles');
+    await fs.mkdir(stylesDir, { recursive: true });
+    await fs.copyFile(path.join(repoDocsDir, 'styles', 'main.css'), path.join(stylesDir, 'main.css'));
+    await fs.copyFile(path.join(repoDocsDir, 'styles', 'drawer.css'), path.join(stylesDir, 'drawer.css'));
+    await fs.copyFile(path.join(repoDocsDir, 'styles', 'variables.css'), path.join(stylesDir, 'variables.css'));
+
     const totalSymbols = Object.keys(enumMap).length;
     const fileSize = (Buffer.byteLength(htmlContent, 'utf8') / 1024 / 1024).toFixed(1);
     console.log(`\n✅ Generated ${htmlOutputFile}`);

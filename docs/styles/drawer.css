@@ -1,0 +1,72 @@
+/* Drawer selected layout -> responsive behavior */
+@import "variables.css";
+
+#drawer-content {
+  height: 100%;
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+#drawer-content .drawer-selected {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 24px; /* increased spacing between SF Symbol and text */
+  height: 100%;
+}
+
+#drawer-content .drawer-code {
+  margin: 0;
+  flex: 0 0 50%;
+  max-width: 50%;
+  min-width: 28%;
+  height: auto; /* make height flexible */
+  overflow: auto;
+  padding-top: 0; /* ensure codebox docks to top */
+  padding-bottom: 0; /* ensure codebox docks to bottom */
+  position: relative;
+}
+
+/* Add a left border to the drawer code box that matches the footer top border */
+#drawer-content .drawer-code {
+  border-left: 1px solid var(--border-weak);
+}
+
+.dark-mode #drawer-content .drawer-code {
+  border-left-color: var(--border-subtle-dark);
+}
+
+/* Dock code box to top/right/bottom by removing extra spacing inside */
+#drawer-content .drawer-code pre { margin: 0; }
+
+.codebox-bg { background: var(--codebox-background); }
+
+/* Syntax highlighting using variables so colors adapt to mode */
+.syntax-keyword { color: var(--syntax-keyword-color); }
+.syntax-string { color: var(--syntax-string-color); }
+.syntax-component { color: var(--syntax-component-color); }
+.syntax-comment { color: var(--syntax-comment-color); font-style: italic; }
+.syntax-number { color: var(--syntax-number-color); }
+.syntax-constant { color: var(--syntax-constant-color); }
+.syntax-operator { color: var(--syntax-operator-color); }
+.syntax-property { color: var(--syntax-property-color); }
+.syntax-punctuation { color: var(--syntax-punctuation-color); }
+
+/* On narrow viewports stack code box under preview/info */
+@media (max-width: 900px) {
+  #drawer-content .drawer-selected {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  #drawer-content .drawer-code {
+    flex: 0 0 auto;
+    max-width: 100%;
+    min-width: 100%;
+    order: 3;
+    height: auto;
+    min-height: 120px;
+  }
+}
