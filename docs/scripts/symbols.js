@@ -1,5 +1,5 @@
 // Symbol rendering and management for SF Symbols demo
-import { FLIP_MEASURE_THRESHOLD, debounce, copyToClipboard, getVisibleCards, kebabToPascalCase } from './utils.js';
+import { FLIP_MEASURE_THRESHOLD, debounce, copyToClipboard, getVisibleCards, setFocusedCard, kebabToPascalCase } from './utils.js';
 import { currentData, currentViewBox, allSymbolsData, allViewBoxData, state, searchInput, variantSelect, iconsContainer, visibleCountEl, totalCountEl, infoSymbols, symbolNames } from './data.js';
 import { openCopyModal } from './modals.js';
 import { currentColor } from './colors.js';
@@ -131,6 +131,10 @@ export function renderSymbols() {
       renderDrawerContent();
       // Open bottom drawer automatically when selecting a symbol
       openDrawer();
+      // After drawer animation completes, ensure selected card remains visible
+      setTimeout(() => {
+        setFocusedCard(state.focusedIndex);
+      }, 400);
     });
 
     fragment.appendChild(card);
@@ -408,7 +412,9 @@ export function renderDrawerContent() {
     // Prefer package export name; fallback to Apple symbol string when not a valid identifier
     const _package = packageName;
     const _isValidIdentifier = /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(_package);
-    const importLine = _isValidIdentifier ? `import { SFSymbol, ${_package} } from 'sf-symbols-lib/hierarchical';` : `import { SFSymbol } from 'sf-symbols-lib/hierarchical';`;
+    const _currentVariant = (variantSelect && variantSelect.value) ? variantSelect.value : 'hierarchical';
+    const _packagePath = `sf-symbols-lib/${_currentVariant}`;
+    const importLine = _isValidIdentifier ? `import { SFSymbol, ${_package} } from '${_packagePath}';` : `import { SFSymbol } from '${_packagePath}';`;
     const nameInline = _isValidIdentifier ? `{${_package}}` : `"${state.selectedSymbolKey}"`;
 
     const codeText = `${importLine}\n\nfunction MyComponent() {
@@ -458,8 +464,10 @@ export function renderDrawerContent() {
   const _importSpan = _isValidIdentifier ? `<span class="syntax-component">SFSymbol</span>, <span class="syntax-component">${packageName}</span>` : `<span class="syntax-component">SFSymbol</span>`;
   const _nameSpan = _isValidIdentifier ? `<span class="syntax-punctuation">{</span><span class="syntax-component">${packageName}</span><span class="syntax-punctuation">}</span>` : `<span class="syntax-string">"${state.selectedSymbolKey}"</span>`;
 
+  const _displayVariant = (variantSelect && variantSelect.value) ? variantSelect.value : 'hierarchical';
+  const _displayPackagePath = `sf-symbols-lib/${_displayVariant}`;
   codeContent.innerHTML = `
-<span class="line-number">1</span>  <span class="syntax-keyword">import</span> { ${_importSpan} } <span class="syntax-keyword">from</span> <span class="syntax-string">'sf-symbols-lib/hierarchical'</span>;
+<span class="line-number">1</span>  <span class="syntax-keyword">import</span> { ${_importSpan} } <span class="syntax-keyword">from</span> <span class="syntax-string">'${_displayPackagePath}'</span>;
 <span class="line-number">2</span>
 <span class="line-number">3</span>  <span class="syntax-keyword">function</span> <span class="syntax-component">MyComponent</span>() {
 <span class="line-number">4</span>    <span class="syntax-keyword">return</span> (

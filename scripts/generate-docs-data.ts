@@ -273,9 +273,15 @@ async function main(): Promise<void> {
     // Read and inject markdown content
     const aboutMdPath = path.join(repoDocsDir, 'about.md');
     const searchMdPath = path.join(repoDocsDir, 'search.md');
+    const shortcutsMdPath = path.join(repoDocsDir, 'shortcuts.md');
 
     const aboutHtml = await readMarkdownAsHtml(aboutMdPath);
     const searchHtml = await readMarkdownAsHtml(searchMdPath);
+    const shortcutsHtmlRaw = await readMarkdownAsHtml(shortcutsMdPath);
+
+    // Transform inline code (<code>...</code>) in shortcuts HTML to a simpler placeholder
+    // We'll post-process it in the modal script, but convert inline code to <code> tags remain.
+    const shortcutsHtml = shortcutsHtmlRaw;
 
     // Replace placeholders with rendered markdown content
     htmlContent = htmlContent.replace('<!-- ABOUT_CONTENT -->', aboutHtml);
@@ -302,7 +308,27 @@ async function main(): Promise<void> {
     // Copy JS files to dist/scripts/
     const scriptsDir = path.join(distDir, 'scripts');
     await fs.mkdir(scriptsDir, { recursive: true });
-    const scriptFiles = ['data.js', 'utils.js', 'theme.js', 'modals.js', 'colors.js', 'symbols.js', 'main.js'];
+
+    // Process modals.js to inject about content
+    const modalsJsPath = path.join(repoDocsDir, 'scripts', 'modals.js');
+    let modalsJsContent = await fs.readFile(modalsJsPath, 'utf8');
+    // Escape any backticks in the rendered HTML so it can be safely embedded
+    const escapedAboutHtml = aboutHtml.replace(/`/g, '\\`');
+    const escapedSearchHtml = searchHtml.replace(/`/g, '\\`');
+
+    // Prefer replacing the exact backtick-wrapped placeholder (old format),
+    // but also replace plain HTML comments inside the template as a fallback.
+    modalsJsContent = modalsJsContent.replace('`<!-- ABOUT_CONTENT -->`', `\`${escapedAboutHtml}\``);
+    modalsJsContent = modalsJsContent.replace('`<!-- SEARCH_CONTENT -->`', `\`${escapedSearchHtml}\``);
+    modalsJsContent = modalsJsContent.replace('`<!-- SHORTCUTS_CONTENT -->`', `\`${shortcutsHtml.replace(/`/g, '\\`')}\``);
+    modalsJsContent = modalsJsContent.replace('<!-- ABOUT_CONTENT -->', escapedAboutHtml);
+    modalsJsContent = modalsJsContent.replace('<!-- SEARCH_CONTENT -->', escapedSearchHtml);
+    modalsJsContent = modalsJsContent.replace('<!-- SHORTCUTS_CONTENT -->', shortcutsHtml);
+    await fs.writeFile(path.join(scriptsDir, 'modals.js'), modalsJsContent, 'utf8');
+
+    console.log('✓ Injected about content into modals.js');
+
+    const scriptFiles = ['data.js', 'utils.js', 'theme.js', 'colors.js', 'symbols.js', 'main.js'];
     for (const file of scriptFiles) {
       await fs.copyFile(path.join(repoDocsDir, 'scripts', file), path.join(scriptsDir, file));
     }

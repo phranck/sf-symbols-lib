@@ -1,8 +1,6 @@
-## Search syntax
-
 Use `|` for OR, `&` or spaces for AND.
 
-**folder|file**
+**folder | file**
 → matches items containing "folder" OR "file"
 
 **chevron up**

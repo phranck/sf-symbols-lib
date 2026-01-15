@@ -19,12 +19,37 @@ aboutTitle.textContent = 'SF Symbols Library';
 
 const aboutContent = document.createElement('div');
 aboutContent.className = 'about-content';
-aboutContent.innerHTML = `<!-- ABOUT_CONTENT -->`;
+aboutContent.innerHTML = `
+  <div class="about-inner">
+    <div class="about-body">
+      <div class="about-tabs">
+        <nav class="about-navbar navbar" role="navigation" aria-label="About navigation">
+          <ul class="navbar-nav about-navbar-list">
+            <li class="nav-item"><button class="nav-link tab-btn active" data-tab="about" role="tab" aria-selected="true">About</button></li>
+            <li class="nav-item"><button class="nav-link tab-btn" data-tab="search" role="tab" aria-selected="false">Search</button></li>
+            <li class="nav-item"><button class="nav-link tab-btn" data-tab="shortcuts" role="tab" aria-selected="false">Shortcuts</button></li>
+          </ul>
+        </nav>
 
-const okWrap = document.createElement('div');
-okWrap.style.display = 'flex';
-okWrap.style.justifyContent = 'center';
-okWrap.style.marginTop = '12px';
+        <div class="about-tabs-body">
+          <div class="tab-pane" data-pane="about">
+            <!-- ABOUT_CONTENT -->
+          </div>
+
+          <div class="tab-pane" data-pane="search" hidden>
+            <!-- SEARCH_CONTENT -->
+          </div>
+
+          <div class="tab-pane" data-pane="shortcuts" hidden>
+            <!-- SHORTCUTS_CONTENT -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+`;
+// default active tab class for styling
+aboutContent.classList.add('active-tab-about');
 
 const okButton = document.createElement('button');
 okButton.className = 'theme-toggle';
@@ -32,18 +57,238 @@ okButton.type = 'button';
 okButton.textContent = 'OK';
 okButton.addEventListener('click', () => closeAboutModal());
 
-okWrap.appendChild(okButton);
+// Header / Content / Footer structure
+const aboutHeader = document.createElement('div');
+aboutHeader.className = 'about-modal-header';
+aboutHeader.appendChild(aboutTitle);
 
-aboutModal.appendChild(aboutTitle);
+const aboutFooter = document.createElement('div');
+aboutFooter.className = 'about-modal-footer';
+aboutFooter.style.display = 'flex';
+aboutFooter.style.justifyContent = 'center';
+aboutFooter.style.paddingTop = '12px';
+aboutFooter.appendChild(okButton);
+
+aboutModal.appendChild(aboutHeader);
 aboutModal.appendChild(aboutContent);
-aboutModal.appendChild(okWrap);
+aboutModal.appendChild(aboutFooter);
 
 aboutModalOverlay.appendChild(aboutModal);
 document.body.appendChild(aboutModalOverlay);
 
-export function openAboutModal() {
+function setActiveTab(tabName) {
+  const headerButtons = aboutContent.querySelectorAll('.tab-btn');
+  const panes = aboutContent.querySelectorAll('.tab-pane');
+  headerButtons.forEach((btn) => {
+    const isActive = btn.dataset.tab === tabName;
+    btn.classList.toggle('active', isActive);
+    btn.setAttribute('aria-selected', String(isActive));
+  });
+  panes.forEach((pane) => {
+    pane.hidden = pane.dataset.pane !== tabName;
+  });
+  // Sync a class on the container so CSS can style the tab pane to match the active tab
+  aboutContent.classList.remove('active-tab-about', 'active-tab-search', 'active-tab-shortcuts');
+  aboutContent.classList.add('active-tab-' + tabName);
+  // If switching to shortcuts, ensure they are processed into keycaps
+  if (tabName === 'shortcuts') processShortcuts();
+  // Animate modal height when content changes while modal is visible
+  animateAboutModalHeight();
+}
+
+/**
+ * Animate the `aboutModal` height from current value to the new content height.
+ * Works only when modal is visible (class `show` on overlay).
+ */
+function animateAboutModalHeight() {
+  if (!aboutModal || !aboutModalOverlay.classList.contains('show')) return;
+
+  // Temporarily disable transitions to measure heights reliably
+  const previousTransition = aboutModal.style.transition || '';
+  aboutModal.style.transition = 'none';
+
+  // Measure start height
+  const startRect = aboutModal.getBoundingClientRect();
+  const startHeight = startRect.height;
+
+  // Ensure explicit start height is set
+  aboutModal.style.height = startHeight + 'px';
+  // Force reflow
+  // eslint-disable-next-line no-unused-expressions
+  aboutModal.offsetHeight;
+
+  // Measure target height by letting it size to auto (no transition active)
+  aboutModal.style.height = 'auto';
+  const targetHeight = aboutModal.getBoundingClientRect().height;
+
+  // If heights are equal, cleanup and exit
+  if (Math.abs(targetHeight - startHeight) < 1) {
+    aboutModal.style.height = 'auto';
+    aboutModal.style.transition = previousTransition;
+    return;
+  }
+
+  // Revert to start height (still with no transition), force reflow
+  aboutModal.style.height = startHeight + 'px';
+  // eslint-disable-next-line no-unused-expressions
+  aboutModal.offsetHeight;
+
+  // Restore/override transition and animate to target height in next frame
+  const animTiming = 'height 240ms cubic-bezier(.2,.9,.2,1)';
+  requestAnimationFrame(() => {
+    aboutModal.style.transition = animTiming;
+    // Set target height (may be larger or smaller)
+    aboutModal.style.height = targetHeight + 'px';
+  });
+
+  const onEnd = (ev) => {
+    if (ev.propertyName !== 'height') return;
+    // After animation, let the modal size naturally
+    aboutModal.style.height = 'auto';
+    // restore previous transition if any
+    aboutModal.style.transition = previousTransition;
+    aboutModal.removeEventListener('transitionend', onEnd);
+  };
+
+  aboutModal.addEventListener('transitionend', onEnd);
+}
+
+// Process rendered shortcuts HTML: convert inline <code> elements into styled key badges
+function processShortcuts() {
+  const pane = aboutContent.querySelector('[data-pane="shortcuts"]');
+  if (!pane) return;
+
+  const paragraphs = Array.from(pane.querySelectorAll('p'));
+  paragraphs.forEach((p) => {
+    // Normalize inline backticks to <code>
+    if (p.innerHTML && p.innerHTML.indexOf('`') !== -1) {
+      p.innerHTML = p.innerHTML.replace(/`([^`]+)`/g, '<code>$1</code>');
+    }
+
+    const nodes = Array.from(p.childNodes);
+    const rows = [];
+
+    for (let idx = 0; idx < nodes.length; idx++) {
+      const node = nodes[idx];
+      if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'CODE') {
+        const codeText = node.textContent.trim();
+
+        // Gather description nodes following this <code> until next <code>
+        const descParts = [];
+        let j = idx + 1;
+        while (j < nodes.length && !(nodes[j].nodeType === Node.ELEMENT_NODE && nodes[j].tagName === 'CODE')) {
+          const followNode = nodes[j];
+          if (followNode.nodeType === Node.TEXT_NODE) {
+            const cleaned = followNode.textContent.replace(/\s+/g, ' ').trim();
+            if (cleaned) descParts.push(cleaned);
+          } else if (followNode.nodeType === Node.ELEMENT_NODE) {
+            const cleaned = followNode.textContent.replace(/\s+/g, ' ').trim();
+            if (cleaned) descParts.push(cleaned);
+          }
+          j++;
+        }
+
+        const descText = descParts.join(' ').trim();
+
+        // Build row element
+        const row = document.createElement('div');
+        row.className = 'shortcut-row';
+
+        const left = document.createElement('div');
+        left.className = 'shortcut-desc';
+        left.textContent = descText;
+
+        const kbdGroup = document.createElement('div');
+        kbdGroup.className = 'kbd-group';
+
+        const parts = codeText.split(/\s*\+\s*|\s+/).filter(Boolean);
+        parts.forEach((part) => {
+          const keySpan = document.createElement('span');
+          keySpan.className = 'kbd-key';
+          keySpan.innerHTML = mapKeyToSymbol(part);
+          kbdGroup.appendChild(keySpan);
+        });
+
+        // Keycaps column on the left, description on the right
+        row.appendChild(kbdGroup);
+        row.appendChild(left);
+        rows.push(row);
+
+        // advance idx to the last consumed node
+        idx = j - 1;
+      }
+    }
+
+    if (rows.length > 0) {
+      p.innerHTML = '';
+      rows.forEach((r) => p.appendChild(r));
+    }
+  });
+}
+
+/**
+ * Map a key token to a visual symbol or normalized label.
+ * Accepts tokens like 'ArrowUp', 'Arrow Up', 'Enter', 'Esc', 'Cmd', '⌘', 'Shift', 'Ctrl', 'Alt', 'F5', letters, etc.
+ */
+function mapKeyToSymbol(token) {
+  const t = token.replace(/[^\w\d]/g, '').toLowerCase();
+  switch (t) {
+    case 'arrowup':
+    case 'uparrow':
+    case 'up':
+      return '↑';
+    case 'arrowdown':
+    case 'downarrow':
+    case 'down':
+      return '↓';
+    case 'arrowleft':
+    case 'leftarrow':
+    case 'left':
+      return '←';
+    case 'arrowright':
+    case 'rightarrow':
+    case 'right':
+      return '→';
+    case 'enter':
+    case 'return':
+      return '⏎';
+    case 'esc':
+    case 'escape':
+      return '⎋';
+    case 'shift':
+      return '⇧';
+    case 'ctrl':
+    case 'control':
+    case '⌃':
+      return '⌃';
+    case 'alt':
+    case 'option':
+    case 'opt':
+      return '⌥';
+    case 'cmd':
+    case 'command':
+    case 'meta':
+    case '⌘':
+      return '⌘';
+    default:
+      // F-keys and single characters keep their label (uppercase)
+      if (/^f\d+$/i.test(token)) return token.toUpperCase();
+      if (/^[a-z0-9]$/i.test(token)) return token.toUpperCase();
+      // Otherwise return trimmed token as-is (escaped)
+      return escapeHtml(token);
+  }
+}
+
+function escapeHtml(text) {
+  return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+export function openAboutModal(activeTab = 'about') {
+  // Show overlay first so height animations can measure visible dimensions
   aboutModalOverlay.classList.add('show');
   aboutModalOverlay.setAttribute('aria-hidden', 'false');
+  // Now set the active tab (this will call processShortcuts and animate height)
+  setActiveTab(activeTab);
   // small timeout to ensure transitions can run; focus OK button
   setTimeout(() => okButton.focus(), 60);
 }
@@ -51,13 +296,21 @@ export function openAboutModal() {
 export function closeAboutModal() {
   aboutModalOverlay.classList.remove('show');
   aboutModalOverlay.setAttribute('aria-hidden', 'true');
-  aboutButton.focus();
+  if (aboutButton) aboutButton.focus();
 }
 
 if (aboutButton) {
   aboutButton.addEventListener('click', (ev) => {
     ev.stopPropagation();
-    openAboutModal();
+    openAboutModal('about');
+  });
+
+  // Allow tab clicks
+  aboutContent.addEventListener('click', (ev) => {
+    const button = ev.target.closest('.tab-btn');
+    if (!button) return;
+    const tab = button.dataset.tab;
+    setActiveTab(tab);
   });
 }
 
@@ -205,38 +458,11 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-// Search help popover handlers
+// Search help: open About modal with Search tab
 const searchHelpButton = document.getElementById('search-help-button');
-const searchHelpPopover = document.getElementById('search-help-popover');
-
-if (searchHelpButton && searchHelpPopover) {
+if (searchHelpButton) {
   searchHelpButton.addEventListener('click', (ev) => {
     ev.stopPropagation();
-    const willShow = !searchHelpPopover.classList.contains('show');
-    if (willShow) {
-      searchHelpPopover.classList.add('show');
-      searchHelpPopover.setAttribute('aria-hidden', 'false');
-    } else {
-      searchHelpPopover.classList.remove('show');
-      searchHelpPopover.setAttribute('aria-hidden', 'true');
-    }
-  });
-
-  // Clicking outside closes the popover
-  document.addEventListener('click', (ev) => {
-    if (!searchHelpPopover.classList.contains('show')) return;
-    if (searchHelpPopover.contains(ev.target) || searchHelpButton.contains(ev.target)) return;
-    searchHelpPopover.classList.remove('show');
-    searchHelpPopover.setAttribute('aria-hidden', 'true');
-  });
-
-  // Close popover on Escape
-  document.addEventListener('keydown', (ev) => {
-    if (ev.key === 'Escape' || ev.key === 'Esc') {
-      if (searchHelpPopover.classList.contains('show')) {
-        searchHelpPopover.classList.remove('show');
-        searchHelpPopover.setAttribute('aria-hidden', 'true');
-      }
-    }
+    openAboutModal('search');
   });
 }
