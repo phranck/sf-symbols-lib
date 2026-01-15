@@ -1013,3 +1013,49 @@ main.container-fluid {
   min-height: 0; /* allow flex to shrink when needed */
   box-sizing: border-box;
 }
+
+/* Chunk progress bar */
+#chunk-progress-container {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  height: 3px !important;
+  background: transparent !important;
+  z-index: 1031 !important;
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 340ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+#chunk-progress-container.show {
+  transform: scaleY(1) !important;
+}
+
+#chunk-progress-container .progress {
+  width: 100% !important;
+  height: 100% !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+}
+
+#chunk-progress-container .progress-bar {
+  height: 100% !important;
+  background: linear-gradient(90deg, #3b82f6, #60a5fa) !important;
+  border-radius: 0 !important;
+  transition: width 450ms cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.5) !important;
+}
+
+.dark-mode #chunk-progress-container .progress-bar {
+  background: linear-gradient(90deg, #60a5fa, #93c5fd) !important;
+  box-shadow: 0 2px 8px rgba(96, 165, 250, 0.5) !important;
+}

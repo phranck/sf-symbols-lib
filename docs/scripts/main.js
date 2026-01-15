@@ -112,12 +112,47 @@ document.addEventListener('click', (ev) => {
 
 // Chunked data loader
 const CHUNKED_META_URL = './meta.json';
+let totalChunksToLoad = 0;
+let chunksLoadedCount = 0;
+let progressBarShownTime = 0;
 
 function normalizeChunkUrl(rawUrl) {
   if (!rawUrl) return rawUrl;
   if (rawUrl.startsWith('./')) return rawUrl;
   if (rawUrl.startsWith('/')) return '.' + rawUrl; // Convert absolute to relative
   return './' + rawUrl;
+}
+
+function updateProgressBar(percentage) {
+  const progressContainer = document.getElementById('chunk-progress-container');
+  const progressBar = document.getElementById('chunk-progress-bar');
+
+  if (progressBar) {
+    progressBar.style.width = percentage + '%';
+    progressBar.parentElement.setAttribute('aria-valuenow', percentage);
+  }
+}
+
+function showProgressBar() {
+  const progressContainer = document.getElementById('chunk-progress-container');
+  if (progressContainer) {
+    progressBarShownTime = Date.now();
+    progressContainer.classList.add('show');
+  }
+}
+
+function hideProgressBar() {
+  const progressContainer = document.getElementById('chunk-progress-container');
+  if (progressContainer) {
+    // Ensure progress bar is visible for at least 800ms
+    const elapsedTime = Date.now() - progressBarShownTime;
+    const minDisplayDuration = 800;
+    const delayBeforeHide = Math.max(0, minDisplayDuration - elapsedTime);
+
+    setTimeout(() => {
+      progressContainer.classList.remove('show');
+    }, delayBeforeHide + 300);
+  }
 }
 
 async function loadChunk(variant, index) {
@@ -145,6 +180,11 @@ async function loadChunk(variant, index) {
     // Mark chunk as loaded
     if (!chunksLoaded[variant]) chunksLoaded[variant] = new Set();
     chunksLoaded[variant].add(index);
+
+    // Update progress bar
+    chunksLoadedCount++;
+    const percentage = Math.min(100, Math.round((chunksLoadedCount / totalChunksToLoad) * 100));
+    updateProgressBar(percentage);
 
     // Always call updateData after loading a chunk to refresh the display
     updateData();
@@ -177,14 +217,41 @@ async function initChunkedData() {
       // Set variant select
       variantSelect.value = defaultVariant;
 
+      // Calculate total chunks to load for ALL variants
+      totalChunksToLoad = 0;
+      for (const variantName of VARIANTS) {
+        if (CHUNKS[variantName]) {
+          totalChunksToLoad += CHUNKS[variantName].length;
+        }
+      }
+      chunksLoadedCount = 0;
+
+      // Show progress bar only if there are chunks to load
+      if (totalChunksToLoad > 0) {
+        showProgressBar();
+        updateProgressBar(0);
+      }
+
       // Load all chunks for the default variant first (sequentially for progressive loading)
       await loadAllChunksForVariant(defaultVariant);
 
-      // Then load remaining variants in the background
+      // Then load remaining variants in the background and wait for them
+      const backgroundVariantPromises = [];
       for (const variantName of VARIANTS) {
         if (variantName !== defaultVariant) {
-          loadAllChunksForVariant(variantName); // fire and forget for other variants
+          backgroundVariantPromises.push(loadAllChunksForVariant(variantName));
         }
+      }
+
+      // Wait for all background variants to load
+      await Promise.all(backgroundVariantPromises);
+
+      // Hide progress bar after all variants are loaded
+      if (totalChunksToLoad > 0) {
+        // Small delay for smooth animation
+        setTimeout(() => {
+          hideProgressBar();
+        }, 300);
       }
     }
   } catch (err) {
