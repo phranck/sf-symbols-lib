@@ -76,6 +76,14 @@ document.addEventListener('keydown', (event) => {
       event.preventDefault();
       closeDrawer();
       break;
+
+    case 'f':
+      // cmd+f (Mac) or ctrl+f (Windows) focuses search input
+      if (event.metaKey || event.ctrlKey) {
+        event.preventDefault();
+        searchInput.focus();
+      }
+      break;
   }
 });
 
