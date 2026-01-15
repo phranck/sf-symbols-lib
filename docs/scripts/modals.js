@@ -1,6 +1,7 @@
 // Modal management for SF Symbols demo
 import { copyToClipboard } from './utils.js';
 import { state } from './data.js';
+import { setAboutModalOpen } from './symbols.js';
 
 // About modal: create DOM once and control via show/hide
 const aboutButton = document.getElementById('about-button');
@@ -23,13 +24,11 @@ aboutContent.innerHTML = `
   <div class="about-inner">
     <div class="about-body">
       <div class="about-tabs">
-        <nav class="about-navbar navbar" role="navigation" aria-label="About navigation">
-          <ul class="navbar-nav about-navbar-list">
-            <li class="nav-item"><button class="nav-link tab-btn active" data-tab="about" role="tab" aria-selected="true">About</button></li>
-            <li class="nav-item"><button class="nav-link tab-btn" data-tab="search" role="tab" aria-selected="false">Search</button></li>
-            <li class="nav-item"><button class="nav-link tab-btn" data-tab="shortcuts" role="tab" aria-selected="false">Shortcuts</button></li>
-          </ul>
-        </nav>
+        <div class="about-tabs-header" role="tablist">
+          <button class="tab-btn active" data-tab="about" role="tab" aria-selected="true">About</button>
+          <button class="tab-btn" data-tab="search" role="tab" aria-selected="false">Search</button>
+          <button class="tab-btn" data-tab="shortcuts" role="tab" aria-selected="false">Shortcuts</button>
+        </div>
 
         <div class="about-tabs-body">
           <div class="tab-pane" data-pane="about">
@@ -79,6 +78,11 @@ document.body.appendChild(aboutModalOverlay);
 function setActiveTab(tabName) {
   const headerButtons = aboutContent.querySelectorAll('.tab-btn');
   const panes = aboutContent.querySelectorAll('.tab-pane');
+
+  // IMPORTANT: Capture current height BEFORE changing content
+  const startHeight = aboutModal.offsetHeight;
+
+  // Now switch the tab content
   headerButtons.forEach((btn) => {
     const isActive = btn.dataset.tab === tabName;
     btn.classList.toggle('active', isActive);
@@ -87,70 +91,64 @@ function setActiveTab(tabName) {
   panes.forEach((pane) => {
     pane.hidden = pane.dataset.pane !== tabName;
   });
+
   // Sync a class on the container so CSS can style the tab pane to match the active tab
   aboutContent.classList.remove('active-tab-about', 'active-tab-search', 'active-tab-shortcuts');
   aboutContent.classList.add('active-tab-' + tabName);
+
   // If switching to shortcuts, ensure they are processed into keycaps
   if (tabName === 'shortcuts') processShortcuts();
+
   // Animate modal height when content changes while modal is visible
-  animateAboutModalHeight();
+  animateAboutModalHeight(startHeight);
 }
 
 /**
- * Animate the `aboutModal` height from current value to the new content height.
+ * Animate the `aboutModal` height from startHeight to the new content height.
  * Works only when modal is visible (class `show` on overlay).
+ * @param {number} startHeight - The height before content changed
  */
-function animateAboutModalHeight() {
-  if (!aboutModal || !aboutModalOverlay.classList.contains('show')) return;
-
-  // Temporarily disable transitions to measure heights reliably
-  const previousTransition = aboutModal.style.transition || '';
-  aboutModal.style.transition = 'none';
-
-  // Measure start height
-  const startRect = aboutModal.getBoundingClientRect();
-  const startHeight = startRect.height;
-
-  // Ensure explicit start height is set
-  aboutModal.style.height = startHeight + 'px';
-  // Force reflow
-  // eslint-disable-next-line no-unused-expressions
-  aboutModal.offsetHeight;
-
-  // Measure target height by letting it size to auto (no transition active)
-  aboutModal.style.height = 'auto';
-  const targetHeight = aboutModal.getBoundingClientRect().height;
-
-  // If heights are equal, cleanup and exit
-  if (Math.abs(targetHeight - startHeight) < 1) {
-    aboutModal.style.height = 'auto';
-    aboutModal.style.transition = previousTransition;
+function animateAboutModalHeight(startHeight) {
+  if (!aboutModal || !aboutModalOverlay.classList.contains('show')) {
     return;
   }
 
-  // Revert to start height (still with no transition), force reflow
+  // Skip animation if this is the initial open (startHeight would be very small or zero)
+  if (startHeight < 50) {
+    return;
+  }
+
+  // Remove any previous transition
+  aboutModal.style.transition = 'none';
+
+  // Measure natural height (content has already changed)
+  aboutModal.style.height = 'auto';
+  const newHeight = aboutModal.offsetHeight;
+
+  // If heights are equal, no animation needed
+  if (Math.abs(newHeight - startHeight) < 1) {
+    return;
+  }
+
+  // Set to start height (before content changed)
   aboutModal.style.height = startHeight + 'px';
+
+  // Force browser to apply the height
   // eslint-disable-next-line no-unused-expressions
   aboutModal.offsetHeight;
 
-  // Restore/override transition and animate to target height in next frame
-  const animTiming = 'height 240ms cubic-bezier(.2,.9,.2,1)';
-  requestAnimationFrame(() => {
-    aboutModal.style.transition = animTiming;
-    // Set target height (may be larger or smaller)
-    aboutModal.style.height = targetHeight + 'px';
-  });
+  // Now enable the transition and animate to new height
+  aboutModal.style.transition = 'height 350ms cubic-bezier(0.2, 0.9, 0.2, 1)';
+  aboutModal.style.height = newHeight + 'px';
 
-  const onEnd = (ev) => {
-    if (ev.propertyName !== 'height') return;
-    // After animation, let the modal size naturally
+  // Clean up after animation completes
+  const handleTransitionEnd = () => {
     aboutModal.style.height = 'auto';
-    // restore previous transition if any
-    aboutModal.style.transition = previousTransition;
-    aboutModal.removeEventListener('transitionend', onEnd);
+    aboutModal.style.transition = 'none';
+    aboutModal.removeEventListener('transitionend', handleTransitionEnd);
   };
 
-  aboutModal.addEventListener('transitionend', onEnd);
+  aboutModal.addEventListener('transitionend', handleTransitionEnd, { once: true });
 }
 
 // Process rendered shortcuts HTML: convert inline <code> elements into styled key badges
@@ -284,18 +282,28 @@ function escapeHtml(text) {
 }
 
 export function openAboutModal(activeTab = 'about') {
+  // Pause background grid updates to prevent jank during modal animations
+  setAboutModalOpen(true);
+
   // Show overlay first so height animations can measure visible dimensions
   aboutModalOverlay.classList.add('show');
   aboutModalOverlay.setAttribute('aria-hidden', 'false');
-  // Now set the active tab (this will call processShortcuts and animate height)
-  setActiveTab(activeTab);
-  // small timeout to ensure transitions can run; focus OK button
-  setTimeout(() => okButton.focus(), 60);
+
+  // Defer setActiveTab to next frame so it doesn't block the initial CSS transition
+  requestAnimationFrame(() => {
+    setActiveTab(activeTab);
+    // Focus OK button after tab is set
+    setTimeout(() => okButton.focus(), 60);
+  });
 }
 
 export function closeAboutModal() {
   aboutModalOverlay.classList.remove('show');
   aboutModalOverlay.setAttribute('aria-hidden', 'true');
+
+  // Resume background grid updates (will process pending updates if any)
+  setAboutModalOpen(false);
+
   if (aboutButton) aboutButton.focus();
 }
 

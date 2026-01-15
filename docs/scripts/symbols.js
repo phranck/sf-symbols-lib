@@ -177,6 +177,19 @@ export function renderSymbols() {
   totalCountEl.textContent = entries.length.toLocaleString();
 }
 
+// Flag to track if About modal is open (set by modals.js)
+let isAboutModalOpen = false;
+let pendingUpdate = false;
+
+export function setAboutModalOpen(isOpen) {
+  isAboutModalOpen = isOpen;
+  // If modal just closed and there's a pending update, run it now
+  if (!isOpen && pendingUpdate) {
+    pendingUpdate = false;
+    requestAnimationFrame(() => renderSymbols());
+  }
+}
+
 // Update data when variant changes
 export function updateData() {
   const variant = variantSelect.value;
@@ -188,6 +201,12 @@ export function updateData() {
   // Same for currentViewBox
   Object.keys(currentViewBox).forEach(key => delete currentViewBox[key]);
   Object.assign(currentViewBox, allViewBoxData[variant] || {});
+
+  // Skip heavy rendering if About modal is open (defer until closed)
+  if (isAboutModalOpen) {
+    pendingUpdate = true;
+    return;
+  }
 
   // Defer heavy rendering to the next animation frame to keep UI responsive
   requestAnimationFrame(() => renderSymbols());

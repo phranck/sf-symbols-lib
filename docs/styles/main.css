@@ -378,8 +378,13 @@ body {
   box-sizing: border-box;
   transform: translateY(8px) scale(0.99);
   opacity: 0;
-  transition: transform 260ms cubic-bezier(.2,.9,.2,1), opacity 220ms ease, height 220ms cubic-bezier(.2,.9,.2,1);
+  transition: transform 260ms cubic-bezier(.2,.9,.2,1), opacity 220ms ease;
   overflow: hidden; /* required for smooth height animation */
+  height: auto;
+}
+
+.about-modal.animating {
+  transition: transform 260ms cubic-bezier(.2,.9,.2,1), opacity 220ms ease, height 240ms cubic-bezier(.2,.9,.2,1);
 }
 
 .modal-overlay.show .about-modal {
@@ -486,51 +491,53 @@ body {
 /* About modal: tab styles and keyboard navigation layout */
 .about-tabs-header {
   display: flex;
-  gap: 8px;
+  gap: 0;
   justify-content: center;
-  margin-bottom: 0; /* keep divider visible */
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--border-subtle-light); /* divider line under tabs */
+  flex-wrap: wrap;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: 1px solid var(--border-subtle-light);
 }
-/* Use Bootstrap-like nav-link visuals: inactive links transparent, active appears connected to pane */
-.nav-link,
+
 .tab-btn {
   background: transparent;
-  border: 1px solid transparent;
-  padding: 8px 12px;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 10px 14px;
   cursor: pointer;
   color: inherit;
-  margin-bottom: -1px; /* pull above the header divider so active looks connected */
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 150ms ease;
+  position: relative;
+  margin: 0;
+  border-radius: 0;
 }
-.nav-link:hover {
-  text-decoration: none;
+
+.tab-btn:hover {
+  background: rgba(0,0,0,0.03);
 }
-.nav-link.active,
+
 .tab-btn.active {
-  /* Active background should match modal content (appear continuous) */
-  background: rgba(255,255,255,0.98);
-  border-color: var(--border-subtle-light);
-  border-bottom-color: transparent; /* open at bottom to connect to pane */
-  box-shadow: none;
+  border-bottom-color: #3b82f6;
+  color: #3b82f6;
 }
-.dark-mode .nav-link.active,
-.dark-mode .tab-btn.active {
-  background: rgba(18,20,22,0.98);
-  border-color: rgba(255,255,255,0.04);
-  border-bottom-color: transparent;
-}
+
 .dark-mode .tab-btn {
-  border-color: var(--border-subtle-darker);
+  color: #e6eef8;
 }
+
+.dark-mode .tab-btn:hover {
+  background: rgba(255,255,255,0.03);
+}
+
 .dark-mode .tab-btn.active {
-  background: rgba(59,130,246,0.08);
+  border-bottom-color: #60a5fa;
+  color: #60a5fa;
 }
-.about-tabs-body { padding: 0 6px; }
-.tab-pane { animation: fadeIn 180ms ease both; }
+
+.about-tabs-body { padding: 0; }
+.tab-pane { animation: fadeIn 180ms ease both; padding-top: 12px; }
 
 @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -546,46 +553,36 @@ body {
 
 /* Modal header / content / footer spacing */
 .about-modal-header {
-  padding: 28px 16px 10px 16px;
+  padding: 24px 20px 16px 20px;
   text-align: center;
-  /* Slightly darker header to separate from content */
-  background: rgba(0,0,0,0.03);
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
 }
-.dark-mode .about-modal-header { background: rgba(255,255,255,0.02); }
+
+.about-modal-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
 .about-content {
-  padding: 14px 16px;
+  padding: 16px 32px;
 }
+
 .about-modal-footer {
-  padding: 12px 16px 24px 16px;
-  background: rgba(0,0,0,0.03);
+  padding: 16px 20px 24px 20px;
+  display: flex;
+  justify-content: center;
 }
+
+.dark-mode .about-modal-header { }
+.dark-mode .about-modal-footer { }
 
 /* Make active tab and content appear as a single connected unit */
 .about-content .about-tabs-header { display: flex; justify-content: center; }
-.tab-btn { border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; }
-.about-content .tab-pane { padding: 12px; border-radius: 8px; margin-top: 12px; }
-
-.about-content.active-tab-about .tab-btn.active,
-.about-content.active-tab-search .tab-btn.active,
-.about-content.active-tab-shortcuts .tab-btn.active {
-  background: rgba(59,130,246,0.12);
-  border-color: var(--focus-ring-border);
-}
-
-/* Keep tab panes with the same background as the modal (no tint) */
 .about-content .tab-pane { background: transparent; }
 
 .dark-mode .about-modal-header,
 .dark-mode .about-modal-footer { border: none; }
-.dark-mode .about-content.active-tab-about .tab-btn.active,
-.dark-mode .about-content.active-tab-search .tab-btn.active,
-.dark-mode .about-content.active-tab-shortcuts .tab-btn.active {
-  background: rgba(59,130,246,0.06);
-  border-color: rgba(59,130,246,0.18);
-}
-.dark-mode .about-content .tab-pane { background: transparent; }
 
 /* Shortcuts layout */
 .shortcut-row { display: flex; align-items: center; gap: 20px; padding: 8px 0; flex-wrap: nowrap; }
@@ -595,8 +592,8 @@ body {
   padding-right: 16px;
 }
 .shortcut-desc { flex: 1 1 75%; color: inherit; }
-.kbd-key { display: inline-flex; align-items: center; justify-content: center; min-width: 36px; height: 30px; padding: 4px 8px; border-radius: 8px; background: var(--codebox-background); border: 1px solid var(--border-subtle-light); font-weight: 700; box-shadow: 0 3px 0 rgba(0,0,0,0.12); }
-.dark-mode .kbd-key { background: var(--codebox-background); border-color: var(--border-subtle-darker); box-shadow: 0 3px 0 rgba(0,0,0,0.2); }
+.kbd-key { display: inline-flex; align-items: center; justify-content: center; min-width: 36px; height: 30px; padding: 4px 8px; border-radius: 8px; background: var(--codebox-background); border: 1px solid var(--border-subtle-light); font-weight: 700; }
+.dark-mode .kbd-key { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.12); }
 
 
 /* Bottom drawer */
