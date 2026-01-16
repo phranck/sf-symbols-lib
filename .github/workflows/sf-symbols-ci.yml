@@ -120,12 +120,13 @@ jobs:
       with:
         node-version: '22'
         registry-url: 'https://registry.npmjs.org'
+        always-auth: true
     - run: npm ci
     - uses: actions/download-artifact@v4
       with:
         name: package-dist
         path: dist
     - run: npm cache clean --force
-    - run: npm publish --provenance
+    - run: npm publish --provenance --access public
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
