@@ -775,6 +775,14 @@ body.drawer-open .card {
   color: var(--symbol-color);
 }
 
+/* Multicolor/Palette: invert in light mode to match SF Symbols App */
+:root:not(.soft-dark) .card[data-variant="multicolor"] svg,
+:root:not(.soft-dark) .card[data-variant="palette"] svg,
+:root:not(.soft-dark) .drawer-preview-box[data-variant="multicolor"] svg,
+:root:not(.soft-dark) .drawer-preview-box[data-variant="palette"] svg {
+  filter: invert(1);
+}
+
 .card-info-icon {
   position: absolute;
   bottom: 12px;

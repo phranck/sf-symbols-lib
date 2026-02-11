@@ -78,6 +78,9 @@ export function renderSymbols() {
     const packageNameForCard = (symbolNames || {})[key] || kebabToPascalCase(key);
     card.title = packageNameForCard;
     card.dataset.sfKey = key;
+    // Mark variant for CSS styling
+    const currentVariant = variantSelect ? variantSelect.value : 'hierarchical';
+    card.dataset.variant = currentVariant;
 
     const vb = currentViewBox[key] || '0 0 24 24';
     // Always set fill="currentColor" - needed for embedded currentColor values to resolve
@@ -294,6 +297,9 @@ export function renderDrawerContent() {
   // 40px margin around the SF Symbol inside the preview box
   previewBox.style.padding = '40px';
   previewBox.style.boxSizing = 'border-box';
+  // Mark variant for CSS styling
+  const currentVariant = variantSelect ? variantSelect.value : 'hierarchical';
+  previewBox.dataset.variant = currentVariant;
 
   const svgKey = state.selectedSymbolKey;
   if (currentData[svgKey]) {
