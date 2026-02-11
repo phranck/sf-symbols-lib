@@ -6,5 +6,7 @@
  */
 export enum SFSymbolVariant {
   hierarchical = 'hierarchical',
-  monochrome = 'monochrome'
+  monochrome = 'monochrome',
+  palette = 'palette',
+  multicolor = 'multicolor'
 }

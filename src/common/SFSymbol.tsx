@@ -7,6 +7,8 @@ import { ReactElement } from 'react';
 
 import { sfSymbolsData as hierarchicalData, sfSymbolsViewBox as hierarchicalViewBox } from '@/hierarchical/data';
 import { sfSymbolsData as monochromeData, sfSymbolsViewBox as monochromeViewBox } from '@/monochrome/data';
+import { sfSymbolsData as paletteData, sfSymbolsViewBox as paletteViewBox } from '@/palette/data';
+import { sfSymbolsData as multicolorData, sfSymbolsViewBox as multicolorViewBox } from '@/multicolor/data';
 
 import { SFSymbolSize } from '@/types/sizes';
 import { SFSymbolVariant } from '@/types/symbol-types';
@@ -52,6 +54,14 @@ export function SFSymbol({
         resolvedSvg = hierarchicalData[name as keyof typeof hierarchicalData];
         resolvedViewBox = resolvedViewBox || hierarchicalViewBox[name as keyof typeof hierarchicalViewBox];
         break;
+      case SFSymbolVariant.palette:
+        resolvedSvg = paletteData[name as keyof typeof paletteData];
+        resolvedViewBox = resolvedViewBox || paletteViewBox[name as keyof typeof paletteViewBox];
+        break;
+      case SFSymbolVariant.multicolor:
+        resolvedSvg = multicolorData[name as keyof typeof multicolorData];
+        resolvedViewBox = resolvedViewBox || multicolorViewBox[name as keyof typeof multicolorViewBox];
+        break;
       case SFSymbolVariant.monochrome:
       default:
         resolvedSvg = monochromeData[name as keyof typeof monochromeData];
@@ -69,7 +79,9 @@ export function SFSymbol({
   const recolorRegex = /fill=(['"])(?:#(?:fff|ffffff)|white)\1/gi;
   const processedSvg = color ? resolvedSvg.replace(recolorRegex, `fill="${color}"`) : resolvedSvg;
 
-  const shouldForceFill = !color;
+  // Only force currentColor for hierarchical/monochrome
+  // For palette/multicolor, preserve embedded colors
+  const shouldForceFill = !color && (variant === SFSymbolVariant.hierarchical || variant === SFSymbolVariant.monochrome);
   const svgFillAttr = shouldForceFill ? 'currentColor' : undefined;
 
   return (
