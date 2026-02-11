@@ -5,15 +5,16 @@
 
 # SF Symbols Library
 
-A React component library providing **7,007 SF Symbols** as type-safe React components. Supports multiple rendering variants (hierarchical, monochrome) with optimized bundle sizes through subpath imports.
+A React component library providing **7,007 Apple SF Symbols** as tree-shakeable React components. Import only the icons you need for optimal bundle sizes.
 
 ## Features
 
-- **7,007 Symbols** - Complete SF Symbols collection
+- **7,007 Symbols** - Complete SF Symbols 7.3 collection
+- **Tree-Shakeable** - Each icon is a standalone component (~1.5 KB each)
+- **4 Variants** - Hierarchical, Monochrome, Palette, Multicolor
 - **Type-Safe** - Full TypeScript support with autocomplete
-- **Tree-Shakeable** - Import only what you need
-- **Multiple Variants** - Hierarchical, Monochrome
-- **Optimized Bundles** - Separate builds per variant
+- **Lightweight** - Only imported icons end up in your bundle
+- **React 18/19** - Works with both versions
 
 ## Live Demo
 
@@ -28,31 +29,33 @@ npm install sf-symbols-lib
 ## Quick Start
 
 ```tsx
-import { SFSymbol, SFCheckmark } from 'sf-symbols-lib/hierarchical';
+import { SFCheckmarkCircleFill, SFPhone } from 'sf-symbols-lib/hierarchical';
 
 function App() {
-  return <SFSymbol name={SFCheckmark} size={24} />;
+  return (
+    <div>
+      <SFCheckmarkCircleFill size="lg" />
+      <SFPhone size="md" className="icon" />
+    </div>
+  );
 }
 ```
+
+Each icon is imported directly as a React component. Your bundler only includes the icons you actually use.
 
 ## Usage
 
 ### Basic Usage
 
 ```tsx
-import { SFSymbol, SFCheckmark, SFCheckmarkCircleFill, SFTrash } from 'sf-symbols-lib/hierarchical';
+import { SFCheckmark, SFCheckmarkCircleFill, SFTrash } from 'sf-symbols-lib/hierarchical';
 
 function MyComponent() {
   return (
     <div>
-      {/* Basic usage */}
-      <SFSymbol name={SFCheckmark} />
-
-      {/* With size */}
-      <SFSymbol name={SFCheckmarkCircleFill} size={32} />
-
-      {/* With custom styling */}
-      <SFSymbol name={SFTrash} className="text-red-500" />
+      <SFCheckmark />
+      <SFCheckmarkCircleFill size="lg" />
+      <SFTrash className="text-red-500" />
     </div>
   );
 }
@@ -63,39 +66,43 @@ function MyComponent() {
 Choose the variant that matches your design needs:
 
 ```tsx
-// Hierarchical (depth through layering)
-import { SFSymbol, Folder } from 'sf-symbols-lib/hierarchical';
+// Hierarchical - depth through layered opacity
+import { SFFolderFill } from 'sf-symbols-lib/hierarchical';
 
-// Monochrome (single color, clean)
-import { SFSymbol, Folder } from 'sf-symbols-lib/monochrome';
+// Monochrome - single color, clean look
+import { SFFolderFill } from 'sf-symbols-lib/monochrome';
+
+// Palette - multiple distinct colors
+import { SFFolderFill } from 'sf-symbols-lib/palette';
+
+// Multicolor - original Apple-designed colors
+import { SFFolderFill } from 'sf-symbols-lib/multicolor';
 ```
 
-### Default Import
+### Direct File Imports
 
-If you don't specify a subpath, you get `hierarchical`:
+For faster build resolution in large projects, you can bypass the barrel export:
 
 ```tsx
-// These are equivalent:
-import { SFSymbol, SFCheckmark } from 'sf-symbols-lib';
-import { SFSymbol, SFCheckmark } from 'sf-symbols-lib/hierarchical';
+import { SFCheckmarkCircleFill } from 'sf-symbols-lib/hierarchical/icons/SFCheckmarkCircleFill';
 ```
 
-### Styling Examples
+### Styling
 
 ```tsx
-import { SFSymbol, Heart, HeartFill, Star } from 'sf-symbols-lib/hierarchical';
+import { SFHeartFill, SFStar } from 'sf-symbols-lib/hierarchical';
 
 function StyledSymbols() {
   return (
     <div>
-      {/* Color via CSS */}
-      <SFSymbol name={Heart} className="text-red-500" />
+      {/* Color via CSS class */}
+      <SFHeartFill className="text-red-500" />
 
       {/* Inline style */}
-      <SFSymbol name={HeartFill} style={{ color: '#ff0000' }} />
+      <SFHeartFill style={{ color: '#ff0000' }} />
 
-      {/* With CSS variable */}
-      <SFSymbol name={Star} style={{ color: 'var(--accent-color)' }} />
+      {/* CSS variable */}
+      <SFStar style={{ color: 'var(--accent-color)' }} />
     </div>
   );
 }
@@ -103,22 +110,28 @@ function StyledSymbols() {
 
 ### Size Presets
 
-Available size presets: `xs`, `sm`, `md`, `lg`, `xl`
+| Preset | Pixels |
+|--------|--------|
+| `xs`   | 16px   |
+| `sm`   | 20px   |
+| `md`   | 24px   |
+| `lg`   | 32px   |
+| `xl`   | 48px   |
 
 ```tsx
-import { SFSymbol, Bell } from 'sf-symbols-lib/hierarchical';
+import { SFBellFill } from 'sf-symbols-lib/hierarchical';
 
 function SizeExamples() {
   return (
     <div>
-      <SFSymbol name={Bell} size="xs" />  {/* 12px */}
-      <SFSymbol name={Bell} size="sm" />  {/* 16px */}
-      <SFSymbol name={Bell} size="md" />  {/* 20px */}
-      <SFSymbol name={Bell} size="lg" />  {/* 24px */}
-      <SFSymbol name={Bell} size="xl" />  {/* 32px */}
+      <SFBellFill size="xs" />
+      <SFBellFill size="sm" />
+      <SFBellFill size="md" />
+      <SFBellFill size="lg" />
+      <SFBellFill size="xl" />
 
       {/* Or use exact pixels */}
-      <SFSymbol name={Bell} size={48} />
+      <SFBellFill size={48} />
     </div>
   );
 }
@@ -127,25 +140,22 @@ function SizeExamples() {
 ### Using with Buttons
 
 ```tsx
-import { SFSymbol, Plus, Trash, PencilLine } from 'sf-symbols-lib/hierarchical';
+import { SFPlus, SFTrash, SFPencilLine } from 'sf-symbols-lib/hierarchical';
 
 function ButtonExamples() {
   return (
     <div>
-      {/* Icon button */}
       <button className="icon-button">
-        <SFSymbol name={Plus} size={20} />
+        <SFPlus size="sm" />
       </button>
 
-      {/* Button with icon and text */}
       <button className="flex items-center gap-2">
-        <SFSymbol name={PencilLine} size={16} />
+        <SFPencilLine size="xs" />
         <span>Edit</span>
       </button>
 
-      {/* Danger button */}
       <button className="flex items-center gap-2 text-red-500">
-        <SFSymbol name={Trash} size={16} />
+        <SFTrash size="xs" />
         <span>Delete</span>
       </button>
     </div>
@@ -153,156 +163,91 @@ function ButtonExamples() {
 }
 ```
 
-### Using with Lists
+### Dynamic Icon Selection
 
 ```tsx
-import { SFSymbol, SFCheckmarkCircleFill, SFCircle, SFExclamationmarkTriangleFill } from 'sf-symbols-lib/hierarchical';
-
-type Status = 'done' | 'pending' | 'warning';
-
-function StatusList({ items }: { items: { text: string; status: Status }[] }) {
-  const statusIcons = {
-    done: { symbol: SFCheckmarkCircleFill, className: 'text-green-500' },
-    pending: { symbol: SFCircle, className: 'text-gray-400' },
-    warning: { symbol: SFExclamationmarkTriangleFill, className: 'text-yellow-500' },
-  };
-
-  return (
-    <ul>
-      {items.map((item, i) => {
-        const icon = statusIcons[item.status];
-        return (
-          <li key={i} className="flex items-center gap-2">
-            <SFSymbol name={icon.symbol} size={16} className={icon.className} />
-            <span>{item.text}</span>
-          </li>
-        );
-      })}
-    </ul>
-  );
-}
-```
-
-### Dynamic Symbol Selection
-
-```tsx
-import { SFSymbol, SFSymbolName, Folder, FolderFill } from 'sf-symbols-lib/hierarchical';
+import { SFFolder, SFFolderFill } from 'sf-symbols-lib/hierarchical';
 
 function DynamicIcon({ isOpen }: { isOpen: boolean }) {
-  return (
-    <SFSymbol
-      name={isOpen ? FolderFill : Folder}
-      size={24}
-    />
-  );
+  const Icon = isOpen ? SFFolderFill : SFFolder;
+  return <Icon size="lg" />;
 }
 ```
-
-### Using the Enum Directly
-
-For cases where you need to work with symbol names programmatically:
-
-```tsx
-import { SFSymbol, SFSymbolName, getAvailableSymbols, isAvailableSymbol } from 'sf-symbols-lib/hierarchical';
-
-// Using enum
-<SFSymbol name={SFSymbolName.SFCheckmark} />
-
-// Check if a symbol exists
-if (isAvailableSymbol('checkmark.circle.fill')) {
-  // Symbol exists
-}
-
-// Get all available symbols
-const allSymbols = getAvailableSymbols();
-console.log(`Total symbols: ${allSymbols.length}`); // 7007
-```
-
-## Project Configuration
-
-### Path Alias (Recommended)
-
-For shorter imports throughout your project, configure a path alias:
-
-**tsconfig.json:**
-```json
-{
-  "compilerOptions": {
-    "paths": {
-      "sf-symbols": ["node_modules/sf-symbols-lib/dist/hierarchical"]
-    }
-  }
-}
-```
-
-**vite.config.ts (if using Vite):**
-```ts
-export default defineConfig({
-  resolve: {
-    alias: {
-      'sf-symbols': 'sf-symbols-lib/hierarchical'
-    }
-  }
-});
-```
-
-Then use it:
-```tsx
-import { SFSymbol, SFCheckmark } from 'sf-symbols';
-```
-
-### Barrel File Alternative
-
-Create a local re-export file:
-
-**src/lib/sf-symbols.ts:**
-```tsx
-export * from 'sf-symbols-lib/hierarchical';
-```
-
-**Usage:**
-```tsx
-import { SFSymbol, SFCheckmark } from '@/lib/sf-symbols';
-```
-
-This approach makes it easy to switch variants later by changing just one file.
 
 ## Props Reference
 
+All icon components accept `SFIconProps`:
+
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `name` | `string` | required | Symbol name constant |
-| `size` | `number \| string` | `24` | Size in pixels or preset (`xs`, `sm`, `md`, `lg`, `xl`) |
-| `className` | `string` | `''` | CSS class names |
-| `strokeWidth` | `number \| string` | `1` | SVG stroke width |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number` | `'md'` | Size preset or exact pixels |
+| `className` | `string` | - | CSS class names |
 | `style` | `CSSProperties` | - | Inline styles |
 | `...rest` | `SVGAttributes` | - | Any valid SVG attribute |
 
 ## Symbol Naming
 
-Symbols are named using PascalCase derived from their SF Symbol names:
+All component names are PascalCase with an `SF` prefix:
 
-| SF Symbol Name | Constant |
-|----------------|----------|
+| SF Symbol Name | Component |
+|----------------|-----------|
 | `checkmark` | `SFCheckmark` |
 | `checkmark.circle` | `SFCheckmarkCircle` |
 | `checkmark.circle.fill` | `SFCheckmarkCircleFill` |
 | `square.and.arrow.up` | `SFSquareAndArrowUp` |
-| `0.circle.fill` | `SFN0CircleFill` |
-| `42.square` | `SFN42Square` |
-
-**Note:** All constants are prefixed with `SF`. Symbols starting with numbers are additionally prefixed with `N`.
+| `0.circle.fill` | `SF00CircleFill` |
 
 ## Bundle Size
 
-Each variant is a separate bundle:
+The tree-shakeable architecture keeps your bundle minimal:
 
-| Import Path | Size (gzip) |
-|-------------|-------------|
-| `sf-symbols-lib/hierarchical` | ~3.1 MB |
-| `sf-symbols-lib/monochrome` | ~3.1 MB |
+| Scenario | Bundle Size |
+|----------|-------------|
+| 1 icon | ~1.5 KB |
+| 5 icons | ~7.5 KB |
+| 20 icons | ~30 KB |
+| Full barrel import (all 7,007) | ~3.1 MB gzip |
 
-Import only the variant you need to minimize bundle size.
+Only the icons you import are included in your production bundle.
+
+## Migration from v1.x
+
+Version 2.0 introduces tree-shakeable icon components. The legacy API remains available through a compatibility layer but is deprecated and will be removed in v3.0.
+
+### Before (v1.x)
+
+```tsx
+import { SFSymbol, SFSymbolName } from 'sf-symbols-lib';
+
+<SFSymbol name={SFSymbolName.SFCheckmarkCircleFill} size="lg" />
+```
+
+This imports all 7,007 icons (~15 MB per variant) regardless of how many you use.
+
+### After (v2.0)
+
+```tsx
+import { SFCheckmarkCircleFill } from 'sf-symbols-lib/hierarchical';
+
+<SFCheckmarkCircleFill size="lg" />
+```
+
+Only the imported icon (~1.5 KB) is included in your bundle.
+
+### Migration Steps
+
+1. **Replace imports** - Change from enum-based to direct component imports
+2. **Remove `name` prop** - Each icon is now its own component
+3. **Update `size` prop** - Uses string presets (`'xs'`, `'sm'`, `'md'`, `'lg'`, `'xl'`) or numbers
+
+The old API still works in v2.0 through the compat layer:
+
+```tsx
+// Still works, but shows deprecation warning in development
+import { SFSymbol, SFSymbolName } from 'sf-symbols-lib/compat';
+```
+
+For a detailed migration guide, see [MIGRATION.md](./MIGRATION.md).
 
 ## Development
 
@@ -317,7 +262,7 @@ Import only the variant you need to minimize bundle size.
 # Install dependencies
 npm install
 
-# Generate symbols from SVGs
+# Generate icon components from SVGs
 npm run generate
 
 # Build the library
@@ -333,40 +278,40 @@ npm run lint
 npm run check
 ```
 
-### Adding New Symbols
+### Project Structure
 
-1. Add SVG files to the appropriate directory:
-   ```
-   src/components/svgs/{variant}/{color}/*.svg
-   ```
-
-   Example structure:
-   ```
-   src/components/svgs/
-   ├── hierarchical/
-   │   └── your-symbol.svg
-   ├── monochrome/
-   │   └── your-symbol.svg
-   ```
-
-2. Run the generator:
-   ```bash
-   npm run generate
-   ```
-
-3. Build the library:
-   ```bash
-   npm run build
-   ```
+```
+sf-symbols-lib/
+├── .svgs/                    # Source SVGs (gitignored)
+│   ├── hierarchical/         # 7,007 SVG files
+│   ├── monochrome/
+│   ├── palette/
+│   └── multicolor/
+├── src/
+│   ├── common/
+│   │   ├── SFIcon.tsx        # Shared SVG renderer
+│   │   └── types.ts          # SFIconProps, size presets
+│   ├── hierarchical/
+│   │   ├── index.tsx          # Barrel re-export (generated)
+│   │   └── icons/             # 7,007 components (generated)
+│   ├── monochrome/            # Same structure
+│   ├── palette/               # Same structure
+│   ├── multicolor/            # Same structure
+│   └── compat/                # Legacy API (deprecated)
+├── scripts/
+│   └── generate-sfsymbols.ts # Icon component generator
+└── dist/                      # Build output
+```
 
 ### Generated Files
 
-The generator creates:
+The generator (`npm run generate`) creates:
 
-- `src/components/sf-symbol-name.ts` - Enum and constants for all symbol names
-- `src/{variant}/data.ts` - SVG content for each variant
-- `src/{variant}/index.tsx` - Entry point with SFSymbol component
-- `src/index.ts` - Main entry (re-exports hierarchical)
+- `src/{variant}/icons/*.tsx` - Individual icon components (28,028 total)
+- `src/{variant}/index.tsx` - Barrel re-exports per variant
+- `src/compat/SFSymbol.tsx` - Legacy renderer with deprecation warning
+- `src/compat/{variant}/data.ts` - All icons in one object (legacy)
+- `src/components/sf-symbol-name.ts` - Symbol name enum
 
 ## Contributing
 
