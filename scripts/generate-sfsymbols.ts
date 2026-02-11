@@ -40,94 +40,429 @@ interface SvgMetadata {
 }
 
 /**
- * Parse metadata from SVG file
+ * Parsed symbol data for a single icon
  */
-function parseMetadata(svgPath: string): SvgMetadata | null {
-  const content = fs.readFileSync(svgPath, 'utf-8');
-  
-  // Extract metadata block
+interface SymbolEntry {
+  content: string;
+  viewBox: string;
+  metadata: SvgMetadata | null;
+}
+
+/**
+ * Parse metadata from SVG file content
+ */
+function parseMetadataFromContent(content: string): SvgMetadata | null {
   const metadataMatch = content.match(/<metadata>([\s\S]*?)<\/metadata>/);
-  if (!metadataMatch) {
-    return null;
-  }
+  if (!metadataMatch) return null;
 
-  const metadataBlock = metadataMatch[1];
-
-  // Extract fields
-  const appleNameMatch = metadataBlock.match(/<name type="apple">([^<]*)<\/name>/);
-  const libNameMatch = metadataBlock.match(/<name type="lib">([^<]*)<\/name>/);
-  const restrictedMatch = metadataBlock.match(/<restricted>([^<]*)<\/restricted>/);
-  const renderingModeMatch = metadataBlock.match(/<renderingMode>([^<]*)<\/renderingMode>/);
-  const sfSymbolsVersionMatch = metadataBlock.match(/<sfSymbolsVersion>([^<]*)<\/sfSymbolsVersion>/);
-  
-  // Extract categories
+  const block = metadataMatch[1];
   const categories: string[] = [];
-  const categoriesMatch = metadataBlock.match(/<categories>([\s\S]*?)<\/categories>/);
+  const categoriesMatch = block.match(/<categories>([\s\S]*?)<\/categories>/);
   if (categoriesMatch) {
-    const categoryMatches = categoriesMatch[1].matchAll(/<category>([^<]*)<\/category>/g);
-    for (const match of categoryMatches) {
+    for (const match of categoriesMatch[1].matchAll(/<category>([^<]*)<\/category>/g)) {
       categories.push(match[1]);
     }
   }
 
   return {
-    appleName: appleNameMatch ? appleNameMatch[1] : '',
-    libName: libNameMatch ? libNameMatch[1] : '',
-    restricted: restrictedMatch ? restrictedMatch[1] === 'true' : false,
-    renderingMode: renderingModeMatch ? renderingModeMatch[1] : '',
-    sfSymbolsVersion: sfSymbolsVersionMatch ? sfSymbolsVersionMatch[1] : '',
+    appleName: block.match(/<name type="apple">([^<]*)<\/name>/)?.[1] ?? '',
+    libName: block.match(/<name type="lib">([^<]*)<\/name>/)?.[1] ?? '',
+    restricted: block.match(/<restricted>([^<]*)<\/restricted>/)?.[1] === 'true',
+    renderingMode: block.match(/<renderingMode>([^<]*)<\/renderingMode>/)?.[1] ?? '',
+    sfSymbolsVersion: block.match(/<sfSymbolsVersion>([^<]*)<\/sfSymbolsVersion>/)?.[1] ?? '',
     categories,
   };
 }
 
 /**
- * Extract SVG viewBox from file
+ * Parse an SVG file and return all needed data in a single read
  */
-function extractViewBox(svgPath: string): string {
-  const content = fs.readFileSync(svgPath, 'utf-8');
-  const viewBoxMatch = content.match(/viewBox="([^"]*)"/);
-  return viewBoxMatch ? viewBoxMatch[1] : '0 0 24 24';
-}
+function parseSvgFile(svgPath: string, variant: string): SymbolEntry {
+  const raw = fs.readFileSync(svgPath, 'utf-8');
 
-/**
- * Extract SVG content from file, removing XML declaration and comments
- */
-function extractSvgContent(svgPath: string, renderingMode?: string): string {
-  let content = fs.readFileSync(svgPath, 'utf-8');
+  // Extract metadata before stripping
+  const metadata = parseMetadataFromContent(raw);
 
-  content = content.replace(/<\?xml[^?]*\?>/g, '').trim();
-  content = content.replace(/<!DOCTYPE[^>]*>/g, '').trim();
-  content = content.replace(/<!--[\s\S]*?-->/g, '').trim();
-  content = content.replace(/>\s+</g, '><');
-  
-  // Color replacement depends on rendering mode
-  if (renderingMode === 'hierarchical' || renderingMode === 'monochrome' || !renderingMode) {
-    // For hierarchical/monochrome: replace all colors with currentColor
+  // Extract viewBox
+  const viewBox = raw.match(/viewBox="([^"]*)"/)?.[1] ?? '0 0 24 24';
+
+  // Strip XML preamble, comments, metadata block, collapse whitespace
+  let content = raw
+    .replace(/<\?xml[^?]*\?>/g, '')
+    .replace(/<!DOCTYPE[^>]*>/g, '')
+    .replace(/<!--[\s\S]*?-->/g, '')
+    .replace(/<metadata>[\s\S]*?<\/metadata>/g, '')
+    .replace(/>\s+</g, '><')
+    .trim();
+
+  // Color replacement by variant
+  if (variant === 'hierarchical' || variant === 'monochrome') {
     content = content.replace(/fill="(white|black|#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})"/g, 'fill="currentColor"');
-  } else if (renderingMode === 'multicolor') {
-    // Multicolor mode: Preserve original colors from SVG
-    // Dark mode will use these as-is (white fills)
-    // Light mode will apply CSS-based color replacement
-    // Preserve white, black, and hex colors exactly as provided
-  } else if (renderingMode === 'palette') {
-    // Palette mode:
-    // - white → currentColor (theme-aware)
-    // - Preserve all other colors (hex, black)
+  } else if (variant === 'palette') {
     content = content.replace(/fill="white"/g, 'fill="currentColor"');
   }
+  // multicolor: preserve original colors
 
+  // Extract inner SVG content (between <svg> tags)
   const svgMatch = content.match(/<svg[^>]*>([\s\S]*?)<\/svg>/);
-  return svgMatch ? svgMatch[1].trim() : content;
+  const innerContent = svgMatch ? svgMatch[1].trim() : content;
+
+  return { content: innerContent, viewBox, metadata };
 }
 
 /**
  * Ensure directory exists
  */
 function ensureDir(dirPath: string): void {
-  if (!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath, { recursive: true });
-  }
+  fs.mkdirSync(dirPath, { recursive: true });
 }
+
+// ---------------------------------------------------------------------------
+// Individual icon file generation (tree-shakeable API)
+// ---------------------------------------------------------------------------
+
+/**
+ * Whether an icon variant uses currentColor fill on the root SVG element
+ */
+function shouldUseCurrentColorFill(variant: Variant): boolean {
+  return variant === 'hierarchical' || variant === 'monochrome';
+}
+
+/**
+ * Generate a single icon component file
+ */
+function generateIconComponentFile(
+  outputDir: string,
+  variant: Variant,
+  pascalName: string,
+  entry: SymbolEntry,
+): void {
+  const escapedContent = entry.content
+    .replace(/\\/g, '\\\\')
+    .replace(/'/g, "\\'")
+    .replace(/\n/g, ' ')
+    .replace(/\s+/g, ' ');
+
+  const currentColor = shouldUseCurrentColorFill(variant);
+
+  const fileContent = `/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: ${pascalName} (${variant})
+ */
+import { type ReactElement } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG = '${escapedContent}';
+const VB = '${entry.viewBox}';
+
+/** ${pascalName} icon component (${variant} variant) */
+export function ${pascalName}(props: SFIconProps): ReactElement {
+  return <SFIcon svgContent={SVG} viewBox={VB}${currentColor ? '' : ' currentColorFill={false}'} {...props} />;
+}
+
+export default ${pascalName};
+`;
+
+  const dirPath = path.join(outputDir, variant, 'icons');
+  ensureDir(dirPath);
+  fs.writeFileSync(path.join(dirPath, `${pascalName}.tsx`), fileContent);
+}
+
+/**
+ * Generate barrel export that re-exports all individual icon components
+ */
+function generateTreeShakeableBarrel(
+  outputDir: string,
+  variant: Variant,
+  pascalNames: string[],
+): void {
+  const sorted = [...pascalNames].sort();
+
+  const exports = sorted
+    .map(name => `export { ${name} } from '@/${variant}/icons/${name}';`)
+    .join('\n');
+
+  const fileContent = `/**
+ * ╔══════════════════════════════════════════════════════════╗
+ * ║       AUTO-GENERATED FILE - DO NOT EDIT MANUALLY         ║
+ * ╚══════════════════════════════════════════════════════════╝
+ *
+ * SF Symbols - ${variant} (Tree-Shakeable API)
+ *
+ * Usage:
+ *   import { SFCheckmarkCircleFill, SFPhone } from 'sf-symbols-lib/${variant}';
+ *   <SFCheckmarkCircleFill size="lg" />
+ *
+ * Each icon is a standalone React component. Only imported icons
+ * are included in the consumer bundle.
+ *
+ * Generated by: scripts/generate-sfsymbols.ts
+ */
+
+// Re-export shared types
+export type { SFIconProps, SFIconSize, SFIconSizePreset } from '@/common/types';
+
+// Re-export the generic renderer for advanced use cases
+export { SFIcon } from '@/common/SFIcon';
+
+// Individual icon components (${sorted.length} icons)
+${exports}
+`;
+
+  const dirPath = path.join(outputDir, variant);
+  ensureDir(dirPath);
+  fs.writeFileSync(path.join(dirPath, 'index.tsx'), fileContent);
+  console.log(`✅ CREATED: ${variant}/index.tsx (barrel, ${sorted.length} re-exports)`);
+}
+
+// ---------------------------------------------------------------------------
+// Compat layer generation (legacy SFSymbol API)
+// ---------------------------------------------------------------------------
+
+/**
+ * Generate the compat data.ts file (all icons in one object, like the old API)
+ */
+function generateCompatDataFile(
+  outputDir: string,
+  variant: Variant,
+  symbolData: Record<string, SymbolEntry>,
+): void {
+  const entries = Object.entries(symbolData)
+    .map(([pascalName, { content }]) => {
+      const escaped = content.replace(/'/g, "\\'").replace(/\n/g, ' ').replace(/\s+/g, ' ');
+      return `  [SFSymbolName.${pascalName}]: '${escaped}',`;
+    })
+    .join('\n');
+
+  const viewBoxEntries = Object.entries(symbolData)
+    .map(([pascalName, { viewBox }]) => `  [SFSymbolName.${pascalName}]: '${viewBox}',`)
+    .join('\n');
+
+  const metadataEntries = Object.entries(symbolData)
+    .map(([pascalName, { metadata }]) => {
+      if (!metadata) {
+        return `  [SFSymbolName.${pascalName}]: { restricted: false, renderingMode: '', sfSymbolsVersion: '', categories: [] },`;
+      }
+      const cats = metadata.categories.map(c => `'${c}'`).join(', ');
+      return `  [SFSymbolName.${pascalName}]: { restricted: ${metadata.restricted}, renderingMode: '${metadata.renderingMode}', sfSymbolsVersion: '${metadata.sfSymbolsVersion}', categories: [${cats}] },`;
+    })
+    .join('\n');
+
+  const fileContent = `/**
+ * ╔══════════════════════════════════════════════════════════╗
+ * ║       AUTO-GENERATED FILE - DO NOT EDIT MANUALLY         ║
+ * ╚══════════════════════════════════════════════════════════╝
+ *
+ * SF Symbols Data - ${variant} (Compat Layer)
+ * Generated by: scripts/generate-sfsymbols.ts
+ */
+
+import { SFSymbolName } from '@/components/sf-symbol-name';
+
+export const sfSymbolsData: Record<SFSymbolName, string> = {
+${entries}
+};
+
+export const sfSymbolsViewBox: Record<SFSymbolName, string> = {
+${viewBoxEntries}
+};
+
+export interface SFSymbolMetadata {
+  restricted: boolean;
+  renderingMode: string;
+  sfSymbolsVersion: string;
+  categories: string[];
+}
+
+export const sfSymbolsMetadata: Record<SFSymbolName, SFSymbolMetadata> = {
+${metadataEntries}
+};
+`;
+
+  const dirPath = path.join(outputDir, 'compat', variant);
+  ensureDir(dirPath);
+  fs.writeFileSync(path.join(dirPath, 'data.ts'), fileContent);
+}
+
+/**
+ * Generate the compat SFSymbol component (legacy renderer with deprecation warning)
+ */
+function generateCompatSFSymbol(outputDir: string): void {
+  const fileContent = `/**
+ * ╔══════════════════════════════════════════════════════════╗
+ * ║       AUTO-GENERATED FILE - DO NOT EDIT MANUALLY         ║
+ * ╚══════════════════════════════════════════════════════════╝
+ *
+ * Legacy SFSymbol renderer (Compat Layer)
+ *
+ * @deprecated Use tree-shakeable imports instead:
+ *   Before: import { SFSymbol, SFCheckmarkCircle } from 'sf-symbols-lib'
+ *   After:  import { SFCheckmarkCircle } from 'sf-symbols-lib/hierarchical'
+ *
+ * Generated by: scripts/generate-sfsymbols.ts
+ */
+import { type ReactElement, useEffect } from 'react';
+
+import { sfSymbolsData as hierarchicalData, sfSymbolsViewBox as hierarchicalViewBox } from '@/compat/hierarchical/data';
+import { sfSymbolsData as monochromeData, sfSymbolsViewBox as monochromeViewBox } from '@/compat/monochrome/data';
+import { sfSymbolsData as paletteData, sfSymbolsViewBox as paletteViewBox } from '@/compat/palette/data';
+import { sfSymbolsData as multicolorData, sfSymbolsViewBox as multicolorViewBox } from '@/compat/multicolor/data';
+
+import { SFSymbolSize } from '@/types/sizes';
+import { SFSymbolVariant } from '@/types/symbol-types';
+
+export interface SFSymbolProps {
+  name: string;
+  size?: number | string;
+  className?: string;
+  strokeWidth?: number | string;
+  color?: string;
+  svgContent?: string;
+  viewBox?: string;
+  variant?: SFSymbolVariant;
+  [key: string]: any;
+}
+
+let deprecationWarned = false;
+
+export function SFSymbol({
+  name,
+  size = SFSymbolSize.lg,
+  className = '',
+  strokeWidth = 1,
+  color,
+  svgContent,
+  viewBox,
+  variant = SFSymbolVariant.monochrome,
+  ...rest
+}: SFSymbolProps): ReactElement {
+  // One-time deprecation warning in development
+  useEffect(() => {
+    if (!deprecationWarned && process.env.NODE_ENV === 'development') {
+      deprecationWarned = true;
+      console.warn(
+        'sf-symbols-lib: The SFSymbol component is deprecated and will be removed in v3.0.\\n' +
+        'Migrate to tree-shakeable imports for better bundle sizes:\\n\\n' +
+        "  Before: import { SFSymbol, SFSymbolName } from 'sf-symbols-lib'\\n" +
+        "  After:  import { SFCheckmarkCircle } from 'sf-symbols-lib/hierarchical'\\n\\n" +
+        'See: https://github.com/phranck/sf-symbols-lib#migration-v2'
+      );
+    }
+  }, []);
+
+  let numSize: number;
+  if (typeof size === 'string') {
+    numSize = SFSymbolSize[size.toLowerCase()] ?? parseInt(size, 10);
+  } else {
+    numSize = size;
+  }
+
+  // Resolve SVG data by variant + name
+  let resolvedSvg: string | undefined = svgContent;
+  let resolvedViewBox: string | undefined = viewBox;
+  if (!resolvedSvg) {
+    switch (variant) {
+      case SFSymbolVariant.hierarchical:
+        resolvedSvg = hierarchicalData[name as keyof typeof hierarchicalData];
+        resolvedViewBox = resolvedViewBox || hierarchicalViewBox[name as keyof typeof hierarchicalViewBox];
+        break;
+      case SFSymbolVariant.palette:
+        resolvedSvg = paletteData[name as keyof typeof paletteData];
+        resolvedViewBox = resolvedViewBox || paletteViewBox[name as keyof typeof paletteViewBox];
+        break;
+      case SFSymbolVariant.multicolor:
+        resolvedSvg = multicolorData[name as keyof typeof multicolorData];
+        resolvedViewBox = resolvedViewBox || multicolorViewBox[name as keyof typeof multicolorViewBox];
+        break;
+      case SFSymbolVariant.monochrome:
+      default:
+        resolvedSvg = monochromeData[name as keyof typeof monochromeData];
+        resolvedViewBox = resolvedViewBox || monochromeViewBox[name as keyof typeof monochromeViewBox];
+        break;
+    }
+  }
+
+  if (!resolvedSvg) {
+    console.warn(\`Symbol "\${name}" not found for variant \${variant}\`);
+    return <svg /> as ReactElement;
+  }
+
+  const recolorRegex = /fill=(['"])(?:#(?:fff|ffffff)|white)\\1/gi;
+  const processedSvg = color ? resolvedSvg.replace(recolorRegex, \`fill="\${color}"\`) : resolvedSvg;
+
+  const shouldForceFill = !color && (variant === SFSymbolVariant.hierarchical || variant === SFSymbolVariant.monochrome);
+  const svgFillAttr = shouldForceFill ? 'currentColor' : undefined;
+
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox={resolvedViewBox || \`0 0 \${SFSymbolSize.lg} \${SFSymbolSize.lg}\`}
+      width={numSize}
+      height={numSize}
+      fill={svgFillAttr}
+      strokeWidth={strokeWidth}
+      className={className}
+      style={{
+        minWidth: numSize,
+        minHeight: numSize,
+        maxWidth: numSize,
+        maxHeight: numSize,
+        flex: \`0 0 \${numSize}px\`,
+        ...((rest.style as any) || {}),
+      }}
+      {...rest}
+      dangerouslySetInnerHTML={{ __html: processedSvg }}
+    />
+  ) as ReactElement;
+}
+
+export default SFSymbol;
+`;
+
+  const dirPath = path.join(outputDir, 'compat');
+  ensureDir(dirPath);
+  fs.writeFileSync(path.join(dirPath, 'SFSymbol.tsx'), fileContent);
+  console.log('✅ CREATED: compat/SFSymbol.tsx');
+}
+
+/**
+ * Generate the compat index.tsx entry point
+ */
+function generateCompatIndex(outputDir: string): void {
+  const fileContent = `/**
+ * ╔══════════════════════════════════════════════════════════╗
+ * ║       AUTO-GENERATED FILE - DO NOT EDIT MANUALLY         ║
+ * ╚══════════════════════════════════════════════════════════╝
+ *
+ * SF Symbols Library - Compatibility Layer (v1.x API)
+ *
+ * @deprecated Use tree-shakeable imports instead:
+ *   import { SFCheckmarkCircle } from 'sf-symbols-lib/hierarchical';
+ *
+ * Generated by: scripts/generate-sfsymbols.ts
+ */
+
+// Re-export all symbol names and constants
+export * from '@/components/sf-symbol-name';
+
+export { SFSymbol, type SFSymbolProps } from '@/compat/SFSymbol';
+export { default as SFSymbol_default } from '@/compat/SFSymbol';
+
+export { SFSymbolVariant } from '@/types/symbol-types';
+export { SFSymbolSize } from '@/types/sizes';
+`;
+
+  const dirPath = path.join(outputDir, 'compat');
+  ensureDir(dirPath);
+  fs.writeFileSync(path.join(dirPath, 'index.tsx'), fileContent);
+  console.log('✅ CREATED: compat/index.tsx');
+}
+
+// ---------------------------------------------------------------------------
+// sf-symbol-name.ts enum generation (shared between both APIs)
+// ---------------------------------------------------------------------------
 
 /**
  * Generate sf-symbol-name.ts with enum and constants
@@ -142,7 +477,6 @@ function generateSymbolNameFile(componentsDir: string, symbolFileNames: string[]
     })
     .join('\n');
 
-  // Generate individual constant exports
   const constantExports = sortedNames
     .map(fileName => {
       const pascalName = kebabToPascalCase(fileName);
@@ -193,112 +527,12 @@ export function isAvailableSymbol(symbolValue: string): boolean {
   console.log(`✅ CREATED: sf-symbol-name.ts with ${sortedNames.length} symbols`);
 }
 
-/**
- * Generate a single variant data file
- */
-function generateVariantDataFile(
-  outputDir: string,
-  variant: Variant,
-  symbolData: Record<string, { content: string; viewBox: string; metadata: SvgMetadata | null }>
-): void {
-  const entries = Object.entries(symbolData)
-    .map(([pascalName, { content }]) => {
-      const escapedContent = content.replace(/'/g, "\\'").replace(/\n/g, ' ').replace(/\s+/g, ' ');
-      return `  [SFSymbolName.${pascalName}]: '${escapedContent}',`;
-    })
-    .join('\n');
-
-  const viewBoxEntries = Object.entries(symbolData)
-    .map(([pascalName, { viewBox }]) => {
-      return `  [SFSymbolName.${pascalName}]: '${viewBox}',`;
-    })
-    .join('\n');
-
-  const metadataEntries = Object.entries(symbolData)
-    .map(([pascalName, { metadata }]) => {
-      if (!metadata) {
-        return `  [SFSymbolName.${pascalName}]: { restricted: false, renderingMode: '', sfSymbolsVersion: '', categories: [] },`;
-      }
-      const categoriesStr = metadata.categories.map(c => `'${c}'`).join(', ');
-      return `  [SFSymbolName.${pascalName}]: { restricted: ${metadata.restricted}, renderingMode: '${metadata.renderingMode}', sfSymbolsVersion: '${metadata.sfSymbolsVersion}', categories: [${categoriesStr}] },`;
-    })
-    .join('\n');
-
-  const fileContent = `/**
- * ╔══════════════════════════════════════════════════════════╗
- * ║       AUTO-GENERATED FILE - DO NOT EDIT MANUALLY         ║
- * ╚══════════════════════════════════════════════════════════╝
- *
- * SF Symbols Data - ${variant}
- * Generated by: scripts/generate-sfsymbols.ts
- */
-
-import { SFSymbolName } from '@/components/sf-symbol-name';
-
-export const sfSymbolsData: Record<SFSymbolName, string> = {
-${entries}
-};
-
-export const sfSymbolsViewBox: Record<SFSymbolName, string> = {
-${viewBoxEntries}
-};
-
-export interface SFSymbolMetadata {
-  restricted: boolean;
-  renderingMode: string;
-  sfSymbolsVersion: string;
-  categories: string[];
-}
-
-export const sfSymbolsMetadata: Record<SFSymbolName, SFSymbolMetadata> = {
-${metadataEntries}
-};
-`;
-
-  const dirPath = path.join(outputDir, variant);
-  ensureDir(dirPath);
-  const filePath = path.join(dirPath, 'data.ts');
-  fs.writeFileSync(filePath, fileContent);
-}
+// ---------------------------------------------------------------------------
+// Main index.ts generation
+// ---------------------------------------------------------------------------
 
 /**
- * Generate entry point for a variant
- */
-function generateVariantEntryPoint(
-  outputDir: string,
-  variant: Variant
-): void {
-  const fileContent = `/**
- * ╔══════════════════════════════════════════════════════════╗
- * ║       AUTO-GENERATED FILE - DO NOT EDIT MANUALLY         ║
- * ╚══════════════════════════════════════════════════════════╝
- *
- * SF Symbols - ${variant}
- *
- * Usage:
- * import { SFSymbol, Checkmark, CheckmarkCircleFill } from 'sf-symbols-lib/${variant}';
- *
- * <SFSymbol name={Checkmark} />
- *
- * Generated by: scripts/generate-sfsymbols.ts
- */
-
-// Re-export all symbol names and constants
-// eslint-disable-next-line react-refresh/only-export-components
-export * from '@/components/sf-symbol-name';
-
-export { default as SFSymbol } from '@/common/SFSymbol';
-`;
-
-  const dirPath = path.join(outputDir, variant);
-  ensureDir(dirPath);
-  const filePath = path.join(dirPath, 'index.tsx');
-  fs.writeFileSync(filePath, fileContent);
-  console.log(`✅ CREATED: ${variant}/index.tsx`);
-}
-
-/**
- * Generate main index.ts that re-exports everything
+ * Generate main index.ts that re-exports the compat layer for backward compatibility
  */
 function generateMainIndex(srcDir: string): void {
   const fileContent = `/**
@@ -308,194 +542,167 @@ function generateMainIndex(srcDir: string): void {
  *
  * SF Symbols Library
  *
- * For optimized bundle size, import from a specific variant:
- * import { SFSymbol, Checkmark } from 'sf-symbols-lib/hierarchical';
+ * For optimal bundle size, use tree-shakeable imports:
+ *   import { SFCheckmarkCircle } from 'sf-symbols-lib/hierarchical';
  *
- * This main entry re-exports from hierarchical as default.
+ * The default export re-exports the compat layer for backward compatibility.
  *
  * Generated by: scripts/generate-sfsymbols.ts
  */
 
-// Re-export from default variant (hierarchical)
-export * from './hierarchical';
+// Re-export compat layer (backward compatible with v1.x)
+export * from './compat';
 
 // Export types
 export { SFSymbolVariant } from './types/symbol-types';
 export { SFSymbolSize } from './types/sizes';
+export type { SFIconProps, SFIconSize, SFIconSizePreset } from './common/types';
 `;
 
-  const filePath = path.join(srcDir, 'index.ts');
-  fs.writeFileSync(filePath, fileContent);
-  console.log(`✅ CREATED: index.ts (default: hierarchical)`);
+  fs.writeFileSync(path.join(srcDir, 'index.ts'), fileContent);
+  console.log('✅ CREATED: index.ts (default: compat layer)');
 }
 
-/**
- * Update README.md with current symbol count in badge and text
- */
+// ---------------------------------------------------------------------------
+// README / package.json updates
+// ---------------------------------------------------------------------------
+
 function updateReadmeSymbolCount(symbolCount: number): void {
   const readmePath = path.join(process.cwd(), 'README.md');
-
-  if (!fs.existsSync(readmePath)) {
-    console.log('⚠️  README.md not found, skipping update');
-    return;
-  }
+  if (!fs.existsSync(readmePath)) return;
 
   let content = fs.readFileSync(readmePath, 'utf-8');
-  const formattedCount = symbolCount.toLocaleString();
+  const formatted = symbolCount.toLocaleString();
 
-  // Update badge
   const badgeUrl = `https://img.shields.io/badge/SF%20Symbols-${symbolCount}-blue?style=flat-square&logo=apple&logoColor=white`;
-  const badgeMarkdown = `![SF Symbols](${badgeUrl})`;
-  const badgePattern = /!\[SF Symbols\]\([^)]+\)/;
-  if (badgePattern.test(content)) {
-    content = content.replace(badgePattern, badgeMarkdown);
-  }
-
-  // Update description line with formatted count (e.g., "6,984 SF Symbols")
+  content = content.replace(/!\[SF Symbols\]\([^)]+\)/, `![SF Symbols](${badgeUrl})`);
   content = content.replace(
     /A React component library providing \*\*[\d,]+\s+SF Symbols\*\*/,
-    `A React component library providing **${formattedCount} SF Symbols**`
+    `A React component library providing **${formatted} SF Symbols**`,
   );
-
-  // Update feature bullet point (e.g., "**6,984 Symbols**")
-  content = content.replace(
-    /^- \*\*[\d,]+\s+Symbols\*\*/m,
-    `- **${formattedCount} Symbols**`
-  );
-
-  // Update code comment (e.g., "// 6984")
+  content = content.replace(/^- \*\*[\d,]+\s+Symbols\*\*/m, `- **${formatted} Symbols**`);
   content = content.replace(
     /console\.log\(`Total symbols: \$\{allSymbols\.length\}`\); \/\/ [\d,]+/,
-    `console.log(\`Total symbols: \${allSymbols.length}\`); // ${symbolCount}`
+    `console.log(\`Total symbols: \${allSymbols.length}\`); // ${symbolCount}`,
   );
 
   fs.writeFileSync(readmePath, content);
   console.log(`✅ UPDATED: README.md with ${symbolCount} symbols`);
 }
 
-/**
- * Update package.json description with current symbol count
- */
 function updatePackageJsonSymbolCount(symbolCount: number): void {
-  const packageJsonPath = path.join(process.cwd(), 'package.json');
+  const pkgPath = path.join(process.cwd(), 'package.json');
+  if (!fs.existsSync(pkgPath)) return;
 
-  if (!fs.existsSync(packageJsonPath)) {
-    console.log('⚠️  package.json not found, skipping update');
-    return;
-  }
-
-  const packageJsonContent = fs.readFileSync(packageJsonPath, 'utf-8');
-  const packageJson = JSON.parse(packageJsonContent);
-
-  if (packageJson.description) {
-    packageJson.description = packageJson.description.replace(
-      /SF Symbols \([\d,]+\) React components library/,
-      `SF Symbols (${symbolCount.toLocaleString()}) React components library`
+  const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
+  if (pkg.description) {
+    pkg.description = pkg.description.replace(
+      /SF Symbols \([\d,]+\)/,
+      `SF Symbols (${symbolCount.toLocaleString()})`,
     );
-
-    // If no previous count format found, add it
-    if (!packageJson.description.includes(`(${symbolCount.toLocaleString()})`)) {
-      packageJson.description = packageJson.description.replace(
-        /SF Symbols React components library/,
-        `SF Symbols (${symbolCount.toLocaleString()}) React components library`
-      );
-    }
   }
 
-  fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n');
+  fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
   console.log(`✅ UPDATED: package.json description with ${symbolCount} symbols`);
 }
 
-/**
- * Main function to generate SF Symbols
- */
+// ---------------------------------------------------------------------------
+// Main
+// ---------------------------------------------------------------------------
+
 async function generateSFSymbols() {
   const svgsDir = path.join(process.cwd(), '.svgs');
   const srcDir = path.join(process.cwd(), 'src');
   const componentsDir = path.join(srcDir, 'components');
 
-  // Check if svgs directory exists with the new structure
   const hierarchicalDir = path.join(svgsDir, 'hierarchical');
   if (!fs.existsSync(hierarchicalDir)) {
-    console.log(`❌ ERROR: Expected directory structure not found: ${hierarchicalDir}`);
-    return;
+    console.error(`❌ ERROR: Expected directory structure not found: ${hierarchicalDir}`);
+    process.exit(1);
   }
 
-  // Get all symbol file names
   const symbolFileNames = fs.readdirSync(hierarchicalDir)
     .filter(file => file.endsWith('.svg'))
     .map(file => file.replace('.svg', ''));
 
   if (symbolFileNames.length === 0) {
-    console.log('⚠️  No SVG files found.');
-    return;
+    console.error('❌ No SVG files found.');
+    process.exit(1);
   }
 
   console.log(`\n🔍 Found ${symbolFileNames.length} symbols\n`);
 
-  // Generate sf-symbol-name.ts with enum and constants
+  // Step 1: Generate shared enum file
   generateSymbolNameFile(componentsDir, symbolFileNames);
 
-  // Process each variant
+  // Step 2: Process each variant - generate individual icons + compat data
   let totalProcessed = 0;
 
   for (const variant of VARIANTS) {
-    const dirPath = path.join(svgsDir, variant);
-
-    if (!fs.existsSync(dirPath)) {
-      console.log(`⚠️  Directory not found: ${dirPath}`);
+    const variantSvgDir = path.join(svgsDir, variant);
+    if (!fs.existsSync(variantSvgDir)) {
+      console.warn(`⚠️  Directory not found: ${variantSvgDir}`);
       continue;
     }
 
-    const symbolData: Record<string, { content: string; viewBox: string; metadata: SvgMetadata | null }> = {};
+    const symbolData: Record<string, SymbolEntry> = {};
+    const pascalNames: string[] = [];
+    let variantCount = 0;
 
     for (const fileName of symbolFileNames) {
-      const svgPath = path.join(dirPath, `${fileName}.svg`);
+      const svgPath = path.join(variantSvgDir, `${fileName}.svg`);
+      if (!fs.existsSync(svgPath)) continue;
+
       const pascalName = kebabToPascalCase(fileName);
 
       try {
-        if (fs.existsSync(svgPath)) {
-          const metadata = parseMetadata(svgPath);
-          const content = extractSvgContent(svgPath, variant);
-          const viewBox = extractViewBox(svgPath);
-          
-          // Cross-validate lib name if metadata exists
-          if (metadata && metadata.libName && metadata.libName !== pascalName) {
-            console.warn(`⚠️  Name mismatch for ${fileName}: embedded="${metadata.libName}" vs generated="${pascalName}"`);
-          }
-          
-          symbolData[pascalName] = { content, viewBox, metadata };
-          totalProcessed++;
+        const entry = parseSvgFile(svgPath, variant);
+
+        // Cross-validate lib name
+        if (entry.metadata?.libName && entry.metadata.libName !== pascalName) {
+          console.warn(`⚠️  Name mismatch for ${fileName}: embedded="${entry.metadata.libName}" vs generated="${pascalName}"`);
         }
+
+        // Generate individual icon component file
+        generateIconComponentFile(srcDir, variant, pascalName, entry);
+
+        symbolData[pascalName] = entry;
+        pascalNames.push(pascalName);
+        variantCount++;
+        totalProcessed++;
       } catch (error) {
         console.error(`❌ ERROR processing ${svgPath}:`, error instanceof Error ? error.message : error);
       }
     }
 
-    // Generate data file for this variant
-    generateVariantDataFile(srcDir, variant, symbolData);
+    // Generate tree-shakeable barrel export
+    generateTreeShakeableBarrel(srcDir, variant, pascalNames);
 
-    // Generate entry point for this variant
-    generateVariantEntryPoint(srcDir, variant);
+    // Generate compat data file (all icons in one object)
+    generateCompatDataFile(srcDir, variant, symbolData);
 
-    console.log(`✓ Processed ${variant} (${Object.keys(symbolData).length} symbols)`);
+    console.log(`✓ ${variant}: ${variantCount} icons + compat data`);
   }
 
-  // Generate main index.ts
+  // Step 3: Generate compat layer
+  generateCompatSFSymbol(srcDir);
+  generateCompatIndex(srcDir);
+
+  // Step 4: Generate main index.ts
   generateMainIndex(srcDir);
 
-  // Update README and package.json with symbol count
+  // Step 5: Update README and package.json
   updateReadmeSymbolCount(symbolFileNames.length);
   updatePackageJsonSymbolCount(symbolFileNames.length);
 
-  // Generate docs data and preview page
+  // Step 6: Generate docs data
   console.log('\n📄 Generating docs data and preview page...');
   execSync('tsx ./scripts/generate-docs-data.ts', { stdio: 'inherit' });
 
-  console.log(`\n📊 Summary: ${symbolFileNames.length} symbols × ${VARIANTS.length} variants = ${totalProcessed} SVGs processed\n`);
+  console.log(`\n📊 Summary: ${symbolFileNames.length} symbols x ${VARIANTS.length} variants = ${totalProcessed} individual icon components`);
+  console.log(`   + compat layer with ${VARIANTS.length} data files\n`);
 }
 
-// Run the generator
 generateSFSymbols().catch(error => {
   console.error('❌ Error generating SF Symbols:', error);
   process.exit(1);

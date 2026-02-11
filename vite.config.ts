@@ -36,6 +36,7 @@ export default defineConfig({
         'monochrome/index': resolve(__dirname, 'src/monochrome/index.tsx'),
         'palette/index': resolve(__dirname, 'src/palette/index.tsx'),
         'multicolor/index': resolve(__dirname, 'src/multicolor/index.tsx'),
+        'compat/index': resolve(__dirname, 'src/compat/index.tsx'),
       },
       name: 'SFSymbolsLib',
       formats: ['es']
@@ -52,7 +53,9 @@ export default defineConfig({
           react: 'React',
           'react-dom': 'ReactDOM'
         },
-        preserveModules: false,
+        // Preserve individual icon modules for tree-shaking
+        preserveModules: true,
+        preserveModulesRoot: 'src',
         entryFileNames: '[name].js',
       }
     },

@@ -1,5 +1,9 @@
 # SVG Metadata Integration and Category Filtering
 
+## Completed
+
+2026-02-11
+
 ## Preface
 
 This plan integrates the new SVG metadata format from the `sfe` extractor (v7.3) into the sf-symbols-lib generator and docs website. The sfe tool now embeds metadata (Apple names, library names, restricted flags, rendering modes, SF Symbols version, and categories) directly into SVG files as XML metadata tags. The generator will parse this embedded metadata instead of relying on external text files, making each SVG self-describing. The docs website will gain a category filter selector, allowing users to browse symbols by Apple's official SF Symbols categories. This eliminates the need for separate category mapping files and provides a more robust, maintainable data flow.

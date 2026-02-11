@@ -21,13 +21,13 @@
     <link rel="preload" href="styles/drawer.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
 
     <!-- Preload JS modules for optimal caching -->
-    <link rel="preload" href="scripts/utils.js" as="script">
-    <link rel="preload" href="scripts/data.js" as="script">
-    <link rel="preload" href="scripts/theme.js" as="script">
-    <link rel="preload" href="scripts/modals.js" as="script">
-    <link rel="preload" href="scripts/colors.js" as="script">
-    <link rel="preload" href="scripts/symbols.js" as="script">
-    <link rel="preload" href="scripts/main.js" as="script">
+    <link rel="modulepreload" href="scripts/utils.js">
+    <link rel="modulepreload" href="scripts/data.js">
+    <link rel="modulepreload" href="scripts/theme.js">
+    <link rel="modulepreload" href="scripts/modals.js">
+    <link rel="modulepreload" href="scripts/colors.js">
+    <link rel="modulepreload" href="scripts/symbols.js">
+    <link rel="modulepreload" href="scripts/main.js">
   </head>
   <body>
     <!-- Fixed header -->
@@ -60,8 +60,8 @@
 
       <div class="header-controls">
         <div class="control-group">
-          <label class="control-label" for="variant-select">Rendering Mode</label>
-          <select id="variant-select" class="control-select">
+          <label class="control-label" for="rendering-mode-select">Rendering Mode</label>
+          <select id="rendering-mode-select" class="control-select">
             <option value="hierarchical" selected>Hierarchical</option>
             <option value="monochrome">Monochrome</option>
             <option value="palette">Palette</option>

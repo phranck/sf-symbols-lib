@@ -5,3 +5,13 @@ docs/dist/
 .DS_Store
 *.log
 .svgs/
+
+# Generated icon components (regenerated via npm run generate)
+src/hierarchical/icons/
+src/monochrome/icons/
+src/multicolor/icons/
+src/palette/icons/
+src/compat/hierarchical/
+src/compat/monochrome/
+src/compat/multicolor/
+src/compat/palette/

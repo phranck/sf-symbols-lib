@@ -1,5 +1,4 @@
 // Color management for SF Symbols demo
-import { updateThemeIcon } from './theme.js';
 
 // 42 Color palette (sorted by hex value ascending)
 export const colors = [
@@ -111,7 +110,8 @@ export function updateColor() {
   } else {
     document.documentElement.style.setProperty('--symbol-color', currentColor);
   }
-  updateThemeIcon(document.documentElement.classList.contains('soft-dark') ? 'soft-dark' : 'light');
+  // Notify theme module to refresh its icon (avoids circular import)
+  document.dispatchEvent(new CustomEvent('sf-color-changed'));
 }
 
 // Initialize

@@ -14,7 +14,7 @@ import { marked } from 'marked';
 import { SFSymbolName } from '../src/components/sf-symbol-name.js';
 
 // Type definitions
-type Variant = 'hierarchical' | 'monochrome';
+type Variant = 'hierarchical' | 'monochrome' | 'palette' | 'multicolor';
 
 interface SymbolData {
   [key: string]: string;
@@ -278,7 +278,7 @@ async function main(): Promise<void> {
     };
 
     for (const variant of VARIANTS) {
-      const dataFile = path.join(repoRootDir, 'src', variant, 'data.ts');
+      const dataFile = path.join(repoRootDir, 'src', 'compat', variant, 'data.ts');
 
       try {
         const dataContent = await fs.readFile(dataFile, 'utf8');
