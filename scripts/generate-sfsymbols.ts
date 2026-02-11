@@ -105,12 +105,21 @@ function extractSvgContent(svgPath: string, renderingMode?: string): string {
     // For hierarchical/monochrome: replace all colors with currentColor
     content = content.replace(/fill="(white|black|#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})"/g, 'fill="currentColor"');
   } else if (renderingMode === 'palette' || renderingMode === 'multicolor') {
-    // For palette/multicolor:
-    // - Replace white with currentColor for theme-awareness
-    // - Preserve black and hex colors for multicolor fidelity
-    // Note: This is a best-effort adaptation - SF Symbols multicolor rendering
-    // uses system-level graphics that aren't fully replicable in SVG/Web
-    content = content.replace(/fill="white"/g, 'fill="currentColor"');
+    // For palette/multicolor with SF Symbols layering semantics:
+    // - white + fill-opacity → represents BACKGROUND layer (darker/filled)
+    // - white without opacity → represents FOREGROUND layer (lighter/stroke)
+    // We need different colors based on context, not just currentColor
+    
+    // Replace background layer (white + opacity) with a semi-transparent black
+    content = content.replace(/fill="white"\s+fill-opacity="([^"]+)"/g, (match, opacity) => {
+      return `fill="#000000" fill-opacity="${opacity}"`;
+    });
+    
+    // Replace foreground layer (white alone) with white
+    // (will be visible on both light and dark backgrounds)
+    content = content.replace(/fill="white"/g, 'fill="#ffffff"');
+    
+    // Preserve black and hex colors for multicolor fidelity
   }
 
   const svgMatch = content.match(/<svg[^>]*>([\s\S]*?)<\/svg>/);
