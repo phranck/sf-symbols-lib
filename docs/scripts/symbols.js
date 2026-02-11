@@ -83,8 +83,20 @@ export function renderSymbols() {
     card.dataset.variant = currentVariant;
 
     const vb = currentViewBox[key] || '0 0 24 24';
+    
+    // For multicolor in light mode, convert white fills to appropriate colors
+    let processedContent = svgContent;
+    const isLightMode = !document.documentElement.classList.contains('soft-dark');
+    const currentVariant = variantSelect ? variantSelect.value : 'hierarchical';
+    
+    if (currentVariant === 'multicolor' && isLightMode) {
+      // Light mode: dimmed white → black, white → #ffffff
+      processedContent = processedContent.replace(/fill="white"\s+fill-opacity="([^"]+)"/g, 'fill="black" fill-opacity="$1"');
+      processedContent = processedContent.replace(/fill="white"/g, 'fill="#ffffff"');
+    }
+    
     // Always set fill="currentColor" - needed for embedded currentColor values to resolve
-    card.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" fill="currentColor">${svgContent}</svg>`;
+    card.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" fill="currentColor">${processedContent}</svg>`;
 
     // Add info icon for symbols that require attribution
     if (infoSymbols.has(key)) {
@@ -304,8 +316,20 @@ export function renderDrawerContent() {
   const svgKey = state.selectedSymbolKey;
   if (currentData[svgKey]) {
     const vb = currentViewBox[svgKey] || '0 0 24 24';
+    
+    // For multicolor in light mode, convert white fills to appropriate colors
+    let processedContent = currentData[svgKey];
+    const isLightMode = !document.documentElement.classList.contains('soft-dark');
+    const currentVariant = variantSelect ? variantSelect.value : 'hierarchical';
+    
+    if (currentVariant === 'multicolor' && isLightMode) {
+      // Light mode: dimmed white → black, white → #ffffff
+      processedContent = processedContent.replace(/fill="white"\s+fill-opacity="([^"]+)"/g, 'fill="black" fill-opacity="$1"');
+      processedContent = processedContent.replace(/fill="white"/g, 'fill="#ffffff"');
+    }
+    
     // Always set fill="currentColor" - needed for embedded currentColor values to resolve
-    previewBox.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" fill="currentColor" width="100%" height="100%">${currentData[svgKey]}</svg>`;
+    previewBox.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" fill="currentColor" width="100%" height="100%">${processedContent}</svg>`;
   } else {
     previewBox.textContent = 'SFSym';
     previewBox.style.fontSize = '18px';

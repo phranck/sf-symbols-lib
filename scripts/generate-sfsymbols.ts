@@ -105,12 +105,10 @@ function extractSvgContent(svgPath: string, renderingMode?: string): string {
     // For hierarchical/monochrome: replace all colors with currentColor
     content = content.replace(/fill="(white|black|#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})"/g, 'fill="currentColor"');
   } else if (renderingMode === 'multicolor') {
-    // Multicolor mode:
-    // - white + opacity (dimmed) → black (dark background layer, works in both themes)
-    // - white without opacity → #ffffff (white foreground, contrasts with black background)
-    // - Preserve all other colors (hex, black)
-    content = content.replace(/fill="white"\s+fill-opacity="([^"]+)"/g, 'fill="black" fill-opacity="$1"');
-    content = content.replace(/fill="white"/g, 'fill="#ffffff"');
+    // Multicolor mode: Preserve original colors from SVG
+    // Dark mode will use these as-is (white fills)
+    // Light mode will apply CSS-based color replacement
+    // Preserve white, black, and hex colors exactly as provided
   } else if (renderingMode === 'palette') {
     // Palette mode:
     // - white → currentColor (theme-aware)
