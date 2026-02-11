@@ -81,12 +81,11 @@ export function renderSymbols() {
 
     const vb = currentViewBox[key] || '0 0 24 24';
     // Only force fill for hierarchical and monochrome modes
-    // For palette and multicolor, preserve embedded colors
+    // For palette and multicolor, use black when no color selected (for visibility)
     const currentVariant = variantSelect ? variantSelect.value : 'hierarchical';
-    const shouldForceCardFill = currentVariant === 'hierarchical' || currentVariant === 'monochrome';
-    card.innerHTML = shouldForceCardFill
-      ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" fill="currentColor">${svgContent}</svg>`
-      : `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}">${svgContent}</svg>`;
+    const isMonochromeVariant = currentVariant === 'hierarchical' || currentVariant === 'monochrome';
+    const fillValue = isMonochromeVariant ? 'currentColor' : 'black';
+    card.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" fill="${fillValue}">${svgContent}</svg>`;
 
     // Add info icon for symbols that require attribution
     if (infoSymbols.has(key)) {
@@ -303,12 +302,12 @@ export function renderDrawerContent() {
   const svgKey = state.selectedSymbolKey;
   if (currentData[svgKey]) {
     const vb = currentViewBox[svgKey] || '0 0 24 24';
-    // Only force fill for hierarchical and monochrome modes
+    // Only force currentColor for hierarchical/monochrome
+    // For palette/multicolor, use black for visibility
     const currentVariant = variantSelect ? variantSelect.value : 'hierarchical';
-    const shouldForcePreviewFill = currentVariant === 'hierarchical' || currentVariant === 'monochrome';
-    previewBox.innerHTML = shouldForcePreviewFill
-      ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" fill="currentColor" width="100%" height="100%">${currentData[svgKey]}</svg>`
-      : `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" width="100%" height="100%">${currentData[svgKey]}</svg>`;
+    const isMonochromeVariant = currentVariant === 'hierarchical' || currentVariant === 'monochrome';
+    const fillValue = isMonochromeVariant ? 'currentColor' : 'black';
+    previewBox.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" fill="${fillValue}" width="100%" height="100%">${currentData[svgKey]}</svg>`;
   } else {
     previewBox.textContent = 'SFSym';
     previewBox.style.fontSize = '18px';
