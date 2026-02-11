@@ -104,11 +104,18 @@ function extractSvgContent(svgPath: string, renderingMode?: string): string {
   if (renderingMode === 'hierarchical' || renderingMode === 'monochrome' || !renderingMode) {
     // For hierarchical/monochrome: replace all colors with currentColor
     content = content.replace(/fill="(white|black|#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})"/g, 'fill="currentColor"');
-  } else if (renderingMode === 'palette' || renderingMode === 'multicolor') {
-    // For palette/multicolor: Keep ALL original colors from SVG
-    // Dark mode will use these as-is (Apple's design)
-    // Light mode will apply CSS filter for visibility
-    // Preserve white, black, and hex colors exactly as provided
+  } else if (renderingMode === 'multicolor') {
+    // Multicolor mode:
+    // - white + opacity (dimmed) → black (for light mode contrast)
+    // - white without opacity → currentColor (theme-aware)
+    // - Preserve all other colors (hex, black)
+    content = content.replace(/fill="white"\s+fill-opacity="([^"]+)"/g, 'fill="black" fill-opacity="$1"');
+    content = content.replace(/fill="white"/g, 'fill="currentColor"');
+  } else if (renderingMode === 'palette') {
+    // Palette mode:
+    // - white → currentColor (theme-aware)
+    // - Preserve all other colors (hex, black)
+    content = content.replace(/fill="white"/g, 'fill="currentColor"');
   }
 
   const svgMatch = content.match(/<svg[^>]*>([\s\S]*?)<\/svg>/);
