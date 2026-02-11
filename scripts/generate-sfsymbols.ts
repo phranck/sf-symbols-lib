@@ -28,6 +28,59 @@ function kebabToPascalCase(kebabStr: string): string {
 }
 
 /**
+ * Metadata structure from SVG
+ */
+interface SvgMetadata {
+  appleName: string;
+  libName: string;
+  restricted: boolean;
+  renderingMode: string;
+  sfSymbolsVersion: string;
+  categories: string[];
+}
+
+/**
+ * Parse metadata from SVG file
+ */
+function parseMetadata(svgPath: string): SvgMetadata | null {
+  const content = fs.readFileSync(svgPath, 'utf-8');
+  
+  // Extract metadata block
+  const metadataMatch = content.match(/<metadata>([\s\S]*?)<\/metadata>/);
+  if (!metadataMatch) {
+    return null;
+  }
+
+  const metadataBlock = metadataMatch[1];
+
+  // Extract fields
+  const appleNameMatch = metadataBlock.match(/<name type="apple">([^<]*)<\/name>/);
+  const libNameMatch = metadataBlock.match(/<name type="lib">([^<]*)<\/name>/);
+  const restrictedMatch = metadataBlock.match(/<restricted>([^<]*)<\/restricted>/);
+  const renderingModeMatch = metadataBlock.match(/<renderingMode>([^<]*)<\/renderingMode>/);
+  const sfSymbolsVersionMatch = metadataBlock.match(/<sfSymbolsVersion>([^<]*)<\/sfSymbolsVersion>/);
+  
+  // Extract categories
+  const categories: string[] = [];
+  const categoriesMatch = metadataBlock.match(/<categories>([\s\S]*?)<\/categories>/);
+  if (categoriesMatch) {
+    const categoryMatches = categoriesMatch[1].matchAll(/<category>([^<]*)<\/category>/g);
+    for (const match of categoryMatches) {
+      categories.push(match[1]);
+    }
+  }
+
+  return {
+    appleName: appleNameMatch ? appleNameMatch[1] : '',
+    libName: libNameMatch ? libNameMatch[1] : '',
+    restricted: restrictedMatch ? restrictedMatch[1] === 'true' : false,
+    renderingMode: renderingModeMatch ? renderingModeMatch[1] : '',
+    sfSymbolsVersion: sfSymbolsVersionMatch ? sfSymbolsVersionMatch[1] : '',
+    categories,
+  };
+}
+
+/**
  * Extract SVG viewBox from file
  */
 function extractViewBox(svgPath: string): string {
@@ -131,7 +184,7 @@ export function isAvailableSymbol(symbolValue: string): boolean {
 function generateVariantDataFile(
   outputDir: string,
   variant: Variant,
-  symbolData: Record<string, { content: string; viewBox: string }>
+  symbolData: Record<string, { content: string; viewBox: string; metadata: SvgMetadata | null }>
 ): void {
   const entries = Object.entries(symbolData)
     .map(([pascalName, { content }]) => {
@@ -143,6 +196,16 @@ function generateVariantDataFile(
   const viewBoxEntries = Object.entries(symbolData)
     .map(([pascalName, { viewBox }]) => {
       return `  [SFSymbolName.${pascalName}]: '${viewBox}',`;
+    })
+    .join('\n');
+
+  const metadataEntries = Object.entries(symbolData)
+    .map(([pascalName, { metadata }]) => {
+      if (!metadata) {
+        return `  [SFSymbolName.${pascalName}]: { restricted: false, renderingMode: '', sfSymbolsVersion: '', categories: [] },`;
+      }
+      const categoriesStr = metadata.categories.map(c => `'${c}'`).join(', ');
+      return `  [SFSymbolName.${pascalName}]: { restricted: ${metadata.restricted}, renderingMode: '${metadata.renderingMode}', sfSymbolsVersion: '${metadata.sfSymbolsVersion}', categories: [${categoriesStr}] },`;
     })
     .join('\n');
 
@@ -163,6 +226,17 @@ ${entries}
 
 export const sfSymbolsViewBox: Record<SFSymbolName, string> = {
 ${viewBoxEntries}
+};
+
+export interface SFSymbolMetadata {
+  restricted: boolean;
+  renderingMode: string;
+  sfSymbolsVersion: string;
+  categories: string[];
+}
+
+export const sfSymbolsMetadata: Record<SFSymbolName, SFSymbolMetadata> = {
+${metadataEntries}
 };
 `;
 
@@ -358,7 +432,7 @@ async function generateSFSymbols() {
       continue;
     }
 
-    const symbolData: Record<string, { content: string; viewBox: string }> = {};
+    const symbolData: Record<string, { content: string; viewBox: string; metadata: SvgMetadata | null }> = {};
 
     for (const fileName of symbolFileNames) {
       const svgPath = path.join(dirPath, `${fileName}.svg`);
@@ -368,7 +442,14 @@ async function generateSFSymbols() {
         if (fs.existsSync(svgPath)) {
           const content = extractSvgContent(svgPath);
           const viewBox = extractViewBox(svgPath);
-          symbolData[pascalName] = { content, viewBox };
+          const metadata = parseMetadata(svgPath);
+          
+          // Cross-validate lib name if metadata exists
+          if (metadata && metadata.libName && metadata.libName !== pascalName) {
+            console.warn(`⚠️  Name mismatch for ${fileName}: embedded="${metadata.libName}" vs generated="${pascalName}"`);
+          }
+          
+          symbolData[pascalName] = { content, viewBox, metadata };
           totalProcessed++;
         }
       } catch (error) {
