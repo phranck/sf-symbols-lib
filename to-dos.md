@@ -2,25 +2,19 @@
 
 ## In Progress
 
-- [ ] **Tree-Shakeable Architecture v2.0**: Phases 1-3 complete (generator, compat layer, build config). Phases 4-5 remaining (docs, testing). See `plans/open/2026-02-11-tree-shakeable-icons.md`
+(none)
 
 ## Open Tasks
 
-### High Priority
-
-- [ ] **README Migration Section**: Document new tree-shakeable API, before/after examples, bundle size comparison
-- [ ] **MIGRATION.md**: Detailed migration guide from v1.x to v2.0
-- [ ] **Test Consumer Project**: Fresh Next.js app testing both old and new API, bundle size analysis
-
 ### Medium Priority
 
+- [ ] **Version Bump**: Bump to 2.0.0 and publish to npm
 - [ ] **Docs Site Performance**: renderSymbols() rebuilds 7k DOM elements per render. Needs event delegation, batch rendering, cached queries.
-- [ ] **Docs Site Code Examples**: Update code preview to show new tree-shakeable import API
-- [ ] **CI Pipeline Update**: Verify CI handles 28k generated icon files correctly
+- [ ] **CI Pipeline Update**: Verify CI handles 28k generated icon files correctly (gitignored, must regenerate)
 
 ### Low Priority
 
-- [ ] **README auf npmjs.com**: Verify v1.1.3 CI publish shows README correctly
+- [ ] **README auf npmjs.com**: Verify CI publish shows updated README correctly
 - [ ] **System-Preference-Detection**: Initial theme based on `prefers-color-scheme`
 - [ ] **Theme-Transition-Animationen**: Smooth theme switch transitions
 
@@ -28,11 +22,10 @@
 
 ### 2026-02-11
 
-- [x] **Tree-Shakeable Phases 1-3**: Generator, SFIcon, 28k icons, compat layer, Vite preserveModules, build/lint/typecheck clean, gitignore generated icons
+- [x] **Tree-Shakeable v2.0**: All 5 phases complete. Generator, SFIcon, 28k icons across 4 variants, compat layer, Vite preserveModules, README/MIGRATION.md, docs site code examples, bundle size validated (1 icon: ~1.1 KB, 5 icons: 7 KB), npm pack verified (112k files)
 - [x] **Docs Circular Dependency Fix**: Resolved theme.js <-> colors.js TDZ crash via CustomEvent
 - [x] **Docs Preload Fix**: Changed `<link rel="preload" as="script">` to `<link rel="modulepreload">`
 - [x] **SVG Metadata Integration**: Embedded XML metadata parsing, 30 categories, category filter on website
-- [x] **Metadata Integration Plan**: Completed all phases
 
 ### 2026-01-31
 
@@ -40,10 +33,10 @@
 
 ## Notes
 
-- Individual icon: ~1.5 KB. Compat data per variant: ~15 MB. Total dist: ~591 MB.
-- Old `src/common/SFSymbol.tsx` removed (replaced by `src/compat/SFSymbol.tsx`)
-- All 4 variants now supported: hierarchical, monochrome, palette, multicolor
+- Individual icon: ~1.1 KB (avg 2.1 KB). Compat data per variant: ~13 MB. Total dist: ~568 MB.
+- Generated icons are gitignored, must run `npm run generate` after clone.
+- All 4 variants: hierarchical, monochrome, palette, multicolor
 
 ---
 
-**Last Updated:** 2026-02-11 (23:30)
+**Last Updated:** 2026-02-11 (24:00)

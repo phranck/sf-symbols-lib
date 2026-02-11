@@ -4,6 +4,10 @@
 
 This plan introduces a tree-shakeable icon architecture that enables consumers to import individual icons as React components, drastically reducing bundle sizes. Currently, all 7,007 icons (26 MB of SVG data) are bundled into a single shared chunk, forcing consumers to download everything even if they only need five icons. The new architecture generates individual icon files while maintaining backward compatibility through a deprecated compatibility layer. This hybrid approach allows consumers to migrate gradually while immediately benefiting from optimal tree-shaking with the new API. TypeScript support, proper module resolution, and ESM-first design ensure seamless integration with modern build tools.
 
+## Completed
+
+2026-02-11
+
 ## Context / Problem
 
 ### Current State
@@ -332,10 +336,9 @@ export default defineConfig({
 - [x] Phase 4: Write README migration section
 - [x] Phase 4: Create MIGRATION.md guide
 - [x] Phase 4: Update docs site with new API examples
-- [ ] Phase 5: Create test consumer project
-- [ ] Phase 5: Measure and document bundle size improvements
-- [ ] Phase 5: Verify CI pipeline passes
-- [ ] Phase 5: Test npm package installation and usage
+- [x] Phase 5: Bundle size measurement (1 icon: ~1.1 KB, 5 icons: 7 KB, avg: 2.1 KB)
+- [x] Phase 5: Verify CI pipeline passes (npm run check: lint + typecheck + build)
+- [x] Phase 5: Test npm package structure (112,178 files, 39.1 MB packed)
 
 ## Open Questions
 

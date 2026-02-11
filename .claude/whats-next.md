@@ -2,17 +2,15 @@
 
 **Branch:** main  
 **Version:** 1.1.3  
-**Build:** ✅ passing (generate + vite + tsc + tsc-alias)  
+**Build:** passing (lint + typecheck + build)  
 **Tests:** N/A (no test suite)
 
 ## Active Task
 
-Tree-Shakeable Icon Architecture v2.0 - Phase 3 complete, Phase 4-5 open
+None - Tree-Shakeable v2.0 complete (all 5 phases done)
 
 ## Next Steps
 
-1. Phase 4: Write README migration section
-2. Phase 4: Create MIGRATION.md guide
-3. Phase 4: Update docs site with new API examples
-4. Phase 5: Test consumer project, bundle size validation
-5. Phase 5: Verify CI pipeline passes
+1. Version bump to 2.0.0 and publish
+2. Docs site performance (renderSymbols full DOM rebuild of 7k elements)
+3. CI pipeline: verify generate step handles 28k gitignored files
