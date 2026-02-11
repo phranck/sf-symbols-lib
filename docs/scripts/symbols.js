@@ -78,16 +78,16 @@ export function renderSymbols() {
     const packageNameForCard = (symbolNames || {})[key] || kebabToPascalCase(key);
     card.title = packageNameForCard;
     card.dataset.sfKey = key;
-    // Mark variant for CSS styling
-    const currentVariant = variantSelect ? variantSelect.value : 'hierarchical';
-    card.dataset.variant = currentVariant;
-
+    
     const vb = currentViewBox[key] || '0 0 24 24';
     
     // For multicolor in light mode, convert white fills to appropriate colors
     let processedContent = svgContent;
     const isLightMode = !document.documentElement.classList.contains('soft-dark');
     const currentVariant = variantSelect ? variantSelect.value : 'hierarchical';
+    
+    // Mark variant for CSS styling
+    card.dataset.variant = currentVariant;
     
     if (currentVariant === 'multicolor' && isLightMode) {
       // Light mode: dimmed white → black, white → #ffffff
