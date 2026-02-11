@@ -105,9 +105,10 @@ function extractSvgContent(svgPath: string, renderingMode?: string): string {
     // For hierarchical/monochrome: replace all colors with currentColor
     content = content.replace(/fill="(white|black|#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})"/g, 'fill="currentColor"');
   } else if (renderingMode === 'palette' || renderingMode === 'multicolor') {
-    // For palette/multicolor: keep original colors
-    // CSS will handle theme-specific rendering via filter
-    // Preserve white, black, and hex colors as-is
+    // For palette/multicolor: Keep ALL original colors from SVG
+    // Dark mode will use these as-is (Apple's design)
+    // Light mode will apply CSS filter for visibility
+    // Preserve white, black, and hex colors exactly as provided
   }
 
   const svgMatch = content.match(/<svg[^>]*>([\s\S]*?)<\/svg>/);

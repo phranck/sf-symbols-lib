@@ -776,15 +776,14 @@ body.drawer-open .card {
 }
 
 /* Multicolor/Palette rendering:
- * SF Symbols uses white fills that need theme-specific rendering
- * Light mode: invert to show black backgrounds with white foregrounds
- * Dark mode: keep original white fills
+ * Dark mode: Use original SVG colors (Apple's design)
+ * Light mode: Invert for visibility on light backgrounds
  */
 :root:not(.soft-dark) .card[data-variant="multicolor"] svg,
 :root:not(.soft-dark) .card[data-variant="palette"] svg,
 :root:not(.soft-dark) .drawer-preview-box[data-variant="multicolor"] svg,
 :root:not(.soft-dark) .drawer-preview-box[data-variant="palette"] svg {
-  filter: invert(1) hue-rotate(180deg);
+  filter: invert(1);
 }
 
 .card-info-icon {
