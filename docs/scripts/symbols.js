@@ -18,6 +18,28 @@ bottomDrawer.addEventListener('wheel', (e) => {
   }
 });
 
+// Helper function to process multicolor content for light mode
+function processMulticolorContent(svgContent, renderingMode) {
+  // Only process multicolor mode in light theme
+  if (renderingMode !== 'multicolor') {
+    return svgContent;
+  }
+  
+  // Check if we're in dark mode
+  const isDark = document.documentElement.classList.contains('soft-dark');
+  if (isDark) {
+    return svgContent; // Keep original colors in dark mode
+  }
+  
+  // Light mode: convert white fills with opacity to black fills with opacity
+  // This handles Apple's SVG format where both background and foreground use white
+  // but are differentiated by fill-opacity
+  return svgContent.replace(
+    /fill="white"\s+fill-opacity="([0-9.]+)"/g,
+    'fill="black" fill-opacity="$1"'
+  );
+}
+
 // Render symbols
 export function renderSymbols() {
   const query = (searchInput.value || '').trim().toLowerCase();
@@ -80,20 +102,13 @@ export function renderSymbols() {
     card.dataset.sfKey = key;
     
     const vb = currentViewBox[key] || '0 0 24 24';
+    const currentRenderingMode = variantSelect ? variantSelect.value : 'hierarchical';
     
-    // For multicolor in light mode, convert white fills to appropriate colors
-    let processedContent = svgContent;
-    const isLightMode = !document.documentElement.classList.contains('soft-dark');
-    const currentVariant = variantSelect ? variantSelect.value : 'hierarchical';
+    // Mark rendering mode for CSS styling
+    card.dataset.variant = currentRenderingMode;
     
-    // Mark variant for CSS styling
-    card.dataset.variant = currentVariant;
-    
-    if (currentVariant === 'multicolor' && isLightMode) {
-      // Light mode: dimmed white → black, white → #ffffff
-      processedContent = processedContent.replace(/fill="white"\s+fill-opacity="([^"]+)"/g, 'fill="black" fill-opacity="$1"');
-      processedContent = processedContent.replace(/fill="white"/g, 'fill="#ffffff"');
-    }
+    // Process content for multicolor/light mode
+    const processedContent = processMulticolorContent(svgContent, currentRenderingMode);
     
     // Always set fill="currentColor" - needed for embedded currentColor values to resolve
     card.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" fill="currentColor">${processedContent}</svg>`;
@@ -211,17 +226,17 @@ export function setAboutModalOpen(isOpen) {
   }
 }
 
-// Update data when variant changes
+// Update data when rendering mode changes
 export function updateData() {
-  const variant = variantSelect.value;
+  const renderingMode = variantSelect.value;
 
-  // Clear currentData and assign new data without reassigning the variable
-  Object.keys(currentData).forEach(key => delete currentData[key]);
-  Object.assign(currentData, allSymbolsData[variant] || {});
+  // Merge the new rendering mode data into currentData
+  // This preserves the proxy reference
+  const newData = allSymbolsData[renderingMode] || {};
+  Object.assign(currentData, allSymbolsData[renderingMode] || {});
 
-  // Same for currentViewBox
-  Object.keys(currentViewBox).forEach(key => delete currentViewBox[key]);
-  Object.assign(currentViewBox, allViewBoxData[variant] || {});
+  // Same for viewBox
+  Object.assign(currentViewBox, allViewBoxData[renderingMode] || {});
 
   // Skip heavy rendering if About modal is open (defer until closed)
   if (isAboutModalOpen) {
@@ -313,20 +328,13 @@ export function renderDrawerContent() {
   const svgKey = state.selectedSymbolKey;
   if (currentData[svgKey]) {
     const vb = currentViewBox[svgKey] || '0 0 24 24';
+    const currentRenderingMode = variantSelect ? variantSelect.value : 'hierarchical';
     
-    // For multicolor in light mode, convert white fills to appropriate colors
-    let processedContent = currentData[svgKey];
-    const isLightMode = !document.documentElement.classList.contains('soft-dark');
-    const currentVariant = variantSelect ? variantSelect.value : 'hierarchical';
+    // Mark rendering mode for CSS styling
+    previewBox.dataset.variant = currentRenderingMode;
     
-    // Mark variant for CSS styling
-    previewBox.dataset.variant = currentVariant;
-    
-    if (currentVariant === 'multicolor' && isLightMode) {
-      // Light mode: dimmed white → black, white → #ffffff
-      processedContent = processedContent.replace(/fill="white"\s+fill-opacity="([^"]+)"/g, 'fill="black" fill-opacity="$1"');
-      processedContent = processedContent.replace(/fill="white"/g, 'fill="#ffffff"');
-    }
+    // Process content for multicolor/light mode
+    const processedContent = processMulticolorContent(currentData[svgKey], currentRenderingMode);
     
     // Always set fill="currentColor" - needed for embedded currentColor values to resolve
     previewBox.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" fill="currentColor" width="100%" height="100%">${processedContent}</svg>`;
@@ -463,8 +471,8 @@ export function renderDrawerContent() {
     // Prefer package export name; fallback to Apple symbol string when not a valid identifier
     const _package = packageName;
     const _isValidIdentifier = /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(_package);
-    const _currentVariant = (variantSelect && variantSelect.value) ? variantSelect.value : 'hierarchical';
-    const _packagePath = `sf-symbols-lib/${_currentVariant}`;
+    const _currentRenderingMode = (variantSelect && variantSelect.value) ? variantSelect.value : 'hierarchical';
+    const _packagePath = `sf-symbols-lib/${_currentRenderingMode}`;
     const importLine = _isValidIdentifier ? `import { SFSymbol, ${_package} } from '${_packagePath}';` : `import { SFSymbol } from '${_packagePath}';`;
     const nameInline = _isValidIdentifier ? `{${_package}}` : `"${state.selectedSymbolKey}"`;
 
@@ -515,8 +523,8 @@ export function renderDrawerContent() {
   const _importSpan = _isValidIdentifier ? `<span class="syntax-component">SFSymbol</span>, <span class="syntax-component">${packageName}</span>` : `<span class="syntax-component">SFSymbol</span>`;
   const _nameSpan = _isValidIdentifier ? `<span class="syntax-punctuation">{</span><span class="syntax-component">${packageName}</span><span class="syntax-punctuation">}</span>` : `<span class="syntax-string">"${state.selectedSymbolKey}"</span>`;
 
-  const _displayVariant = (variantSelect && variantSelect.value) ? variantSelect.value : 'hierarchical';
-  const _displayPackagePath = `sf-symbols-lib/${_displayVariant}`;
+  const _displayRenderingMode = (variantSelect && variantSelect.value) ? variantSelect.value : 'hierarchical';
+  const _displayPackagePath = `sf-symbols-lib/${_displayRenderingMode}`;
   codeContent.innerHTML = `
 <span class="line-number">1</span>  <span class="syntax-keyword">import</span> { ${_importSpan} } <span class="syntax-keyword">from</span> <span class="syntax-string">'${_displayPackagePath}'</span>;
 <span class="line-number">2</span>
