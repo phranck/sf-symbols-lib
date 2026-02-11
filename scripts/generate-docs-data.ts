@@ -34,11 +34,15 @@ interface SymbolMetadataMap {
 interface VariantData {
   hierarchical: SymbolData;
   monochrome: SymbolData;
+  palette: SymbolData;
+  multicolor: SymbolData;
 }
 
 interface VariantMetadata {
   hierarchical: SymbolMetadataMap;
   monochrome: SymbolMetadataMap;
+  palette: SymbolMetadataMap;
+  multicolor: SymbolMetadataMap;
 }
 
 interface ChunkData {
@@ -59,7 +63,7 @@ interface MetaManifest {
   sfSymbolsVersion: string;
 }
 
-const VARIANTS = ['hierarchical', 'monochrome'] as const;
+const VARIANTS = ['hierarchical', 'monochrome', 'palette', 'multicolor'] as const;
 
 /**
  * Create reverse enum map from the imported SFSymbolName enum
@@ -257,14 +261,20 @@ async function main(): Promise<void> {
     const allData: VariantData = {
       hierarchical: {},
       monochrome: {},
+      palette: {},
+      multicolor: {},
     };
     const allViewBox: VariantData = {
       hierarchical: {},
       monochrome: {},
+      palette: {},
+      multicolor: {},
     };
     const allMetadata: VariantMetadata = {
       hierarchical: {},
       monochrome: {},
+      palette: {},
+      multicolor: {},
     };
 
     for (const variant of VARIANTS) {

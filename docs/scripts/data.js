@@ -26,6 +26,6 @@ export const state = {
 export let symbolNames = {};
 export let VARIANTS = [];
 export let CHUNKS = {};
-export let chunksLoaded = { hierarchical: new Set(), monochrome: new Set() };
+export let chunksLoaded = { hierarchical: new Set(), monochrome: new Set(), palette: new Set(), multicolor: new Set() };
 export let categories = [];
 export let symbolCategories = {};

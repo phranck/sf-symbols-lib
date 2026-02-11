@@ -2,8 +2,8 @@ import { execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
-// Constants for variants
-const VARIANTS = ['hierarchical', 'monochrome'] as const;
+// Constants for variants (rendering modes)
+const VARIANTS = ['hierarchical', 'monochrome', 'palette', 'multicolor'] as const;
 
 type Variant = typeof VARIANTS[number];
 
