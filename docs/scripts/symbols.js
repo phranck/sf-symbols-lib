@@ -309,9 +309,6 @@ export function renderDrawerContent() {
   // 40px margin around the SF Symbol inside the preview box
   previewBox.style.padding = '40px';
   previewBox.style.boxSizing = 'border-box';
-  // Mark variant for CSS styling
-  const currentVariant = variantSelect ? variantSelect.value : 'hierarchical';
-  previewBox.dataset.variant = currentVariant;
 
   const svgKey = state.selectedSymbolKey;
   if (currentData[svgKey]) {
@@ -321,6 +318,9 @@ export function renderDrawerContent() {
     let processedContent = currentData[svgKey];
     const isLightMode = !document.documentElement.classList.contains('soft-dark');
     const currentVariant = variantSelect ? variantSelect.value : 'hierarchical';
+    
+    // Mark variant for CSS styling
+    previewBox.dataset.variant = currentVariant;
     
     if (currentVariant === 'multicolor' && isLightMode) {
       // Light mode: dimmed white → black, white → #ffffff
