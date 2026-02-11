@@ -105,7 +105,14 @@ function extractSvgContent(svgPath: string, renderingMode?: string): string {
     // For hierarchical/monochrome: replace all colors with currentColor
     content = content.replace(/fill="(white|black|#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})"/g, 'fill="currentColor"');
   } else if (renderingMode === 'palette' || renderingMode === 'multicolor') {
-    // For palette/multicolor: replace white with currentColor for theme-awareness, preserve black and hex
+    // For palette/multicolor with opacity semantics:
+    // - white + opacity (background) → black (or dark color for contrast)
+    // - white without opacity (foreground) → currentColor (theme-aware)
+    // - preserve black and hex colors as-is
+    
+    // Replace white with opacity with black (background layer)
+    content = content.replace(/fill="white"\s+fill-opacity="[^"]+"/g, 'fill="black" fill-opacity="0.85"');
+    // Replace standalone white with currentColor (foreground layer)
     content = content.replace(/fill="white"/g, 'fill="currentColor"');
     // Note: black and hex colors are preserved for multicolor rendering
   }
