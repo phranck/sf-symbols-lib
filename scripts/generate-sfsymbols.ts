@@ -92,14 +92,19 @@ function extractViewBox(svgPath: string): string {
 /**
  * Extract SVG content from file, removing XML declaration and comments
  */
-function extractSvgContent(svgPath: string): string {
+function extractSvgContent(svgPath: string, renderingMode?: string): string {
   let content = fs.readFileSync(svgPath, 'utf-8');
 
   content = content.replace(/<\?xml[^?]*\?>/g, '').trim();
   content = content.replace(/<!DOCTYPE[^>]*>/g, '').trim();
   content = content.replace(/<!--[\s\S]*?-->/g, '').trim();
   content = content.replace(/>\s+</g, '><');
-  content = content.replace(/fill="(white|black|#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})"/g, 'fill="currentColor"');
+  
+  // Only replace colors for hierarchical and monochrome modes
+  // For palette and multicolor, preserve original colors
+  if (renderingMode === 'hierarchical' || renderingMode === 'monochrome' || !renderingMode) {
+    content = content.replace(/fill="(white|black|#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})"/g, 'fill="currentColor"');
+  }
 
   const svgMatch = content.match(/<svg[^>]*>([\s\S]*?)<\/svg>/);
   return svgMatch ? svgMatch[1].trim() : content;
@@ -440,9 +445,9 @@ async function generateSFSymbols() {
 
       try {
         if (fs.existsSync(svgPath)) {
-          const content = extractSvgContent(svgPath);
-          const viewBox = extractViewBox(svgPath);
           const metadata = parseMetadata(svgPath);
+          const content = extractSvgContent(svgPath, variant);
+          const viewBox = extractViewBox(svgPath);
           
           // Cross-validate lib name if metadata exists
           if (metadata && metadata.libName && metadata.libName !== pascalName) {

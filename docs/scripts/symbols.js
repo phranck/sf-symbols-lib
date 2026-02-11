@@ -80,8 +80,10 @@ export function renderSymbols() {
     card.dataset.sfKey = key;
 
     const vb = currentViewBox[key] || '0 0 24 24';
-    // Always force fill for consistency
-    const shouldForceCardFill = true;
+    // Only force fill for hierarchical and monochrome modes
+    // For palette and multicolor, preserve embedded colors
+    const currentVariant = variantSelect ? variantSelect.value : 'hierarchical';
+    const shouldForceCardFill = currentVariant === 'hierarchical' || currentVariant === 'monochrome';
     card.innerHTML = shouldForceCardFill
       ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" fill="currentColor">${svgContent}</svg>`
       : `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}">${svgContent}</svg>`;
@@ -301,8 +303,9 @@ export function renderDrawerContent() {
   const svgKey = state.selectedSymbolKey;
   if (currentData[svgKey]) {
     const vb = currentViewBox[svgKey] || '0 0 24 24';
-    // Always force fill for consistency
-    const shouldForcePreviewFill = true;
+    // Only force fill for hierarchical and monochrome modes
+    const currentVariant = variantSelect ? variantSelect.value : 'hierarchical';
+    const shouldForcePreviewFill = currentVariant === 'hierarchical' || currentVariant === 'monochrome';
     previewBox.innerHTML = shouldForcePreviewFill
       ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" fill="currentColor" width="100%" height="100%">${currentData[svgKey]}</svg>`
       : `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" width="100%" height="100%">${currentData[svgKey]}</svg>`;
