@@ -100,10 +100,14 @@ function extractSvgContent(svgPath: string, renderingMode?: string): string {
   content = content.replace(/<!--[\s\S]*?-->/g, '').trim();
   content = content.replace(/>\s+</g, '><');
   
-  // Only replace colors for hierarchical and monochrome modes
-  // For palette and multicolor, preserve original colors
+  // Always replace white and black with currentColor
+  content = content.replace(/fill="(white|black)"/g, 'fill="currentColor"');
+  
+  // For hierarchical and monochrome modes, also replace all hex colors
+  // For palette and multicolor, preserve hex colors (#ff4245, etc.)
   if (renderingMode === 'hierarchical' || renderingMode === 'monochrome' || !renderingMode) {
-    content = content.replace(/fill="(white|black|#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})"/g, 'fill="currentColor"');
+    content = content.replace(/fill="#[0-9a-fA-F]{6}"/g, 'fill="currentColor"');
+    content = content.replace(/fill="#[0-9a-fA-F]{3}"/g, 'fill="currentColor"');
   }
 
   const svgMatch = content.match(/<svg[^>]*>([\s\S]*?)<\/svg>/);
