@@ -1,6 +1,6 @@
 // Main initialization for SF Symbols demo
 import { debounce, getVisibleCards, setFocusedCard, getGridColumns, getCenteredCardIndex } from './utils.js';
-import { searchInput, variantSelect, state, allSymbolsData, allViewBoxData, symbolNames, VARIANTS, CHUNKS, chunksLoaded } from './data.js';
+import { searchInput, variantSelect, categorySelect, state, allSymbolsData, allViewBoxData, symbolNames, VARIANTS, CHUNKS, chunksLoaded, categories, symbolCategories } from './data.js';
 import { renderSymbols, updateData, openDrawer, closeDrawer } from './symbols.js';
 import './theme.js';
 import './modals.js';
@@ -14,6 +14,9 @@ searchInput.addEventListener('input', debouncedRender);
 
 // Variant select event
 variantSelect.addEventListener('change', updateData);
+
+// Category select event
+categorySelect.addEventListener('change', renderSymbols);
 
 // Keyboard navigation
 document.addEventListener('keydown', (event) => {
@@ -210,6 +213,21 @@ async function initChunkedData() {
     VARIANTS.push(...(meta.VARIANTS || []));
     Object.assign(symbolNames, meta.symbolNames || {});
     Object.assign(CHUNKS, meta.chunks || {});
+    
+    // Load categories and symbol-category mappings
+    categories.length = 0;
+    categories.push(...(meta.categories || []));
+    Object.assign(symbolCategories, meta.symbolCategories || {});
+    
+    // Populate category dropdown
+    if (categorySelect && categories.length > 0) {
+      categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category;
+        option.textContent = category;
+        categorySelect.appendChild(option);
+      });
+    }
 
     const defaultVariant = VARIANTS[0];
 

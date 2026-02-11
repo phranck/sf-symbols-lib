@@ -1,6 +1,6 @@
 // Symbol rendering and management for SF Symbols demo
 import { FLIP_MEASURE_THRESHOLD, debounce, copyToClipboard, getVisibleCards, setFocusedCard, kebabToPascalCase } from './utils.js';
-import { currentData, currentViewBox, allSymbolsData, allViewBoxData, state, searchInput, variantSelect, iconsContainer, visibleCountEl, totalCountEl, infoSymbols, symbolNames } from './data.js';
+import { currentData, currentViewBox, allSymbolsData, allViewBoxData, state, searchInput, variantSelect, categorySelect, iconsContainer, visibleCountEl, totalCountEl, infoSymbols, symbolNames, symbolCategories } from './data.js';
 import { openCopyModal } from './modals.js';
 import { currentColor } from './colors.js';
 
@@ -21,6 +21,7 @@ bottomDrawer.addEventListener('wheel', (e) => {
 // Render symbols
 export function renderSymbols() {
   const query = (searchInput.value || '').trim().toLowerCase();
+  const selectedCategory = categorySelect ? categorySelect.value : '';
 
   // Prepare entries and decide whether to run expensive FLIP measurements
   const entries = Object.entries(currentData);
@@ -43,6 +44,14 @@ export function renderSymbols() {
   entries.forEach(([key, svgContent]) => {
     const name = key;
     const searchText = (name + ' ' + key).toLowerCase();
+
+    // Category filter
+    if (selectedCategory) {
+      const symbolCats = symbolCategories[key] || [];
+      if (!symbolCats.includes(selectedCategory)) {
+        return;
+      }
+    }
 
     // Advanced search parsing:
     // - '|' splits OR segments: match any segment
