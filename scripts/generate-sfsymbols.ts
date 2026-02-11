@@ -104,8 +104,11 @@ function extractSvgContent(svgPath: string, renderingMode?: string): string {
   if (renderingMode === 'hierarchical' || renderingMode === 'monochrome' || !renderingMode) {
     // For hierarchical/monochrome: replace all colors with currentColor
     content = content.replace(/fill="(white|black|#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})"/g, 'fill="currentColor"');
+  } else if (renderingMode === 'palette' || renderingMode === 'multicolor') {
+    // For palette/multicolor: replace white with currentColor for theme-awareness, preserve black and hex
+    content = content.replace(/fill="white"/g, 'fill="currentColor"');
+    // Note: black and hex colors are preserved for multicolor rendering
   }
-  // For palette/multicolor: preserve all original colors (white, black, hex)
 
   const svgMatch = content.match(/<svg[^>]*>([\s\S]*?)<\/svg>/);
   return svgMatch ? svgMatch[1].trim() : content;
