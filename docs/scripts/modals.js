@@ -396,10 +396,10 @@ export function openCopyModal() {
   reactOption.className = 'copy-option';
   reactOption.innerHTML = `
     <span class="copy-option-label">React Component</span>
-    <span class="copy-option-value">&lt;SFSymbol name={${displayName}} size={32} /&gt;</span>
+    <span class="copy-option-value">&lt;${displayName} size="lg" /&gt;</span>
   `;
-  reactOption.dataset.copyValue = `<SFSymbol name={${displayName}} size={32} />`;
-  reactOption.addEventListener('click', () => copyAndClose(`<SFSymbol name={${displayName}} size={32} />`));
+  reactOption.dataset.copyValue = `<${displayName} size="lg" />`;
+  reactOption.addEventListener('click', () => copyAndClose(`<${displayName} size="lg" />`));
   copyOptionsContainer.appendChild(reactOption);
   copyOptions.push(reactOption);
 

@@ -385,16 +385,10 @@ function createCodeColumn(key, packageName, renderingMode) {
   const codeContent = document.createElement('pre');
   codeContent.className = 'codebox-bg';
 
-  const isValidIdentifier = /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(packageName);
   const packagePath = `sf-symbols-lib/${renderingMode}`;
-  const importSpan = isValidIdentifier 
-    ? `<span class="syntax-component">SFSymbol</span>, <span class="syntax-component">${packageName}</span>` 
-    : '<span class="syntax-component">SFSymbol</span>';
-  const nameSpan = isValidIdentifier 
-    ? `<span class="syntax-punctuation">{</span><span class="syntax-component">${packageName}</span><span class="syntax-punctuation">}</span>` 
-    : `<span class="syntax-string">"${key}"</span>`;
+  const componentSpan = `<span class="syntax-component">${packageName}</span>`;
 
-  codeContent.innerHTML = generateCodePreview(importSpan, nameSpan, packagePath);
+  codeContent.innerHTML = generateCodePreview(componentSpan, packageName, packagePath);
 
   // Copy button
   const copyButton = document.createElement('button');
@@ -403,7 +397,7 @@ function createCodeColumn(key, packageName, renderingMode) {
   copyButton.setAttribute('aria-label', 'Copy code to clipboard');
   copyButton.appendChild(createClipboardIcon());
   copyButton.addEventListener('click', () => {
-    const codeText = generateCodeText(packageName, key, isValidIdentifier, packagePath);
+    const codeText = generateCodeText(packageName, packagePath);
     copyToClipboard(codeText, 'Code copied to clipboard');
   });
 
@@ -411,49 +405,44 @@ function createCodeColumn(key, packageName, renderingMode) {
   return codeCol;
 }
 
-function generateCodeText(packageName, key, isValidIdentifier, packagePath) {
-  const importLine = isValidIdentifier 
-    ? `import { SFSymbol, ${packageName} } from '${packagePath}';` 
-    : `import { SFSymbol } from '${packagePath}';`;
-  const nameInline = isValidIdentifier ? `{${packageName}}` : `"${key}"`;
-
-  return `${importLine}
+function generateCodeText(packageName, packagePath) {
+  return `import { ${packageName} } from '${packagePath}';
 
 function MyComponent() {
   return (
     <div>
       {/* Basic usage */}
-      <SFSymbol name=${nameInline} />
+      <${packageName} />
 
       {/* With size */}
-      <SFSymbol name=${nameInline} size={32} />
+      <${packageName} size={32} />
 
       {/* With size preset */}
-      <SFSymbol name=${nameInline} size="lg" />
+      <${packageName} size="lg" />
 
       {/* Color via CSS */}
-      <SFSymbol name=${nameInline} className="text-red-500" />
+      <${packageName} className="text-red-500" />
 
       {/* Inline style */}
-      <SFSymbol name=${nameInline} style={{ color: '#ff0000' }} />
+      <${packageName} style={{ color: '#ff0000' }} />
 
       {/* With CSS variable */}
-      <SFSymbol name=${nameInline} style={{ color: 'var(--accent-color)' }} />
+      <${packageName} style={{ color: 'var(--accent-color)' }} />
 
       {/* Icon button */}
       <button className="icon-button">
-        <SFSymbol name=${nameInline} size={20} />
+        <${packageName} size="sm" />
       </button>
 
       {/* Button with icon and text */}
       <button className="flex items-center gap-2">
-        <SFSymbol name=${nameInline} size={16} />
+        <${packageName} size="xs" />
         <span>Edit</span>
       </button>
 
       {/* Danger button */}
       <button className="flex items-center gap-2 text-red-500">
-        <SFSymbol name=${nameInline} size={16} />
+        <${packageName} size="xs" />
         <span>Delete</span>
       </button>
     </div>
@@ -461,45 +450,45 @@ function MyComponent() {
 }`;
 }
 
-function generateCodePreview(importSpan, nameSpan, packagePath) {
+function generateCodePreview(componentSpan, componentName, packagePath) {
   return `
-<span class="line-number">1</span>  <span class="syntax-keyword">import</span> { ${importSpan} } <span class="syntax-keyword">from</span> <span class="syntax-string">'${packagePath}'</span>;
+<span class="line-number">1</span>  <span class="syntax-keyword">import</span> { ${componentSpan} } <span class="syntax-keyword">from</span> <span class="syntax-string">'${packagePath}'</span>;
 <span class="line-number">2</span>
 <span class="line-number">3</span>  <span class="syntax-keyword">function</span> <span class="syntax-component">MyComponent</span>() {
 <span class="line-number">4</span>    <span class="syntax-keyword">return</span> (
 <span class="line-number">5</span>      <span class="syntax-component">&lt;div&gt;</span>
 <span class="line-number">6</span>        {/* Basic usage */}
-<span class="line-number">7</span>        <span class="syntax-component">&lt;SFSymbol</span> <span class="syntax-property">name</span>=${nameSpan} <span class="syntax-component">/&gt;</span>
+<span class="line-number">7</span>        <span class="syntax-component">&lt;${componentName}</span> <span class="syntax-component">/&gt;</span>
 <span class="line-number">8</span>  
 <span class="line-number">9</span>        {/* With size */}
-<span class="line-number">10</span>       <span class="syntax-component">&lt;SFSymbol</span> <span class="syntax-property">name</span>=${nameSpan} <span class="syntax-property">size</span>={<span class="syntax-number">32</span>} <span class="syntax-component">/&gt;</span>
+<span class="line-number">10</span>       <span class="syntax-component">&lt;${componentName}</span> <span class="syntax-property">size</span>={<span class="syntax-number">32</span>} <span class="syntax-component">/&gt;</span>
 <span class="line-number">11</span> 
 <span class="line-number">12</span>       {/* With size preset */}
-<span class="line-number">13</span>       <span class="syntax-component">&lt;SFSymbol</span> <span class="syntax-property">name</span>=${nameSpan} <span class="syntax-property">size</span>=<span class="syntax-string">"lg"</span> <span class="syntax-component">/&gt;</span>
+<span class="line-number">13</span>       <span class="syntax-component">&lt;${componentName}</span> <span class="syntax-property">size</span>=<span class="syntax-string">"lg"</span> <span class="syntax-component">/&gt;</span>
 <span class="line-number">14</span> 
 <span class="line-number">15</span>       {/* Color via CSS */}
-<span class="line-number">16</span>       <span class="syntax-component">&lt;SFSymbol</span> <span class="syntax-property">name</span>=${nameSpan} <span class="syntax-property">className</span>=<span class="syntax-string">"text-red-500"</span> <span class="syntax-component">/&gt;</span>
+<span class="line-number">16</span>       <span class="syntax-component">&lt;${componentName}</span> <span class="syntax-property">className</span>=<span class="syntax-string">"text-red-500"</span> <span class="syntax-component">/&gt;</span>
 <span class="line-number">17</span> 
 <span class="line-number">18</span>       {/* Inline style */}
-<span class="line-number">19</span>       <span class="syntax-component">&lt;SFSymbol</span> <span class="syntax-property">name</span>=${nameSpan} <span class="syntax-property">style</span>={<span class="syntax-punctuation">{{</span> <span class="syntax-property">color:</span> <span class="syntax-string">'#ff0000'</span> <span class="syntax-punctuation">}}</span>} <span class="syntax-component">/&gt;</span>
+<span class="line-number">19</span>       <span class="syntax-component">&lt;${componentName}</span> <span class="syntax-property">style</span>={<span class="syntax-punctuation">{{</span> <span class="syntax-property">color:</span> <span class="syntax-string">'#ff0000'</span> <span class="syntax-punctuation">}}</span>} <span class="syntax-component">/&gt;</span>
 <span class="line-number">20</span> 
 <span class="line-number">21</span>       {/* With CSS variable */}
-<span class="line-number">22</span>       <span class="syntax-component">&lt;SFSymbol</span> <span class="syntax-property">name</span>=${nameSpan} <span class="syntax-property">style</span>={<span class="syntax-punctuation">{{</span> <span class="syntax-property">color:</span> <span class="syntax-string">'var(--accent-color)'</span> <span class="syntax-punctuation">}}</span>} <span class="syntax-component">/&gt;</span>
+<span class="line-number">22</span>       <span class="syntax-component">&lt;${componentName}</span> <span class="syntax-property">style</span>={<span class="syntax-punctuation">{{</span> <span class="syntax-property">color:</span> <span class="syntax-string">'var(--accent-color)'</span> <span class="syntax-punctuation">}}</span>} <span class="syntax-component">/&gt;</span>
 <span class="line-number">23</span> 
 <span class="line-number">24</span>       {/* Icon button */}
 <span class="line-number">25</span>       <span class="syntax-component">&lt;button</span> <span class="syntax-property">className</span>=<span class="syntax-string">"icon-button"</span><span class="syntax-component">&gt;</span>
-<span class="line-number">26</span>         <span class="syntax-component">&lt;SFSymbol</span> <span class="syntax-property">name</span>=${nameSpan} <span class="syntax-property">size</span>={<span class="syntax-number">20</span>} <span class="syntax-component">/&gt;</span>
+<span class="line-number">26</span>         <span class="syntax-component">&lt;${componentName}</span> <span class="syntax-property">size</span>=<span class="syntax-string">"sm"</span> <span class="syntax-component">/&gt;</span>
 <span class="line-number">27</span>       <span class="syntax-component">&lt;/button&gt;</span>
 <span class="line-number">28</span> 
 <span class="line-number">29</span>       {/* Button with icon and text */}
 <span class="line-number">30</span>       <span class="syntax-component">&lt;button</span> <span class="syntax-property">className</span>=<span class="syntax-string">"flex items-center gap-2"</span><span class="syntax-component">&gt;</span>
-<span class="line-number">31</span>         <span class="syntax-component">&lt;SFSymbol</span> <span class="syntax-property">name</span>=${nameSpan} <span class="syntax-property">size</span>={<span class="syntax-number">16</span>} <span class="syntax-component">/&gt;</span>
+<span class="line-number">31</span>         <span class="syntax-component">&lt;${componentName}</span> <span class="syntax-property">size</span>=<span class="syntax-string">"xs"</span> <span class="syntax-component">/&gt;</span>
 <span class="line-number">32</span>         <span class="syntax-component">&lt;span&gt;</span>Edit<span class="syntax-component">&lt;/span&gt;</span>
 <span class="line-number">33</span>       <span class="syntax-component">&lt;/button&gt;</span>
 <span class="line-number">34</span> 
 <span class="line-number">35</span>       {/* Danger button */}
 <span class="line-number">36</span>       <span class="syntax-component">&lt;button</span> <span class="syntax-property">className</span>=<span class="syntax-string">"flex items-center gap-2 text-red-500"</span><span class="syntax-component">&gt;</span>
-<span class="line-number">37</span>         <span class="syntax-component">&lt;SFSymbol</span> <span class="syntax-property">name</span>=${nameSpan} <span class="syntax-property">size</span>={<span class="syntax-number">16</span>} <span class="syntax-component">/&gt;</span>
+<span class="line-number">37</span>         <span class="syntax-component">&lt;${componentName}</span> <span class="syntax-property">size</span>=<span class="syntax-string">"xs"</span> <span class="syntax-component">/&gt;</span>
 <span class="line-number">38</span>         <span class="syntax-component">&lt;span&gt;</span>Delete<span class="syntax-component">&lt;/span&gt;</span>
 <span class="line-number">39</span>       <span class="syntax-component">&lt;/button&gt;</span>
 <span class="line-number">40</span>     <span class="syntax-component">&lt;/div&gt;</span>

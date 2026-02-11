@@ -331,7 +331,7 @@ export default defineConfig({
 - [x] Phase 3: Run lint + typecheck, fix issues
 - [x] Phase 4: Write README migration section
 - [x] Phase 4: Create MIGRATION.md guide
-- [ ] Phase 4: Update docs site with new API examples
+- [x] Phase 4: Update docs site with new API examples
 - [ ] Phase 5: Create test consumer project
 - [ ] Phase 5: Measure and document bundle size improvements
 - [ ] Phase 5: Verify CI pipeline passes
