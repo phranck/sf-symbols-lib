@@ -219,6 +219,12 @@ async function initChunkedData() {
     categories.push(...(meta.categories || []));
     Object.assign(symbolCategories, meta.symbolCategories || {});
     
+    // Update SF Symbols version in header
+    const versionEl = document.getElementById('sf-version');
+    if (versionEl && meta.sfSymbolsVersion) {
+      versionEl.textContent = meta.sfSymbolsVersion;
+    }
+    
     // Populate category dropdown
     if (categorySelect && categories.length > 0) {
       categories.forEach(category => {

@@ -56,6 +56,7 @@ interface MetaManifest {
   chunks: ChunksManifest;
   categories: string[];
   symbolCategories: { [key: string]: string[] };
+  sfSymbolsVersion: string;
 }
 
 const VARIANTS = ['hierarchical', 'monochrome'] as const;
@@ -310,11 +311,17 @@ async function main(): Promise<void> {
     // Collect unique categories and build symbol-to-categories mapping
     const categoriesSet = new Set<string>();
     const symbolCategories: { [key: string]: string[] } = {};
+    let sfSymbolsVersion = '';
 
-    // Iterate through all variants to collect categories
+    // Iterate through all variants to collect categories and version
     for (const variant of VARIANTS) {
       const metadata = allMetadata[variant];
       for (const [symbolKey, meta] of Object.entries(metadata)) {
+        // Extract SF Symbols version from first symbol
+        if (!sfSymbolsVersion && meta.sfSymbolsVersion) {
+          sfSymbolsVersion = meta.sfSymbolsVersion;
+        }
+        
         if (meta.categories && meta.categories.length > 0) {
           meta.categories.forEach(cat => categoriesSet.add(cat));
           // Use hierarchical variant as canonical source for categories
@@ -327,6 +334,7 @@ async function main(): Promise<void> {
 
     const categories = Array.from(categoriesSet).sort();
     console.log(`✓ Collected ${categories.length} unique categories`);
+    console.log(`✓ SF Symbols version: ${sfSymbolsVersion}`);
 
     // Create meta manifest
     const meta: MetaManifest = {
@@ -335,6 +343,7 @@ async function main(): Promise<void> {
       chunks: chunksManifest,
       categories,
       symbolCategories,
+      sfSymbolsVersion,
     };
 
     const metaPath = path.join(distDir, 'meta.json');
