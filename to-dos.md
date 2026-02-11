@@ -8,9 +8,6 @@
 
 ### High Priority
 
-- [ ] **Post-Regenerate Build**: Run full `npm run build` after metadata-strip fix in generator
-- [ ] **Lint & Typecheck**: Run `npm run lint` + `npm run typecheck`, fix issues
-- [ ] **Gitignore Decision**: Decide whether to gitignore generated `src/*/icons/*.tsx` (28k files) or commit them
 - [ ] **README Migration Section**: Document new tree-shakeable API, before/after examples, bundle size comparison
 - [ ] **MIGRATION.md**: Detailed migration guide from v1.x to v2.0
 - [ ] **Test Consumer Project**: Fresh Next.js app testing both old and new API, bundle size analysis
@@ -31,7 +28,7 @@
 
 ### 2026-02-11
 
-- [x] **Tree-Shakeable Phases 1-3**: Generator rewrite, SFIcon/types, 28k individual icon components, compat layer with deprecation, Vite preserveModules, package.json exports
+- [x] **Tree-Shakeable Phases 1-3**: Generator, SFIcon, 28k icons, compat layer, Vite preserveModules, build/lint/typecheck clean, gitignore generated icons
 - [x] **Docs Circular Dependency Fix**: Resolved theme.js <-> colors.js TDZ crash via CustomEvent
 - [x] **Docs Preload Fix**: Changed `<link rel="preload" as="script">` to `<link rel="modulepreload">`
 - [x] **SVG Metadata Integration**: Embedded XML metadata parsing, 30 categories, category filter on website
@@ -49,4 +46,4 @@
 
 ---
 
-**Last Updated:** 2026-02-11 (22:00)
+**Last Updated:** 2026-02-11 (23:30)

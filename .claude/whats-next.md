@@ -7,13 +7,12 @@
 
 ## Active Task
 
-Tree-Shakeable Icon Architecture v2.0 - Phases 1-3 done, Phase 4-5 open
+Tree-Shakeable Icon Architecture v2.0 - Phase 3 complete, Phase 4-5 open
 
 ## Next Steps
 
-1. Full `npm run build` after metadata-strip fix (last regenerate done, build not yet)
-2. Run lint + typecheck, fix issues
-3. Decide: gitignore generated `src/*/icons/*.tsx` or commit them
-4. Docs site performance (renderSymbols full DOM rebuild of 7k elements)
-5. Phase 4: README migration section + MIGRATION.md
-6. Phase 5: Test consumer project, bundle size validation
+1. Phase 4: Write README migration section
+2. Phase 4: Create MIGRATION.md guide
+3. Phase 4: Update docs site with new API examples
+4. Phase 5: Test consumer project, bundle size validation
+5. Phase 5: Verify CI pipeline passes

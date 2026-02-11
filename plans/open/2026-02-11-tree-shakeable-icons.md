@@ -327,8 +327,8 @@ export default defineConfig({
 - [x] Phase 3: Update Vite config with preserveModules: true
 - [x] Phase 3: Add subpath exports to package.json (all 4 variants + compat)
 - [x] Phase 3: Verify build output structure (28,028 individual icons in dist/)
-- [ ] Phase 3: Run full build after metadata-strip fix
-- [ ] Phase 3: Run lint + typecheck, fix issues
+- [x] Phase 3: Run full build after metadata-strip fix
+- [x] Phase 3: Run lint + typecheck, fix issues
 - [ ] Phase 4: Write README migration section
 - [ ] Phase 4: Create MIGRATION.md guide
 - [ ] Phase 4: Update docs site with new API examples
