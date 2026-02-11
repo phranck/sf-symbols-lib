@@ -20,9 +20,25 @@ interface SymbolData {
   [key: string]: string;
 }
 
+interface SymbolMetadata {
+  restricted: boolean;
+  renderingMode: string;
+  sfSymbolsVersion: string;
+  categories: string[];
+}
+
+interface SymbolMetadataMap {
+  [key: string]: SymbolMetadata;
+}
+
 interface VariantData {
   hierarchical: SymbolData;
   monochrome: SymbolData;
+}
+
+interface VariantMetadata {
+  hierarchical: SymbolMetadataMap;
+  monochrome: SymbolMetadataMap;
 }
 
 interface ChunkData {
@@ -38,6 +54,8 @@ interface MetaManifest {
   VARIANTS: readonly Variant[];
   symbolNames: SymbolData;
   chunks: ChunksManifest;
+  categories: string[];
+  symbolCategories: { [key: string]: string[] };
 }
 
 const VARIANTS = ['hierarchical', 'monochrome'] as const;
@@ -60,9 +78,10 @@ function createReverseEnumMap(): SymbolData {
 function parseSymbolsData(
   dataContent: string,
   reverseEnumMap: SymbolData
-): { symbolsData: SymbolData; viewBoxData: SymbolData } {
+): { symbolsData: SymbolData; viewBoxData: SymbolData; metadataMap: SymbolMetadataMap } {
   const symbolsData: SymbolData = {};
   const viewBoxData: SymbolData = {};
+  const metadataMap: SymbolMetadataMap = {};
 
   // Parse sfSymbolsData
   const dataMatch = dataContent.match(/export const sfSymbolsData[^{]*=\s*\{([\s\S]*?)\n\};/);
@@ -100,7 +119,32 @@ function parseSymbolsData(
     }
   }
 
-  return { symbolsData, viewBoxData };
+  // Parse sfSymbolsMetadata
+  const mdMatch = dataContent.match(/export const sfSymbolsMetadata[^{]*=\s*\{([\s\S]*?)\n\};/);
+  if (mdMatch) {
+    const mdBlock = mdMatch[1];
+    const mdRegex = /\[SFSymbolName\.(\w+)\]:\s*\{\s*restricted:\s*(true|false),\s*renderingMode:\s*'([^']*)',\s*sfSymbolsVersion:\s*'([^']*)',\s*categories:\s*\[(.*?)\]\s*\}/g;
+    let mdEntry: RegExpExecArray | null;
+
+    while ((mdEntry = mdRegex.exec(mdBlock)) !== null) {
+      const enumKey = mdEntry[1];
+      const restricted = mdEntry[2] === 'true';
+      const renderingMode = mdEntry[3];
+      const sfSymbolsVersion = mdEntry[4];
+      const categoriesStr = mdEntry[5];
+      const categories = categoriesStr
+        .split(',')
+        .map(c => c.trim().replace(/'/g, ''))
+        .filter(c => c.length > 0);
+
+      const strKey = reverseEnumMap[enumKey];
+      if (strKey) {
+        metadataMap[strKey] = { restricted, renderingMode, sfSymbolsVersion, categories };
+      }
+    }
+  }
+
+  return { symbolsData, viewBoxData, metadataMap };
 }
 
 
@@ -217,16 +261,21 @@ async function main(): Promise<void> {
       hierarchical: {},
       monochrome: {},
     };
+    const allMetadata: VariantMetadata = {
+      hierarchical: {},
+      monochrome: {},
+    };
 
     for (const variant of VARIANTS) {
       const dataFile = path.join(repoRootDir, 'src', variant, 'data.ts');
 
       try {
         const dataContent = await fs.readFile(dataFile, 'utf8');
-        const { symbolsData, viewBoxData } = parseSymbolsData(dataContent, reverseEnumMap);
+        const { symbolsData, viewBoxData, metadataMap } = parseSymbolsData(dataContent, reverseEnumMap);
 
         allData[variant] = symbolsData;
         allViewBox[variant] = viewBoxData;
+        allMetadata[variant] = metadataMap;
 
         console.log(`✓ Processed ${variant}: ${Object.keys(symbolsData).length} symbols`);
         console.log(`  Sample data:`, Object.keys(symbolsData).slice(0, 3));
@@ -235,6 +284,7 @@ async function main(): Promise<void> {
         console.warn(`⚠ Could not read ${dataFile}: ${errorMessage}`);
         allData[variant] = {};
         allViewBox[variant] = {};
+        allMetadata[variant] = {};
       }
     }
 
@@ -257,11 +307,34 @@ async function main(): Promise<void> {
       await writeChunks(distDir, variant, allData, allViewBox, chunksManifest);
     }
 
+    // Collect unique categories and build symbol-to-categories mapping
+    const categoriesSet = new Set<string>();
+    const symbolCategories: { [key: string]: string[] } = {};
+
+    // Iterate through all variants to collect categories
+    for (const variant of VARIANTS) {
+      const metadata = allMetadata[variant];
+      for (const [symbolKey, meta] of Object.entries(metadata)) {
+        if (meta.categories && meta.categories.length > 0) {
+          meta.categories.forEach(cat => categoriesSet.add(cat));
+          // Use hierarchical variant as canonical source for categories
+          if (variant === 'hierarchical') {
+            symbolCategories[symbolKey] = meta.categories;
+          }
+        }
+      }
+    }
+
+    const categories = Array.from(categoriesSet).sort();
+    console.log(`✓ Collected ${categories.length} unique categories`);
+
     // Create meta manifest
     const meta: MetaManifest = {
       VARIANTS,
       symbolNames: componentNames,
       chunks: chunksManifest,
+      categories,
+      symbolCategories,
     };
 
     const metaPath = path.join(distDir, 'meta.json');
