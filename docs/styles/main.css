@@ -776,8 +776,11 @@ body.drawer-open .card {
 }
 
 /* Multicolor/Palette rendering:
- * Dark mode: Use original SVG colors (Apple's design)
- * Light mode: Invert for visibility on light backgrounds
+ * Dark mode: Use original Apple SVG colors (designed for dark backgrounds)
+ * Light mode: Invert for visibility (not perfect due to SVG format limitations)
+ * 
+ * Note: Apple's SVG export uses white for all layers with only opacity differences.
+ * True SF Symbols layering cannot be fully replicated without system-level rendering.
  */
 :root:not(.soft-dark) .card[data-variant="multicolor"] svg,
 :root:not(.soft-dark) .card[data-variant="palette"] svg,
