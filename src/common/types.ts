@@ -1,8 +1,9 @@
 /**
  * Shared prop types for all SF Symbol icon components.
  *
- * Used by both the new tree-shakeable API (individual icon components)
- * and the legacy SFSymbol component.
+ * Every generated icon component accepts `SFIconProps`. Size can be
+ * specified as a named preset (`'xs'` through `'xl'`) or a numeric
+ * pixel value.
  */
 import { type CSSProperties, type SVGAttributes } from 'react';
 

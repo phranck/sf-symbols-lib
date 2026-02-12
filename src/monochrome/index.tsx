@@ -21,6 +21,9 @@ export type { SFIconProps, SFIconSize, SFIconSizePreset } from '@/common/types';
 // Re-export the generic renderer for advanced use cases
 export { SFIcon } from '@/common/SFIcon';
 
+// Re-export context for global icon defaults
+export { SFIconContext } from '@/common/context';
+
 // Individual icon components (7007 icons)
 export { SF00Circle } from '@/monochrome/icons/SF00Circle';
 export { SF00CircleFill } from '@/monochrome/icons/SF00CircleFill';

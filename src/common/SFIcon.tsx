@@ -2,11 +2,16 @@
  * Lightweight SVG wrapper for tree-shakeable SF Symbol icon components.
  *
  * Each generated icon component calls this renderer with its inline SVG data.
- * Unlike the legacy SFSymbol component, this does NOT import any data files,
- * keeping the bundle size to only the icons that are actually imported.
+ * Supports ref forwarding and inherits defaults from SFIconContext.
+ *
+ * Security note: `dangerouslySetInnerHTML` is used here because the SVG content
+ * is baked into each generated component at build time (not user-supplied at
+ * runtime). The content originates from Apple's official SF Symbols SVG exports
+ * and is processed by `scripts/generate-sfsymbols.ts`.
  */
-import { type ReactElement } from 'react';
+import { forwardRef, useContext } from 'react';
 
+import { SFIconContext } from '@/common/context';
 import { resolveSize, type SFIconProps } from '@/common/types';
 
 /** Internal props passed by generated icon components */
@@ -22,40 +27,47 @@ export interface SFIconRenderProps extends SFIconProps {
 /**
  * Render an SF Symbol as an inline SVG element.
  *
- * This is intentionally minimal for performance. Generated icon components
- * call this directly with their pre-baked SVG data.
+ * Reads defaults from the nearest `SFIconContext.Provider`. Explicit props
+ * passed to the icon component always take precedence over context values.
  */
-export function SFIcon({
-  svgContent,
-  viewBox,
-  currentColorFill = true,
-  size = 'lg',
-  className,
-  style,
-  ...rest
-}: SFIconRenderProps): ReactElement {
-  const px = resolveSize(size);
+export const SFIcon = forwardRef<SVGSVGElement, SFIconRenderProps>(
+  (
+    {
+      svgContent,
+      viewBox,
+      currentColorFill = true,
+      ...props
+    },
+    ref,
+  ) => {
+    const context = useContext(SFIconContext);
 
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox={viewBox}
-      width={px}
-      height={px}
-      fill={currentColorFill ? 'currentColor' : undefined}
-      className={className}
-      style={{
-        minWidth: px,
-        minHeight: px,
-        maxWidth: px,
-        maxHeight: px,
-        flex: `0 0 ${px}px`,
-        ...style,
-      }}
-      {...rest}
-      dangerouslySetInnerHTML={{ __html: svgContent }}
-    />
-  ) as ReactElement;
-}
+    const {
+      size = context.size ?? 'lg',
+      className = context.className,
+      style = context.style,
+      ...rest
+    } = props;
+
+    const pixelSize = resolveSize(size);
+
+    return (
+      <svg
+        ref={ref}
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox={viewBox}
+        width={pixelSize}
+        height={pixelSize}
+        fill={currentColorFill ? 'currentColor' : undefined}
+        className={className}
+        style={style}
+        {...rest}
+        dangerouslySetInnerHTML={{ __html: svgContent }}
+      />
+    );
+  },
+);
+
+SFIcon.displayName = 'SFIcon';
 
 export default SFIcon;
