@@ -1,0 +1,20 @@
+/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: SFBookmarkCircleFill (monochrome)
+ */
+import { forwardRef } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG_CONTENT = '<g><rect height="25.459" opacity="0" width="25.8008" x="0" y="0"/><path d="M25.4395 12.7246C25.4395 19.7266 19.7266 25.4395 12.7148 25.4395C5.71289 25.4395 0 19.7266 0 12.7246C0 5.71289 5.71289 0 12.7148 0C19.7266 0 25.4395 5.71289 25.4395 12.7246ZM10.0684 6.00586C8.84766 6.00586 8.21289 6.65039 8.21289 7.88086L8.21289 18.8086C8.21289 19.2773 8.4668 19.5605 8.86719 19.5605C9.16016 19.5605 9.33594 19.3945 9.84375 18.8965L12.6562 16.0938C12.6953 16.0547 12.7441 16.0547 12.7734 16.0938L15.5957 18.8965C16.0938 19.3945 16.2695 19.5605 16.5723 19.5605C16.9629 19.5605 17.2168 19.2773 17.2168 18.8086L17.2168 7.88086C17.2168 6.65039 16.582 6.00586 15.3613 6.00586Z" fill="currentColor" fill-opacity="0.85"/></g>';
+const VIEW_BOX = '0 0 25.8008 25.459';
+
+/** SFBookmarkCircleFill icon component (monochrome) */
+export const SFBookmarkCircleFill = forwardRef<SVGSVGElement, SFIconProps>((props, ref) => (
+  <SFIcon ref={ref} svgContent={SVG_CONTENT} viewBox={VIEW_BOX} {...props} />
+));
+
+SFBookmarkCircleFill.displayName = 'SFBookmarkCircleFill';
+
+export default SFBookmarkCircleFill;

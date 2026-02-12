@@ -1,0 +1,20 @@
+/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: SFDocumentCircle (monochrome)
+ */
+import { forwardRef } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG_CONTENT = '<g><rect height="25.459" opacity="0" width="25.8008" x="0" y="0"/><path d="M12.7148 25.4395C19.7363 25.4395 25.4395 19.7461 25.4395 12.7246C25.4395 5.70312 19.7363 0 12.7148 0C5.69336 0 0 5.70312 0 12.7246C0 19.7461 5.69336 25.4395 12.7148 25.4395ZM12.7148 23.623C6.68945 23.623 1.81641 18.75 1.81641 12.7246C1.81641 6.69922 6.68945 1.82617 12.7148 1.82617C18.7402 1.82617 23.6133 6.69922 23.6133 12.7246C23.6133 18.75 18.7402 23.623 12.7148 23.623Z" fill="currentColor" fill-opacity="0.85"/><path d="M9.69727 19.4531L16.2988 19.4531C17.6465 19.4531 18.3203 18.7598 18.3203 17.4023L18.3203 11.8359L13.3496 11.8359C12.5293 11.8359 12.1387 11.4453 12.1387 10.625L12.1387 5.5957L9.69727 5.5957C8.35938 5.5957 7.67578 6.28906 7.67578 7.64648L7.67578 17.4023C7.67578 18.7695 8.34961 19.4531 9.69727 19.4531ZM13.4766 10.8984L18.2324 10.8984C18.2031 10.6543 18.0176 10.4102 17.7344 10.127L13.8477 6.18164C13.5742 5.89844 13.3203 5.72266 13.0859 5.67383L13.0859 10.498C13.0859 10.7617 13.2129 10.8984 13.4766 10.8984Z" fill="currentColor" fill-opacity="0.85"/></g>';
+const VIEW_BOX = '0 0 25.8008 25.459';
+
+/** SFDocumentCircle icon component (monochrome) */
+export const SFDocumentCircle = forwardRef<SVGSVGElement, SFIconProps>((props, ref) => (
+  <SFIcon ref={ref} svgContent={SVG_CONTENT} viewBox={VIEW_BOX} {...props} />
+));
+
+SFDocumentCircle.displayName = 'SFDocumentCircle';
+
+export default SFDocumentCircle;

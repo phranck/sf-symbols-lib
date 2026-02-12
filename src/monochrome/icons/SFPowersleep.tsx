@@ -1,0 +1,20 @@
+/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: SFPowersleep (monochrome)
+ */
+import { forwardRef } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG_CONTENT = '<g><rect height="25.4199" opacity="0" width="23.252" x="0" y="0"/><path d="M5.81055 7.88086C5.81055 5.77148 6.31836 3.75977 7.26562 2.02148C7.48047 1.65039 7.16797 1.2793 6.70898 1.52344C2.70508 3.65234 0 7.90039 0 12.7051C0 19.7266 5.69336 25.4199 12.7148 25.4199C16.8066 25.4199 20.498 23.4473 22.793 20.3809C23.0078 20.127 22.8809 19.7559 22.4414 19.8828C21.2207 20.3418 19.9023 20.5957 18.5352 20.5957C11.5723 20.5957 5.81055 14.834 5.81055 7.88086Z" fill="currentColor" fill-opacity="0.85"/></g>';
+const VIEW_BOX = '0 0 23.252 25.4199';
+
+/** SFPowersleep icon component (monochrome) */
+export const SFPowersleep = forwardRef<SVGSVGElement, SFIconProps>((props, ref) => (
+  <SFIcon ref={ref} svgContent={SVG_CONTENT} viewBox={VIEW_BOX} {...props} />
+));
+
+SFPowersleep.displayName = 'SFPowersleep';
+
+export default SFPowersleep;

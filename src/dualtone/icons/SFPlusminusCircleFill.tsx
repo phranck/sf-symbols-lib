@@ -1,0 +1,20 @@
+/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: SFPlusminusCircleFill (dualtone)
+ */
+import { forwardRef } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG_CONTENT = '<g><rect height="25.459" opacity="0" width="25.8008" x="0" y="0"/><path d="M12.7148 25.459C19.7266 25.459 25.4395 19.7461 25.4395 12.7344C25.4395 5.73242 19.7266 0.0195312 12.7148 0.0195312C5.71289 0.0195312 0 5.73242 0 12.7344C0 19.7461 5.71289 25.459 12.7148 25.459Z" fill="currentColor" fill-opacity="0.2125"/><path d="M9.0918 18.7891L16.3574 18.7891C16.7969 18.7891 17.1484 18.3984 17.1484 18.0078C17.1484 17.5879 16.7969 17.2266 16.3574 17.2266L9.0918 17.2266C8.66211 17.2266 8.31055 17.5879 8.31055 18.0078C8.31055 18.3984 8.66211 18.7891 9.0918 18.7891ZM9.08203 10.9961L16.3672 10.9961C16.7969 10.9961 17.1484 10.6348 17.1484 10.2051C17.1484 9.78516 16.7969 9.42383 16.3672 9.42383L9.08203 9.42383C8.66211 9.42383 8.31055 9.78516 8.31055 10.2051C8.31055 10.6348 8.66211 10.9961 9.08203 10.9961ZM12.7344 14.6289C13.1641 14.6289 13.5254 14.2773 13.5254 13.8574L13.5254 6.5625C13.5254 6.13281 13.1543 5.78125 12.7344 5.78125C12.3145 5.79102 11.9531 6.14258 11.9531 6.5625L11.9531 13.8574C11.9531 14.2676 12.3145 14.6289 12.7344 14.6289Z" fill="currentColor" fill-opacity="0.85"/></g>';
+const VIEW_BOX = '0 0 25.8008 25.459';
+
+/** SFPlusminusCircleFill icon component (dualtone) */
+export const SFPlusminusCircleFill = forwardRef<SVGSVGElement, SFIconProps>((props, ref) => (
+  <SFIcon ref={ref} svgContent={SVG_CONTENT} viewBox={VIEW_BOX} {...props} />
+));
+
+SFPlusminusCircleFill.displayName = 'SFPlusminusCircleFill';
+
+export default SFPlusminusCircleFill;

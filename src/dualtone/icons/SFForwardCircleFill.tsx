@@ -1,0 +1,20 @@
+/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: SFForwardCircleFill (dualtone)
+ */
+import { forwardRef } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG_CONTENT = '<g><rect height="25.459" opacity="0" width="25.8008" x="0" y="0"/><path d="M12.7148 25.4395C19.7266 25.4395 25.4395 19.7266 25.4395 12.7246C25.4395 5.71289 19.7266 0 12.7148 0C5.71289 0 0 5.71289 0 12.7246C0 19.7266 5.71289 25.4395 12.7148 25.4395Z" fill="currentColor" fill-opacity="0.2125"/><path d="M21.9824 12.7441C21.9824 13.0664 21.7969 13.3496 21.416 13.5645L15.1172 17.2852C14.8926 17.4219 14.6875 17.4805 14.4531 17.4805C14.0137 17.4805 13.6426 17.168 13.6426 16.5234L13.6426 13.1055C13.5547 13.2812 13.3984 13.4375 13.1738 13.5645L6.86523 17.2852C6.64062 17.4219 6.42578 17.4805 6.20117 17.4805C5.76172 17.4805 5.38086 17.168 5.38086 16.5234L5.38086 8.97461C5.38086 8.32031 5.76172 8.00781 6.20117 8.00781C6.42578 8.00781 6.64062 8.07617 6.86523 8.21289L13.1738 11.9238C13.3984 12.0605 13.5547 12.207 13.6426 12.3926L13.6426 8.97461C13.6426 8.32031 14.0137 8.00781 14.4531 8.00781C14.6875 8.00781 14.8926 8.07617 15.1172 8.21289L21.416 11.9238C21.7969 12.1484 21.9824 12.4219 21.9824 12.7441Z" fill="currentColor" fill-opacity="0.85"/></g>';
+const VIEW_BOX = '0 0 25.8008 25.459';
+
+/** SFForwardCircleFill icon component (dualtone) */
+export const SFForwardCircleFill = forwardRef<SVGSVGElement, SFIconProps>((props, ref) => (
+  <SFIcon ref={ref} svgContent={SVG_CONTENT} viewBox={VIEW_BOX} {...props} />
+));
+
+SFForwardCircleFill.displayName = 'SFForwardCircleFill';
+
+export default SFForwardCircleFill;

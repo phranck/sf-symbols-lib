@@ -1,0 +1,20 @@
+/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: SFFieldOfViewWideFill (dualtone)
+ */
+import { forwardRef } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG_CONTENT = '<g><rect height="21.8262" opacity="0" width="29.3831" x="0" y="0"/><path d="M0.73157 8.83789L12.3136 20.3711C13.7394 21.7871 15.2921 21.7871 16.7374 20.3711L28.2902 8.83789C29.3058 7.82227 29.2179 6.5625 28.2804 5.57617C24.9894 2.13867 19.755 0 14.5109 0C9.26673 0 4.04212 2.14844 0.741335 5.57617C-0.20593 6.55273-0.284055 7.82227 0.73157 8.83789Z" fill="currentColor" fill-opacity="0.85"/></g>';
+const VIEW_BOX = '0 0 29.3831 21.8262';
+
+/** SFFieldOfViewWideFill icon component (dualtone) */
+export const SFFieldOfViewWideFill = forwardRef<SVGSVGElement, SFIconProps>((props, ref) => (
+  <SFIcon ref={ref} svgContent={SVG_CONTENT} viewBox={VIEW_BOX} {...props} />
+));
+
+SFFieldOfViewWideFill.displayName = 'SFFieldOfViewWideFill';
+
+export default SFFieldOfViewWideFill;

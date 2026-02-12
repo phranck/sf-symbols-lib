@@ -1,0 +1,20 @@
+/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: SFDistributeVerticalBottomFill (monochrome)
+ */
+import { forwardRef } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG_CONTENT = '<g><rect height="29.7559" opacity="0" width="29.7461" x="0" y="0"/><path d="M9.85352 9.08203L19.5312 9.08203C21.2109 9.08203 22.1484 8.1543 22.1484 6.50391L22.1484 2.57812C22.1484 0.927734 21.2109 0 19.5312 0L9.85352 0C8.17383 0 7.23633 0.927734 7.23633 2.57812L7.23633 6.50391C7.23633 8.1543 8.17383 9.08203 9.85352 9.08203ZM5.48828 25.9668L23.8965 25.9668C25.5762 25.9668 26.5137 25.0391 26.5137 23.3887L26.5137 19.4629C26.5137 17.8125 25.5762 16.8848 23.8965 16.8848L5.48828 16.8848C3.80859 16.8848 2.87109 17.8125 2.87109 19.4629L2.87109 23.3887C2.87109 25.0391 3.80859 25.9668 5.48828 25.9668Z" fill="currentColor" fill-opacity="0.85"/><path d="M0.751953 12.8516L28.623 12.8516C29.0527 12.8516 29.3848 12.4805 29.3848 12.0605C29.3848 11.6309 29.0527 11.2598 28.623 11.2598L0.751953 11.2598C0.332031 11.2598 0 11.6309 0 12.0605C0 12.4805 0.332031 12.8516 0.751953 12.8516ZM0.751953 29.7363L28.623 29.7363C29.0527 29.7363 29.3848 29.3652 29.3848 28.9453C29.3848 28.5156 29.0527 28.1445 28.623 28.1445L0.751953 28.1445C0.332031 28.1445 0 28.5156 0 28.9453C0 29.3652 0.332031 29.7363 0.751953 29.7363Z" fill="currentColor" fill-opacity="0.85"/></g>';
+const VIEW_BOX = '0 0 29.7461 29.7559';
+
+/** SFDistributeVerticalBottomFill icon component (monochrome) */
+export const SFDistributeVerticalBottomFill = forwardRef<SVGSVGElement, SFIconProps>((props, ref) => (
+  <SFIcon ref={ref} svgContent={SVG_CONTENT} viewBox={VIEW_BOX} {...props} />
+));
+
+SFDistributeVerticalBottomFill.displayName = 'SFDistributeVerticalBottomFill';
+
+export default SFDistributeVerticalBottomFill;

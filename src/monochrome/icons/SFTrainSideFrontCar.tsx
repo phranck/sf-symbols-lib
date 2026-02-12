@@ -1,0 +1,20 @@
+/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: SFTrainSideFrontCar (monochrome)
+ */
+import { forwardRef } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG_CONTENT = '<g><rect height="19.7363" opacity="0" width="34.5703" x="0" y="0"/><path d="M0 16.0645C0 18.4961 1.24023 19.7363 3.71094 19.7363L28.0859 19.7363C32.0898 19.7363 34.209 17.3145 34.209 14.502C34.209 12.8027 33.4863 10.9863 31.8945 9.4043L26.582 4.14062C23.3594 0.957031 21.2793 0 17.4707 0L3.71094 0C1.24023 0 0 1.24023 0 3.67188ZM13.1543 10.0488L13.1543 5.22461C13.1543 4.50195 13.584 4.08203 14.3164 4.08203L17.9883 4.08203C21.3867 4.08203 23.1348 4.51172 24.9609 6.32812L28.0762 9.42383C28.8086 10.1562 28.3984 11.1719 27.5781 11.1719L14.3164 11.1719C13.584 11.1719 13.1543 10.752 13.1543 10.0488Z" fill="currentColor" fill-opacity="0.85"/></g>';
+const VIEW_BOX = '0 0 34.5703 19.7363';
+
+/** SFTrainSideFrontCar icon component (monochrome) */
+export const SFTrainSideFrontCar = forwardRef<SVGSVGElement, SFIconProps>((props, ref) => (
+  <SFIcon ref={ref} svgContent={SVG_CONTENT} viewBox={VIEW_BOX} {...props} />
+));
+
+SFTrainSideFrontCar.displayName = 'SFTrainSideFrontCar';
+
+export default SFTrainSideFrontCar;

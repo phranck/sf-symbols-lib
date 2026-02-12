@@ -1,0 +1,20 @@
+/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: SFCableConnector (monochrome)
+ */
+import { forwardRef } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG_CONTENT = '<g><rect height="28.3301" opacity="0" width="8.47656" x="0" y="0"/><path d="M3.13477 28.3301L4.99023 28.3301L4.99023 16.377L3.13477 16.377ZM1.47461 18.2715L6.64062 18.2715C7.67578 18.2715 8.11523 17.8418 8.11523 16.8066L8.11523 7.03125C8.11523 5.99609 7.67578 5.55664 6.64062 5.55664L1.47461 5.55664C0.439453 5.55664 0 5.99609 0 7.03125L0 16.8066C0 17.8418 0.439453 18.2715 1.47461 18.2715Z" fill="currentColor" fill-opacity="0.85"/><path d="M1.67969 4.19922L6.43555 4.19922L6.43555 1.46484C6.43555 0.429688 5.98633 0 4.95117 0L3.16406 0C2.12891 0 1.67969 0.429688 1.67969 1.46484Z" fill="currentColor" fill-opacity="0.85"/></g>';
+const VIEW_BOX = '0 0 8.47656 28.3301';
+
+/** SFCableConnector icon component (monochrome) */
+export const SFCableConnector = forwardRef<SVGSVGElement, SFIconProps>((props, ref) => (
+  <SFIcon ref={ref} svgContent={SVG_CONTENT} viewBox={VIEW_BOX} {...props} />
+));
+
+SFCableConnector.displayName = 'SFCableConnector';
+
+export default SFCableConnector;

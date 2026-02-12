@@ -1,0 +1,20 @@
+/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: SFSignpostLeftFill (dualtone)
+ */
+import { forwardRef } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG_CONTENT = '<g><rect height="26.084" opacity="0" width="26.2623" x="0" y="0"/><path d="M14.6546 5.01953L14.6546 0.869141C14.6546 0.390625 14.2639 0 13.7854 0C13.3167 0 12.9261 0.390625 12.9261 0.869141L12.9261 5.01953ZM22.7307 15.4688C24.3518 15.4688 25.26 14.5703 25.26 12.9883L25.26 6.18164C25.26 4.59961 24.3518 3.71094 22.7307 3.71094L6.46121 3.71094C5.39676 3.71094 4.88895 4.0332 4.27371 4.60938L0.982697 7.72461C-0.345428 8.98438-0.306366 10.2344 0.972931 11.4355L4.27371 14.5605C4.88895 15.1367 5.39676 15.459 6.47098 15.459ZM14.6546 14.834L12.9261 14.834L12.9261 25.9375L14.6546 25.9375ZM19.3909 25.2051C19.3909 24.7266 19.0003 24.3359 18.5315 24.3359L9.03934 24.3359C8.56082 24.3359 8.1702 24.7266 8.1702 25.2051C8.1702 25.6738 8.56082 26.0645 9.03934 26.0645L18.5315 26.0645C19.0003 26.0645 19.3909 25.6738 19.3909 25.2051Z" fill="currentColor" fill-opacity="0.85"/></g>';
+const VIEW_BOX = '0 0 26.2623 26.084';
+
+/** SFSignpostLeftFill icon component (dualtone) */
+export const SFSignpostLeftFill = forwardRef<SVGSVGElement, SFIconProps>((props, ref) => (
+  <SFIcon ref={ref} svgContent={SVG_CONTENT} viewBox={VIEW_BOX} {...props} />
+));
+
+SFSignpostLeftFill.displayName = 'SFSignpostLeftFill';
+
+export default SFSignpostLeftFill;

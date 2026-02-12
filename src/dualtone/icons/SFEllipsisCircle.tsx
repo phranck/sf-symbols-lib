@@ -1,0 +1,20 @@
+/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: SFEllipsisCircle (dualtone)
+ */
+import { forwardRef } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG_CONTENT = '<g><rect height="25.459" opacity="0" width="25.8008" x="0" y="0"/><path d="M12.7148 25.4395C19.7363 25.4395 25.4395 19.7461 25.4395 12.7246C25.4395 5.70312 19.7363 0 12.7148 0C5.69336 0 0 5.70312 0 12.7246C0 19.7461 5.69336 25.4395 12.7148 25.4395ZM12.7148 23.623C6.68945 23.623 1.81641 18.75 1.81641 12.7246C1.81641 6.69922 6.68945 1.82617 12.7148 1.82617C18.7402 1.82617 23.6133 6.69922 23.6133 12.7246C23.6133 18.75 18.7402 23.623 12.7148 23.623Z" fill="currentColor" fill-opacity="0.425"/><path d="M18.5449 14.4531C19.502 14.4531 20.2832 13.6719 20.2832 12.7051C20.2832 11.748 19.502 10.9668 18.5449 10.9668C17.5781 10.9668 16.7969 11.748 16.7969 12.7051C16.7969 13.6719 17.5781 14.4531 18.5449 14.4531Z" fill="currentColor" fill-opacity="0.85"/><path d="M12.7051 14.4531C13.6719 14.4531 14.4531 13.6719 14.4531 12.7051C14.4531 11.748 13.6719 10.9668 12.7051 10.9668C11.748 10.9668 10.9668 11.748 10.9668 12.7051C10.9668 13.6719 11.748 14.4531 12.7051 14.4531Z" fill="currentColor" fill-opacity="0.85"/><path d="M6.875 14.4531C7.83203 14.4531 8.61328 13.6719 8.61328 12.7051C8.61328 11.748 7.82227 10.9668 6.875 10.9668C5.9082 10.9668 5.12695 11.748 5.12695 12.7051C5.12695 13.6719 5.9082 14.4531 6.875 14.4531Z" fill="currentColor" fill-opacity="0.85"/></g>';
+const VIEW_BOX = '0 0 25.8008 25.459';
+
+/** SFEllipsisCircle icon component (dualtone) */
+export const SFEllipsisCircle = forwardRef<SVGSVGElement, SFIconProps>((props, ref) => (
+  <SFIcon ref={ref} svgContent={SVG_CONTENT} viewBox={VIEW_BOX} {...props} />
+));
+
+SFEllipsisCircle.displayName = 'SFEllipsisCircle';
+
+export default SFEllipsisCircle;

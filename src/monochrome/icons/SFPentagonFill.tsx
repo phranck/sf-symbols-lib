@@ -1,0 +1,20 @@
+/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: SFPentagonFill (monochrome)
+ */
+import { forwardRef } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG_CONTENT = '<g><rect height="26.6113" opacity="0" width="27.3869" x="0" y="0"/><path d="M0.236405 12.4512L3.9864 24.043C4.53328 25.7812 5.66609 26.6113 7.5118 26.6113L19.5333 26.6113C21.379 26.6113 22.5118 25.7812 23.0587 24.043L26.7794 12.5195C27.3555 10.7129 26.9356 9.35547 25.4805 8.28125L15.7735 1.14258C14.2305 0.0195312 12.8145 0.0195312 11.2716 1.14258L1.56453 8.28125C0.0996859 9.35547-0.320236 10.6836 0.236405 12.4512Z" fill="currentColor" fill-opacity="0.85"/></g>';
+const VIEW_BOX = '0 0 27.3869 26.6113';
+
+/** SFPentagonFill icon component (monochrome) */
+export const SFPentagonFill = forwardRef<SVGSVGElement, SFIconProps>((props, ref) => (
+  <SFIcon ref={ref} svgContent={SVG_CONTENT} viewBox={VIEW_BOX} {...props} />
+));
+
+SFPentagonFill.displayName = 'SFPentagonFill';
+
+export default SFPentagonFill;

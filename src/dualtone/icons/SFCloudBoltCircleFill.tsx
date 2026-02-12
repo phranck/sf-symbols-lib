@@ -1,0 +1,20 @@
+/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: SFCloudBoltCircleFill (dualtone)
+ */
+import { forwardRef } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG_CONTENT = '<g><rect height="25.459" opacity="0" width="25.8008" x="0" y="0"/><path d="M12.7148 25.459C19.7266 25.459 25.4395 19.7461 25.4395 12.7344C25.4395 5.73242 19.7266 0.0195312 12.7148 0.0195312C5.71289 0.0195312 0 5.73242 0 12.7344C0 19.7461 5.71289 25.459 12.7148 25.459Z" fill="currentColor" fill-opacity="0.2125"/><path d="M8.50586 14.0137C6.66992 14.0137 5.61523 12.8223 5.61523 11.3867C5.61523 10.0684 6.49414 9.11133 7.62695 8.78906C7.8418 6.46484 9.75586 4.60938 12.0801 4.60938C13.916 4.60938 15.332 5.63477 16.1133 7.17773C18.2031 7.17773 19.8242 8.61328 19.8242 10.5762C19.8242 12.4707 18.2812 14.0137 16.2793 14.0137ZM10.7227 17.6855L11.7773 15.2539C11.8555 15.0781 11.9531 15 12.1875 15L13.6523 15C13.8477 15 13.916 15.1562 13.8281 15.3418L13.0273 16.875L14.4922 16.875C14.7559 16.875 14.8242 17.0898 14.668 17.3047L11.4746 20.7617C11.3965 20.8789 11.2891 20.8887 11.2207 20.8789C11.123 20.8203 11.0938 20.7129 11.1426 20.5859L12.1875 18.0469L10.957 18.0469C10.7129 18.0469 10.625 17.8809 10.7227 17.6855Z" fill="currentColor" fill-opacity="0.85"/></g>';
+const VIEW_BOX = '0 0 25.8008 25.459';
+
+/** SFCloudBoltCircleFill icon component (dualtone) */
+export const SFCloudBoltCircleFill = forwardRef<SVGSVGElement, SFIconProps>((props, ref) => (
+  <SFIcon ref={ref} svgContent={SVG_CONTENT} viewBox={VIEW_BOX} {...props} />
+));
+
+SFCloudBoltCircleFill.displayName = 'SFCloudBoltCircleFill';
+
+export default SFCloudBoltCircleFill;

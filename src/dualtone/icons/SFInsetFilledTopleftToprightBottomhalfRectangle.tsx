@@ -1,0 +1,20 @@
+/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: SFInsetFilledTopleftToprightBottomhalfRectangle (dualtone)
+ */
+import { forwardRef } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG_CONTENT = '<g><rect height="22.959" opacity="0" width="29.9512" x="0" y="0"/><path d="M3.79883 22.959L25.7812 22.959C28.3105 22.959 29.5898 21.6797 29.5898 19.1992L29.5898 3.76953C29.5898 1.2793 28.3105 0 25.7812 0L3.79883 0C1.2793 0 0 1.26953 0 3.76953L0 19.1992C0 21.6992 1.2793 22.959 3.79883 22.959ZM3.83789 21.2305C2.4707 21.2305 1.72852 20.5078 1.72852 19.1016L1.72852 3.85742C1.72852 2.46094 2.4707 1.72852 3.83789 1.72852L25.752 1.72852C27.0898 1.72852 27.8516 2.46094 27.8516 3.85742L27.8516 19.1016C27.8516 20.5078 27.0898 21.2305 25.752 21.2305Z" fill="currentColor" fill-opacity="0.425"/><path d="M4.53125 12.2656C3.67188 12.2656 3.29102 12.6465 3.29102 13.4961L3.29102 18.4277C3.29102 19.2871 3.66211 19.668 4.51172 19.668L25.0684 19.668C25.9277 19.668 26.2988 19.2871 26.2988 18.4375L26.2988 13.4961C26.2988 12.6465 25.918 12.2656 25.0488 12.2656Z" fill="currentColor" fill-opacity="0.85"/><path d="M16.7969 3.29102C15.9473 3.29102 15.5762 3.67188 15.5762 4.54102L15.5762 9.44336C15.5762 10.3125 15.9473 10.6934 16.7969 10.6934L25.0684 10.6934C25.9277 10.6934 26.2988 10.3125 26.2988 9.45312L26.2988 4.54102C26.2988 3.67188 25.9277 3.29102 25.0684 3.29102Z" fill="currentColor" fill-opacity="0.2125"/><path d="M4.51172 3.29102C3.66211 3.29102 3.29102 3.67188 3.29102 4.54102L3.29102 9.44336C3.29102 10.3125 3.66211 10.6934 4.51172 10.6934L12.7832 10.6934C13.6426 10.6934 14.0137 10.3125 14.0137 9.45312L14.0137 4.54102C14.0137 3.67188 13.6426 3.29102 12.7832 3.29102Z" fill="currentColor" fill-opacity="0.2125"/></g>';
+const VIEW_BOX = '0 0 29.9512 22.959';
+
+/** SFInsetFilledTopleftToprightBottomhalfRectangle icon component (dualtone) */
+export const SFInsetFilledTopleftToprightBottomhalfRectangle = forwardRef<SVGSVGElement, SFIconProps>((props, ref) => (
+  <SFIcon ref={ref} svgContent={SVG_CONTENT} viewBox={VIEW_BOX} {...props} />
+));
+
+SFInsetFilledTopleftToprightBottomhalfRectangle.displayName = 'SFInsetFilledTopleftToprightBottomhalfRectangle';
+
+export default SFInsetFilledTopleftToprightBottomhalfRectangle;

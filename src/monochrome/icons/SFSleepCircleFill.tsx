@@ -1,0 +1,20 @@
+/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: SFSleepCircleFill (monochrome)
+ */
+import { forwardRef } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG_CONTENT = '<g><rect height="25.459" opacity="0" width="25.8008" x="0" y="0"/><path d="M25.4395 12.7344C25.4395 19.7461 19.7266 25.459 12.7148 25.459C5.71289 25.459 0 19.7461 0 12.7344C0 5.73242 5.71289 0.0195312 12.7148 0.0195312C19.7266 0.0195312 25.4395 5.73242 25.4395 12.7344ZM4.81445 12.7344C4.81445 17.0996 8.35938 20.6445 12.7246 20.6445C17.0898 20.6445 20.6348 17.0996 20.6348 12.7344C20.6348 8.36914 17.0898 4.83398 12.7246 4.83398C8.35938 4.83398 4.81445 8.36914 4.81445 12.7344ZM12.7344 19.0332C10.6738 19.0332 8.84766 18.0371 7.70508 16.4941L17.7637 16.4941C16.6309 18.0371 14.7949 19.0332 12.7344 19.0332ZM19.0332 12.7344C19.0332 13.5449 18.877 14.3066 18.6035 15.0098L6.86523 15.0098C6.5918 14.3066 6.44531 13.5449 6.44531 12.7344C6.44531 9.25781 9.25781 6.44531 12.7344 6.44531C16.2109 6.44531 19.0332 9.25781 19.0332 12.7344Z" fill="currentColor" fill-opacity="0.85"/></g>';
+const VIEW_BOX = '0 0 25.8008 25.459';
+
+/** SFSleepCircleFill icon component (monochrome) */
+export const SFSleepCircleFill = forwardRef<SVGSVGElement, SFIconProps>((props, ref) => (
+  <SFIcon ref={ref} svgContent={SVG_CONTENT} viewBox={VIEW_BOX} {...props} />
+));
+
+SFSleepCircleFill.displayName = 'SFSleepCircleFill';
+
+export default SFSleepCircleFill;

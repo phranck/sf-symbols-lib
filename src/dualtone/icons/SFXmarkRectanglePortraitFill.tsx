@@ -1,0 +1,20 @@
+/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: SFXmarkRectanglePortraitFill (dualtone)
+ */
+import { forwardRef } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG_CONTENT = '<g><rect height="26.9238" opacity="0" width="21.3281" x="0" y="0"/><path d="M0 23.125C0 25.6445 1.25977 26.9238 3.75977 26.9238L17.207 26.9238C19.707 26.9238 20.9668 25.6445 20.9668 23.125L20.9668 3.80859C20.9668 1.28906 19.707 0.00976562 17.207 0.00976562L3.75977 0.00976562C1.25977 0.00976562 0 1.28906 0 3.80859Z" fill="currentColor" fill-opacity="0.2125"/><path d="M6.68945 18.5742L15.5957 9.6582C15.7715 9.48242 15.8594 9.25781 15.8594 9.01367C15.8594 8.52539 15.459 8.13477 14.9609 8.13477C14.7168 8.13477 14.502 8.22266 14.3359 8.39844L5.40039 17.2949C5.22461 17.4805 5.12695 17.6953 5.12695 17.9395C5.12695 18.4473 5.52734 18.8477 6.03516 18.8477C6.28906 18.8477 6.50391 18.7402 6.68945 18.5742ZM14.3066 18.5742C14.4824 18.7402 14.6973 18.8477 14.9609 18.8477C15.459 18.8477 15.8594 18.4473 15.8594 17.9395C15.8594 17.6953 15.7715 17.4805 15.5957 17.2949L6.66992 8.39844C6.48438 8.22266 6.2793 8.13477 6.03516 8.13477C5.52734 8.13477 5.12695 8.52539 5.12695 9.01367C5.12695 9.25781 5.22461 9.48242 5.40039 9.6582Z" fill="currentColor" fill-opacity="0.85"/></g>';
+const VIEW_BOX = '0 0 21.3281 26.9238';
+
+/** SFXmarkRectanglePortraitFill icon component (dualtone) */
+export const SFXmarkRectanglePortraitFill = forwardRef<SVGSVGElement, SFIconProps>((props, ref) => (
+  <SFIcon ref={ref} svgContent={SVG_CONTENT} viewBox={VIEW_BOX} {...props} />
+));
+
+SFXmarkRectanglePortraitFill.displayName = 'SFXmarkRectanglePortraitFill';
+
+export default SFXmarkRectanglePortraitFill;

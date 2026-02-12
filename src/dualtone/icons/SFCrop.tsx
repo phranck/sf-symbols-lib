@@ -1,0 +1,20 @@
+/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: SFCrop (dualtone)
+ */
+import { forwardRef } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG_CONTENT = '<g><rect height="27.9395" opacity="0" width="27.6074" x="0" y="0"/><path d="M27.2461 20.9863C27.2461 20.4785 26.9043 20.1758 26.3867 20.1758L8.20312 20.1758C7.96875 20.1758 7.87109 20.0781 7.87109 19.834L7.87109 1.68945C7.87109 1.16211 7.5293 0.791016 7.01172 0.791016C6.49414 0.791016 6.13281 1.16211 6.13281 1.68945L6.13281 20.8984C6.13281 21.4453 6.49414 21.8066 7.05078 21.8066L26.3867 21.8066C26.9043 21.8066 27.2461 21.4941 27.2461 20.9863ZM0 7.74414C0 8.25195 0.341797 8.55469 0.859375 8.55469L19.0332 8.55469C19.2773 8.55469 19.375 8.65234 19.375 8.89648L19.375 27.041C19.375 27.5684 19.7168 27.9395 20.2344 27.9395C20.752 27.9395 21.1035 27.5684 21.1035 27.041L21.1035 7.83203C21.1035 7.28516 20.752 6.92383 20.1953 6.92383L0.859375 6.92383C0.341797 6.92383 0 7.24609 0 7.74414Z" fill="currentColor" fill-opacity="0.85"/></g>';
+const VIEW_BOX = '0 0 27.6074 27.9395';
+
+/** SFCrop icon component (dualtone) */
+export const SFCrop = forwardRef<SVGSVGElement, SFIconProps>((props, ref) => (
+  <SFIcon ref={ref} svgContent={SVG_CONTENT} viewBox={VIEW_BOX} {...props} />
+));
+
+SFCrop.displayName = 'SFCrop';
+
+export default SFCrop;

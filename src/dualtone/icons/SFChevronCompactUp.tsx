@@ -1,0 +1,20 @@
+/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: SFChevronCompactUp (dualtone)
+ */
+import { forwardRef } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG_CONTENT = '<g><rect height="6.06445" opacity="0" width="22.4219" x="0" y="0"/><path d="M0.664062 3.89648C0.253906 4.0625 0 4.42383 0 4.79492C0 5.41992 0.458984 5.88867 1.07422 5.88867C1.38672 5.88867 1.80664 5.71289 2.07031 5.61523L11.7578 1.78711L10.293 1.78711L19.9805 5.61523C20.2539 5.71289 20.6738 5.88867 20.9863 5.88867C21.6016 5.88867 22.0605 5.41992 22.0605 4.79492C22.0605 4.42383 21.7969 4.0625 21.3867 3.89648L12.5684 0.419922C12.0898 0.224609 11.5039 0 11.0254 0C10.5566 0 9.98047 0.224609 9.48242 0.419922Z" fill="currentColor" fill-opacity="0.85"/></g>';
+const VIEW_BOX = '0 0 22.4219 6.06445';
+
+/** SFChevronCompactUp icon component (dualtone) */
+export const SFChevronCompactUp = forwardRef<SVGSVGElement, SFIconProps>((props, ref) => (
+  <SFIcon ref={ref} svgContent={SVG_CONTENT} viewBox={VIEW_BOX} {...props} />
+));
+
+SFChevronCompactUp.displayName = 'SFChevronCompactUp';
+
+export default SFChevronCompactUp;

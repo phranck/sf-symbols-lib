@@ -1,0 +1,20 @@
+/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: SFPentagonLefthalfFilled (dualtone)
+ */
+import { forwardRef } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG_CONTENT = '<g><rect height="26.6113" opacity="0" width="27.3869" x="0" y="0"/><path d="M0.236405 12.4512L3.9864 24.043C4.53328 25.7812 5.66609 26.6113 7.5118 26.6113L19.5333 26.6113C21.379 26.6113 22.5118 25.7812 23.0587 24.043L26.7794 12.5195C27.3555 10.7129 26.9356 9.35547 25.4805 8.28125L15.7735 1.14258C14.2305 0.0195312 12.8145 0.0195312 11.2716 1.14258L1.56453 8.28125C0.0996859 9.35547-0.320236 10.6836 0.236405 12.4512ZM13.5177 2.03125C13.8887 2.03125 14.2891 2.1875 14.7384 2.5293L24.4259 9.66797C25.295 10.3125 25.4903 10.9277 25.1387 11.9922L21.4376 23.5156C21.1055 24.5215 20.5977 24.8828 19.5333 24.8828L13.5177 24.8828Z" fill="currentColor" fill-opacity="0.85"/></g>';
+const VIEW_BOX = '0 0 27.3869 26.6113';
+
+/** SFPentagonLefthalfFilled icon component (dualtone) */
+export const SFPentagonLefthalfFilled = forwardRef<SVGSVGElement, SFIconProps>((props, ref) => (
+  <SFIcon ref={ref} svgContent={SVG_CONTENT} viewBox={VIEW_BOX} {...props} />
+));
+
+SFPentagonLefthalfFilled.displayName = 'SFPentagonLefthalfFilled';
+
+export default SFPentagonLefthalfFilled;

@@ -1,0 +1,20 @@
+/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: SFSignpostRightFill (monochrome)
+ */
+import { forwardRef } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG_CONTENT = '<g><rect height="26.084" opacity="0" width="25.5396" x="0" y="0"/><path d="M10.885 5.01953L12.6136 5.01953L12.6136 0.869141C12.6136 0.390625 12.2229 0 11.7542 0C11.2757 0 10.885 0.390625 10.885 0.869141ZM2.80887 15.4688L19.0686 15.4492C20.1429 15.4492 20.6507 15.1367 21.2659 14.5605L24.5667 11.4355C25.846 10.2344 25.885 8.98438 24.5569 7.72461L21.2659 4.60938C20.6507 4.0332 20.1429 3.71094 19.0784 3.71094L2.80887 3.71094C1.18777 3.71094 0.279572 4.59961 0.279572 6.18164L0.279572 12.9883C0.279572 14.5703 1.18777 15.4688 2.80887 15.4688ZM10.885 14.834L10.885 25.9375L12.6136 25.9375L12.6136 14.834ZM6.14871 25.2051C6.14871 25.6738 6.53934 26.0645 7.00809 26.0645L16.5003 26.0645C16.9788 26.0645 17.3694 25.6738 17.3694 25.2051C17.3694 24.7266 16.9788 24.3359 16.5003 24.3359L7.00809 24.3359C6.53934 24.3359 6.14871 24.7266 6.14871 25.2051Z" fill="currentColor" fill-opacity="0.85"/></g>';
+const VIEW_BOX = '0 0 25.5396 26.084';
+
+/** SFSignpostRightFill icon component (monochrome) */
+export const SFSignpostRightFill = forwardRef<SVGSVGElement, SFIconProps>((props, ref) => (
+  <SFIcon ref={ref} svgContent={SVG_CONTENT} viewBox={VIEW_BOX} {...props} />
+));
+
+SFSignpostRightFill.displayName = 'SFSignpostRightFill';
+
+export default SFSignpostRightFill;

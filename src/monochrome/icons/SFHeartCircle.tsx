@@ -1,0 +1,20 @@
+/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: SFHeartCircle (monochrome)
+ */
+import { forwardRef } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG_CONTENT = '<g><rect height="25.459" opacity="0" width="25.8008" x="0" y="0"/><path d="M12.7148 25.4395C19.7363 25.4395 25.4395 19.7461 25.4395 12.7246C25.4395 5.70312 19.7363 0 12.7148 0C5.69336 0 0 5.70312 0 12.7246C0 19.7461 5.69336 25.4395 12.7148 25.4395ZM12.7148 23.623C6.68945 23.623 1.81641 18.75 1.81641 12.7246C1.81641 6.69922 6.68945 1.82617 12.7148 1.82617C18.7402 1.82617 23.6133 6.69922 23.6133 12.7246C23.6133 18.75 18.7402 23.623 12.7148 23.623Z" fill="currentColor" fill-opacity="0.85"/><path d="M9.69727 7.13867C7.56836 7.13867 6.03516 8.75 6.03516 10.9473C6.03516 14.3457 9.6582 17.4219 12.1387 18.9844C12.3438 19.1113 12.5879 19.2578 12.7344 19.2578C12.8809 19.2578 13.1152 19.1113 13.291 18.9844C15.7324 17.3535 19.4043 14.3457 19.4043 10.9473C19.4043 8.75 17.8613 7.13867 15.7422 7.13867C14.4141 7.13867 13.3301 7.92969 12.7148 9.05273C12.0996 7.92969 11.0352 7.13867 9.69727 7.13867Z" fill="currentColor" fill-opacity="0.85"/></g>';
+const VIEW_BOX = '0 0 25.8008 25.459';
+
+/** SFHeartCircle icon component (monochrome) */
+export const SFHeartCircle = forwardRef<SVGSVGElement, SFIconProps>((props, ref) => (
+  <SFIcon ref={ref} svgContent={SVG_CONTENT} viewBox={VIEW_BOX} {...props} />
+));
+
+SFHeartCircle.displayName = 'SFHeartCircle';
+
+export default SFHeartCircle;

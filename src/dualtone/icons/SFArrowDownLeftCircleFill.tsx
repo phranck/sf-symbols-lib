@@ -1,0 +1,20 @@
+/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: SFArrowDownLeftCircleFill (dualtone)
+ */
+import { forwardRef } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG_CONTENT = '<g><rect height="25.459" opacity="0" width="25.8008" x="0" y="0"/><path d="M12.7148 25.4395C19.7266 25.4395 25.4395 19.7266 25.4395 12.7246C25.4395 5.71289 19.7266 0 12.7148 0C5.71289 0 0 5.71289 0 12.7246C0 19.7266 5.71289 25.4395 12.7148 25.4395Z" fill="currentColor" fill-opacity="0.2125"/><path d="M9.98047 16.5137L12.1484 14.4727L17.4023 9.22852C17.5684 9.0625 17.6758 8.84766 17.6758 8.62305C17.6758 8.11523 17.3438 7.79297 16.8555 7.79297C16.582 7.79297 16.377 7.89062 16.2109 8.04688L10.9668 13.3008L8.93555 15.459C8.11523 16.3281 9.14062 17.2949 9.98047 16.5137ZM9.39453 13.0469L9.39453 10.4492C9.39453 9.91211 9.07227 9.58008 8.57422 9.58008C8.08594 9.58008 7.76367 9.94141 7.76367 10.4688L7.76367 16.7676C7.76367 17.4121 8.11523 17.6855 8.68164 17.6855L15.0098 17.6855C15.5371 17.6855 15.8789 17.3633 15.8789 16.875C15.8789 16.377 15.5273 16.0547 14.9902 16.0547L12.1875 16.0547L9.11133 16.3574Z" fill="currentColor" fill-opacity="0.85"/></g>';
+const VIEW_BOX = '0 0 25.8008 25.459';
+
+/** SFArrowDownLeftCircleFill icon component (dualtone) */
+export const SFArrowDownLeftCircleFill = forwardRef<SVGSVGElement, SFIconProps>((props, ref) => (
+  <SFIcon ref={ref} svgContent={SVG_CONTENT} viewBox={VIEW_BOX} {...props} />
+));
+
+SFArrowDownLeftCircleFill.displayName = 'SFArrowDownLeftCircleFill';
+
+export default SFArrowDownLeftCircleFill;

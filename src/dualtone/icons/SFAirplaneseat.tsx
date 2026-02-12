@@ -1,0 +1,20 @@
+/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: SFAirplaneseat (dualtone)
+ */
+import { forwardRef } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG_CONTENT = '<g><rect height="26.123" opacity="0" width="22.8125" x="0" y="0"/><path d="M8.34961 21.416L19.541 21.416C21.1523 21.416 22.4512 20.1074 22.4512 18.4961C22.4512 16.8945 21.1523 15.5957 19.541 15.5957L10.8789 15.5957C9.84375 15.5957 8.85742 15.9277 8.24219 16.4453L3.99414 1.81641C3.69141 0.693359 2.79297 0.185547 1.98242 0.185547C0.966797 0.185547 0 0.957031 0 2.19727C0 2.49023 0.0683594 2.80273 0.175781 3.17383L4.61914 18.3496C5.17578 20.2734 6.37695 21.416 8.34961 21.416ZM4.74609 11.6309L15.7031 11.6309C16.2012 11.6309 16.6211 11.2207 16.6211 10.7129C16.6211 10.2148 16.2012 9.80469 15.7031 9.80469L4.74609 9.80469ZM7.72461 26.123L19.1016 26.123C19.6094 26.123 20.0195 25.7129 20.0195 25.2148C20.0195 24.707 19.6094 24.2969 19.1016 24.2969L7.72461 24.2969C7.2168 24.2969 6.80664 24.707 6.80664 25.2148C6.80664 25.7129 7.2168 26.123 7.72461 26.123Z" fill="currentColor" fill-opacity="0.85"/></g>';
+const VIEW_BOX = '0 0 22.8125 26.123';
+
+/** SFAirplaneseat icon component (dualtone) */
+export const SFAirplaneseat = forwardRef<SVGSVGElement, SFIconProps>((props, ref) => (
+  <SFIcon ref={ref} svgContent={SVG_CONTENT} viewBox={VIEW_BOX} {...props} />
+));
+
+SFAirplaneseat.displayName = 'SFAirplaneseat';
+
+export default SFAirplaneseat;

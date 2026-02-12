@@ -1,0 +1,20 @@
+/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: SFRectangleFillOnRectangleAngledFill (monochrome)
+ */
+import { forwardRef } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG_CONTENT = '<g><rect height="28.2129" opacity="0" width="34.541" x="0" y="0"/><path d="M25.918 3.70117L26.2577 5.625L11.7773 5.625C8.39844 5.625 6.42578 7.57812 6.42578 10.9375L6.42578 22.8906C6.42578 22.9108 6.42585 22.9309 6.42798 22.9495C4.74055 22.8453 3.72464 21.7946 3.37891 19.8145L1.29883 8.04688C0.869141 5.58594 1.9043 4.12109 4.39453 3.68164L21.5234 0.664062C24.0039 0.224609 25.4883 1.25977 25.918 3.70117Z" fill="currentColor" fill-opacity="0.85"/><path d="M11.7773 26.6504L29.1797 26.6504C31.6992 26.6504 32.9785 25.3711 32.9785 22.8906L32.9785 10.9375C32.9785 8.45703 31.6992 7.17773 29.1797 7.17773L11.7773 7.17773C9.25781 7.17773 7.97852 8.44727 7.97852 10.9375L7.97852 22.8906C7.97852 25.3906 9.25781 26.6504 11.7773 26.6504Z" fill="currentColor" fill-opacity="0.85"/></g>';
+const VIEW_BOX = '0 0 34.541 28.2129';
+
+/** SFRectangleFillOnRectangleAngledFill icon component (monochrome) */
+export const SFRectangleFillOnRectangleAngledFill = forwardRef<SVGSVGElement, SFIconProps>((props, ref) => (
+  <SFIcon ref={ref} svgContent={SVG_CONTENT} viewBox={VIEW_BOX} {...props} />
+));
+
+SFRectangleFillOnRectangleAngledFill.displayName = 'SFRectangleFillOnRectangleAngledFill';
+
+export default SFRectangleFillOnRectangleAngledFill;

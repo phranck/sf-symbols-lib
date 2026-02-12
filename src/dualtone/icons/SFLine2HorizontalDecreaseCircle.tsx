@@ -1,0 +1,20 @@
+/**
+ * AUTO-GENERATED - DO NOT EDIT
+ * Icon: SFLine2HorizontalDecreaseCircle (dualtone)
+ */
+import { forwardRef } from 'react';
+
+import { SFIcon } from '@/common/SFIcon';
+import { type SFIconProps } from '@/common/types';
+
+const SVG_CONTENT = '<g><rect height="25.459" opacity="0" width="25.8008" x="0" y="0"/><path d="M12.7148 25.4395C19.7363 25.4395 25.4395 19.7461 25.4395 12.7246C25.4395 5.70312 19.7363 0 12.7148 0C5.69336 0 0 5.70312 0 12.7246C0 19.7461 5.69336 25.4395 12.7148 25.4395ZM12.7148 23.623C6.68945 23.623 1.81641 18.75 1.81641 12.7246C1.81641 6.69922 6.68945 1.82617 12.7148 1.82617C18.7402 1.82617 23.6133 6.69922 23.6133 12.7246C23.6133 18.75 18.7402 23.623 12.7148 23.623Z" fill="currentColor" fill-opacity="0.425"/><path d="M5.78125 11.9141L19.668 11.9141C20.1465 11.9141 20.4883 11.6016 20.4883 11.1426C20.4883 10.6836 20.1465 10.3809 19.668 10.3809L5.78125 10.3809C5.30273 10.3809 4.96094 10.6836 4.96094 11.1426C4.96094 11.6016 5.30273 11.9141 5.78125 11.9141ZM7.63672 16.0742L17.8125 16.0742C18.291 16.0742 18.6328 15.7715 18.6328 15.3125C18.6328 14.8535 18.291 14.541 17.8125 14.541L7.63672 14.541C7.1582 14.541 6.81641 14.8535 6.81641 15.3125C6.81641 15.7715 7.1582 16.0742 7.63672 16.0742Z" fill="currentColor" fill-opacity="0.85"/></g>';
+const VIEW_BOX = '0 0 25.8008 25.459';
+
+/** SFLine2HorizontalDecreaseCircle icon component (dualtone) */
+export const SFLine2HorizontalDecreaseCircle = forwardRef<SVGSVGElement, SFIconProps>((props, ref) => (
+  <SFIcon ref={ref} svgContent={SVG_CONTENT} viewBox={VIEW_BOX} {...props} />
+));
+
+SFLine2HorizontalDecreaseCircle.displayName = 'SFLine2HorizontalDecreaseCircle';
+
+export default SFLine2HorizontalDecreaseCircle;
