@@ -4,6 +4,10 @@
 
 After analyzing the Phosphor Icons React library, this plan identifies concrete optimizations for sf-symbols-lib focused on developer experience and performance. Phosphor serves 9,000+ icons across 6 weights with a mature API that includes ref forwarding, React Context for global defaults, and native JSX rendering. Our library can adopt key patterns from Phosphor while keeping our unique strengths (4 color variants with preserved SVG detail, Apple SF Symbols fidelity). The changes are additive and non-breaking, prioritized by impact-to-effort ratio.
 
+## Completed
+
+2026-02-12
+
 ## Context / Problem
 
 Our current v2.0 architecture works, but has gaps compared to industry-standard icon libraries:
@@ -130,16 +134,19 @@ style={style}
 
 ## Checklist
 
-- [ ] Add `sideEffects: false` to package.json
-- [ ] Remove forced inline styles from SFIcon
-- [ ] Create `SFIconContext` in `src/common/context.ts`
-- [ ] Update `SFIcon` to use `forwardRef` and read context
-- [ ] Update generator template for `forwardRef` + `displayName`
-- [ ] Regenerate all icon components
-- [ ] Re-export `SFIconContext` from barrel indexes
-- [ ] Run `npm run check`
-- [ ] Update README with Context example
-- [ ] Verify bundle sizes
+- [x] Add `sideEffects: false` to package.json
+- [x] Remove forced inline styles from SFIcon
+- [x] Create `SFIconContext` in `src/common/context.ts`
+- [x] Update `SFIcon` to use `forwardRef` and read context
+- [x] Update generator template for `forwardRef` + `displayName`
+- [x] Regenerate all icon components
+- [x] Re-export `SFIconContext` from barrel indexes
+- [x] Run `npm run check`
+- [x] Remove compat layer entirely (no legacy users)
+- [x] Reduce to 2 variants (dualtone + monochrome)
+- [x] Rewrite generate-docs-data.ts to read SVGs directly
+- [x] Update README with Context example
+- [x] Verify bundle sizes
 
 ## Open Questions
 
