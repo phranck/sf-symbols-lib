@@ -1,7 +1,7 @@
 /**
  * Global application state managed by Zustand.
  *
- * Holds display settings (theme, variant, color), search/filter state,
+ * Holds display settings (theme, render mode, color), search/filter state,
  * icon selection, and drawer visibility. All actions that modify state
  * live here so components remain pure renderers.
  */
@@ -12,7 +12,7 @@ import type { IconEntry } from '@/lib/icons';
 // ── Types ───────────────────────────────────────────────────────────────
 
 export type Theme = 'light' | 'dark';
-export type Variant = 'dualtone' | 'monochrome';
+export type RenderMode = 'dualtone' | 'monochrome';
 
 // ── Color palette (42 colors + theme token) ─────────────────────────────
 
@@ -34,7 +34,7 @@ export const THEME_COLOR = 'currentColor';
 interface AppState {
   // Display
   theme: Theme;
-  variant: Variant;
+  renderMode: RenderMode;
   iconColor: string;
 
   // Search & filter
@@ -50,10 +50,13 @@ interface AppState {
   aboutModalOpen: boolean;
   copyModalOpen: boolean;
 
+  // Toast
+  toastMessage: string | null;
+
   // Actions: display
   setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
-  setVariant: (variant: Variant) => void;
+  setRenderMode: (renderMode: RenderMode) => void;
   setIconColor: (color: string) => void;
 
   // Actions: search & filter
@@ -69,6 +72,9 @@ interface AppState {
   // Actions: modals
   setAboutModalOpen: (open: boolean) => void;
   setCopyModalOpen: (open: boolean) => void;
+
+  // Actions: toast
+  setToastMessage: (message: string | null) => void;
 }
 
 // ── Persistence helpers ─────────────────────────────────────────────────
@@ -85,8 +91,8 @@ function loadColor(): string {
   return localStorage.getItem('sf-color') ?? THEME_COLOR;
 }
 
-function loadVariant(): Variant {
-  const saved = localStorage.getItem('sf-variant');
+function loadRenderMode(): RenderMode {
+  const saved = localStorage.getItem('sf-render-mode');
   if (saved === 'dualtone' || saved === 'monochrome') return saved;
   return 'dualtone';
 }
@@ -96,7 +102,7 @@ function loadVariant(): Variant {
 export const useAppStore = create<AppState>()((set) => ({
   // Initial values
   theme: loadTheme(),
-  variant: loadVariant(),
+  renderMode: loadRenderMode(),
   iconColor: loadColor(),
   searchQuery: '',
   selectedCategory: '',
@@ -105,6 +111,7 @@ export const useAppStore = create<AppState>()((set) => ({
   focusedIndex: -1,
   aboutModalOpen: false,
   copyModalOpen: false,
+  toastMessage: null,
 
   // Display
   setTheme: (theme) => {
@@ -117,9 +124,9 @@ export const useAppStore = create<AppState>()((set) => ({
       localStorage.setItem('sf-theme', next);
       return { theme: next };
     }),
-  setVariant: (variant) => {
-    localStorage.setItem('sf-variant', variant);
-    set({ variant });
+  setRenderMode: (renderMode) => {
+    localStorage.setItem('sf-render-mode', renderMode);
+    set({ renderMode });
   },
   setIconColor: (iconColor) => {
     localStorage.setItem('sf-color', iconColor);
@@ -142,4 +149,7 @@ export const useAppStore = create<AppState>()((set) => ({
   // Modals
   setAboutModalOpen: (aboutModalOpen) => set({ aboutModalOpen }),
   setCopyModalOpen: (copyModalOpen) => set({ copyModalOpen }),
+
+  // Toast
+  setToastMessage: (toastMessage) => set({ toastMessage }),
 }));

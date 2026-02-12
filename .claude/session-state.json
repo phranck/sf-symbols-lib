@@ -1,36 +1,48 @@
 {
   "version": "1.0",
-  "timestamp": "2026-02-12T17:45:00+01:00",
+  "timestamp": "2026-02-12T22:30:00+01:00",
   "project_name": "sf-symbols-lib",
 
   "session": {
     "active_task": "Docs Site React Rewrite",
     "task_status": "in_progress",
-    "current_focus": "docs-app/src/App.tsx",
-    "last_checkpoint": "Phases 1-3 complete. Scaffold, catalog, store, hooks, App layout done. Phase 4 (components) next.",
-    "phase": "3/7"
+    "current_focus": "docs-app/src/components/Drawer/",
+    "last_checkpoint": "Phase 4 partial: Header, IconGrid, DrawerCode done. Rename variant->renderMode done but uncommitted. Next: Drawer container (4.6), Modals (4.8-4.9), Toast (4.10).",
+    "phase": "4/7"
   },
 
   "blockers": [],
 
   "recent_actions": [
+    "Phase 4: Built Header components (SearchInput, RenderModeSelect, CategorySelect, ColorPicker, ThemeToggle)",
+    "Phase 4: Built IconGrid with @tanstack/react-virtual + IconGridItem",
+    "Phase 4: Built DrawerCode with syntax highlighting",
+    "Renamed variant->renderMode in store, scripts, utils (uncommitted)",
     "Phase 3: Created Zustand store, useTheme hook, useFuse hook, App.tsx layout",
-    "Phase 2: Created catalog generator (7,007 icons), icons.ts wildcard import, feasibility gate passed",
-    "Phase 1: Scaffolded docs-app/ with Vite + React + TypeScript, ported CSS, copied static assets",
-    "Committed all outstanding v2 changes in 4 logical commits (refactor, config, docs, tracking)",
-    "Pushed 11 commits to origin/main"
+    "Phase 2: Created catalog generator, icons.ts wildcard import, feasibility gate passed",
+    "Phase 1: Scaffolded docs-app/ with Vite + React + TypeScript"
   ],
 
   "git_state": {
     "branch": "main",
-    "commit_hash": "e0f01b3",
-    "uncommitted_files": [],
+    "commit_hash": "6ca2f73",
+    "uncommitted_files": [
+      ".claude/memory.md",
+      "docs-app/src/App.tsx",
+      "docs-app/src/state/store.ts",
+      "plans/open/2026-02-12-docs-site-react-rewrite.md",
+      "scripts/generate-docs-data.ts",
+      "scripts/generate-sfsymbols.ts",
+      "scripts/shared/utils.ts",
+      "docs-app/src/components/"
+    ],
     "staged_changes": []
   },
 
   "next_steps": [
-    "Phase 4: Build components (Header, IconGrid with @tanstack/react-virtual, Drawer, Modals, Toast)",
-    "Phase 5: Interactions (keyboard nav, FLIP animation, clipboard, responsive)",
-    "Phase 6: Analytics and deploy (Umami, GitHub Pages, CNAME)"
+    "Build Drawer component (4.6): DrawerPreview.tsx, DrawerInfo.tsx, Drawer.tsx, wire into App.tsx",
+    "Build AboutModal (4.8), CopyModal (4.9), Toast (4.10)",
+    "Commit all uncommitted work (rename + Phase 4 components)",
+    "Phase 5: Interactions (keyboard nav, FLIP animation, clipboard, responsive)"
   ]
 }

@@ -39,7 +39,11 @@
       "WebFetch(domain:gist.github.com)",
       "Bash(npm run docs:generate:*)",
       "Bash(curl:*)",
-      "Bash(npm run lint)"
+      "Bash(npm run lint)",
+      "mcp__serena__list_dir",
+      "Bash(npm run build:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nFeat: Implement Phase 4 components \\(Drawer, Modals, Toast\\) + rename variant→renderMode\n\n## Phase 4 Components \\(Tasks 4.6-4.10\\)\n- Task 4.6: Drawer container with 3-column layout \\(Preview, Info, Code\\)\n  - DrawerPreview.tsx: Large icon preview with restricted badge\n  - DrawerInfo.tsx: Metadata display \\(symbol name, Apple name, categories\\) with copy buttons\n  - Drawer.tsx: Main container managing drawer-open state and keyboard handlers\n  - Integrated with DrawerCode.tsx \\(already existed\\)\n- Task 4.10: Toast component with auto-dismiss \\(2.5s\\)\n  - Added toastMessage state to Zustand store\n- Task 4.9: CopyModal with 3 copy options\n  - Copy symbol name, Apple name, or code snippet\n  - Triggers toast feedback and closes after copy\n- Task 4.8: AboutModal with 3 tabs\n  - About, Search, Shortcuts tabs with markdown rendering\n  - Simple markdown parser \\(bold, code, links\\)\n  - Click-outside and Escape key support\n\n## State Management\n- Added toastMessage and setToastMessage to Zustand store\n- Implemented mutual-exclusive modal logic \\(opening one closes the other\\)\n\n## UI Improvements\n- Drawer header with icon title and Copy Options button\n- AboutButton in header to open About modal\n- Copy buttons in DrawerInfo for symbol name and Apple name\n- Toast notifications for copy feedback\n\n## Other Changes\n- Renamed variant→renderMode throughout codebase \\(store, scripts, utils\\)\n- All Phase 4 components compile without errors\n- Build verified \\(14093 modules, bundle ~28MB uncompressed\\)\n\nCo-Authored-By: Claude Haiku 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
     ]
   }
 }

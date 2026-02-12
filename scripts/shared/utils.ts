@@ -2,7 +2,7 @@
  * Shared utilities for SF Symbols generator scripts.
  *
  * Single source of truth for naming conventions, SVG parsing, metadata
- * extraction, and variant definitions used by all generator scripts.
+ * extraction, and render mode definitions used by all generator scripts.
  */
 import fs from 'fs';
 
@@ -10,11 +10,11 @@ import fs from 'fs';
 // Constants
 // ---------------------------------------------------------------------------
 
-/** All supported rendering mode variants */
-export const VARIANTS = ['dualtone', 'monochrome'] as const;
+/** All supported render modes */
+export const RENDER_MODES = ['dualtone', 'monochrome'] as const;
 
-/** A single rendering mode variant */
-export type Variant = (typeof VARIANTS)[number];
+/** A single render mode */
+export type RenderMode = (typeof RENDER_MODES)[number];
 
 // ---------------------------------------------------------------------------
 // Naming

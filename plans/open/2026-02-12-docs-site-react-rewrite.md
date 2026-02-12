@@ -267,11 +267,11 @@ Replace the current string-contains logic with `fuse.js` for fuzzy search, while
 - [x] 3.4 Create `App.tsx` with top-level layout (header, grid stub, footer, stats bar)
 
 ### Phase 4: Components
-- [ ] 4.1 Header component (search input, variant selector, category dropdown)
-- [ ] 4.2 ThemeToggle component
-- [ ] 4.3 ColorPicker component (42 colors + theme color)
-- [ ] 4.4 IconGrid with `@tanstack/react-virtual` (virtual rows, responsive columns)
-- [ ] 4.5 IconGridItem (renders actual `<Icon />` component, restricted badge, selection state)
+- [x] 4.1 Header component (SearchInput, RenderModeSelect, CategorySelect)
+- [x] 4.2 ThemeToggle component
+- [x] 4.3 ColorPicker component (42 colors + theme color)
+- [x] 4.4 IconGrid with `@tanstack/react-virtual` (virtual rows, responsive columns)
+- [x] 4.5 IconGridItem (renders actual `<Icon />` component, restricted badge, selection state)
 - [ ] 4.6 Drawer component (3-column layout: preview, info, code)
 - [ ] 4.7 DrawerCode with syntax-highlighted React code preview
 - [ ] 4.8 AboutModal with 3 tabs (About / Search / Shortcuts) and markdown rendering

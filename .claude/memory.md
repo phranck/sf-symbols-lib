@@ -6,7 +6,7 @@
 - **Purpose:** React component library for Apple SF Symbols (7,007 icons)
 - **Framework:** React 18/19, TypeScript, Vite
 - **Package:** ESM-only, tree-shakeable, `sideEffects: false`
-- **Variants:** dualtone (default), monochrome
+- **Render Modes:** dualtone (default), monochrome
 
 ## Architecture
 
@@ -25,7 +25,7 @@ src/
 └── index.ts                  # Generated (re-exports dualtone as default)
 scripts/
 ├── shared/
-│   └── utils.ts              # Shared: kebabToPascalCase, parseSvgFile, VARIANTS
+│   └── utils.ts              # Shared: kebabToPascalCase, parseSvgFile, RENDER_MODES
 ├── generate-sfsymbols.ts     # SVGs → React components
 ├── generate-catalog.ts       # SVGs → docs-app/src/lib/catalog.ts (metadata)
 └── generate-docs-data.ts     # SVGs → JSON chunks for old docs site (to be removed)
@@ -38,11 +38,16 @@ docs-app/                     # New React/Vite docs site (in progress)
 │   │   ├── catalog.ts        # Generated: 7,007 icon metadata entries
 │   │   └── icons.ts          # Wildcard import + catalog merge
 │   ├── state/
-│   │   └── store.ts          # Zustand store (theme, variant, search, drawer)
+│   │   └── store.ts          # Zustand store (theme, renderMode, search, drawer)
 │   ├── hooks/
 │   │   ├── useTheme.ts       # DOM sync for dark mode and --symbol-color
 │   │   └── useFuse.ts        # fuse.js search with OR/AND operators
-│   ├── components/           # (Phase 4, not yet created)
+│   ├── components/
+│   │   ├── Header/           # Header.tsx, SearchInput, RenderModeSelect, CategorySelect, ColorPicker, ThemeToggle
+│   │   ├── IconGrid/         # IconGrid.tsx (virtual scroll), IconGridItem.tsx
+│   │   ├── Drawer/           # DrawerCode.tsx (done), Drawer/Preview/Info (pending)
+│   │   ├── Modals/           # AboutModal, CopyModal (pending)
+│   │   └── Toast/            # Toast.tsx (pending)
 │   └── styles/               # Ported CSS (variables, app, drawer)
 ├── public/                   # CNAME, markdown files
 ├── vite.config.ts            # Builds to docs/dist/
@@ -55,7 +60,7 @@ docs-app/                     # New React/Vite docs site (in progress)
 
 ### Data Flow
 
-1. `.svgs/{variant}/*.svg` → `npm run generate` → parses SVGs, strips metadata
+1. `.svgs/{renderMode}/*.svg` → `npm run generate` → parses SVGs, strips metadata
 2. Each icon = `forwardRef` component with inlined SVG string + viewBox
 3. `SFIcon` renders `<svg dangerouslySetInnerHTML>`, reads defaults from `SFIconContext`
 4. Vite builds with `preserveModules` for per-icon tree-shaking
@@ -80,7 +85,7 @@ docs-app/                     # New React/Vite docs site (in progress)
 | `SFIconSize` | `src/common/types.ts` | `'xs'\|'sm'\|'md'\|'lg'\|'xl'\|number` |
 | `SFIconSizePreset` | `src/common/types.ts` | Named presets only |
 | `SFIconContext` | `src/common/context.ts` | React Context for `Partial<SFIconProps>` defaults |
-| `Variant` | `scripts/shared/utils.ts` | `'dualtone' \| 'monochrome'` |
+| `RenderMode` | `scripts/shared/utils.ts` | `'dualtone' \| 'monochrome'` |
 | `SvgMetadata` | `scripts/shared/utils.ts` | Parsed SVG metadata (appleName, categories, etc.) |
 
 ### Size Presets
@@ -113,10 +118,10 @@ Dot/dash-separated SVG filename → PascalCase with SF prefix:
 - `0.circle.fill` → `SF0CircleFill`
 - Numeric segments kept as-is, text segments capitalized
 
-### Adding a New Variant
+### Adding a New Render Mode
 
-1. Add SVGs to `.svgs/{variant}/`
-2. Add variant name to `VARIANTS` in `scripts/shared/utils.ts`
+1. Add SVGs to `.svgs/{renderMode}/`
+2. Add render mode name to `RENDER_MODES` in `scripts/shared/utils.ts`
 3. Add entry to `vite.config.ts` build entries
 4. Add exports to `package.json`
 5. Run `npm run generate`
@@ -138,5 +143,6 @@ Dot/dash-separated SVG filename → PascalCase with SF prefix:
 - **Branch:** main
 - **Tests:** N/A (no test suite)
 - **Build:** passing (library + docs-app)
-- **Docs Rewrite:** Phase 3/7 complete (scaffold, catalog, store, hooks, layout)
+- **Docs Rewrite:** Phase 4/7 in progress (Header, IconGrid, DrawerCode done; Drawer container, Modals, Toast pending)
 - **Blockers:** None
+- **Uncommitted:** Rename variant->renderMode + Phase 4 components

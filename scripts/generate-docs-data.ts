@@ -12,8 +12,8 @@ import CleanCSS from 'clean-css';
 import { marked } from 'marked';
 
 import {
-  VARIANTS,
-  type Variant,
+  RENDER_MODES,
+  type RenderMode,
   type SvgMetadata,
   kebabToPascalCase,
   parseSvgFile,
@@ -44,11 +44,11 @@ interface ChunkData {
 }
 
 interface ChunksManifest {
-  [variant: string]: string[];
+  [renderMode: string]: string[];
 }
 
 interface MetaManifest {
-  VARIANTS: readonly Variant[];
+  RENDER_MODES: readonly RenderMode[];
   symbolNames: SymbolData;
   chunks: ChunksManifest;
   categories: string[];
@@ -115,20 +115,20 @@ function escapeForTemplateLiteral(value: string): string {
 // ---------------------------------------------------------------------------
 
 /**
- * Write chunk files for a variant.
+ * Write chunk files for a render mode.
  *
  * Splits the symbol data into smaller JSON files of `CHUNK_SIZE` entries each,
  * and records the chunk file paths in the manifest.
  */
 async function writeChunks(
   distDir: string,
-  variant: Variant,
+  renderMode: RenderMode,
   symbolsData: SymbolData,
   viewBoxData: SymbolData,
   chunksManifest: ChunksManifest,
 ): Promise<void> {
   const keys = Object.keys(symbolsData);
-  chunksManifest[variant] = [];
+  chunksManifest[renderMode] = [];
 
   for (
     let chunkStartIndex = 0;
@@ -146,23 +146,23 @@ async function writeChunks(
     }
 
     const chunkIndex = Math.floor(chunkStartIndex / CHUNK_SIZE);
-    const chunkName = `chunks/${variant}-${chunkIndex}.json`;
+    const chunkName = `chunks/${renderMode}-${chunkIndex}.json`;
     await fs.writeFile(
       path.join(distDir, chunkName),
       JSON.stringify(chunkData),
       'utf8',
     );
-    chunksManifest[variant].push(chunkName);
+    chunksManifest[renderMode].push(chunkName);
   }
 
-  if (chunksManifest[variant].length === 0) {
-    const chunkName = `chunks/${variant}-0.json`;
+  if (chunksManifest[renderMode].length === 0) {
+    const chunkName = `chunks/${renderMode}-0.json`;
     await fs.writeFile(
       path.join(distDir, chunkName),
       JSON.stringify({ data: {}, viewBox: {} }),
       'utf8',
     );
-    chunksManifest[variant].push(chunkName);
+    chunksManifest[renderMode].push(chunkName);
   }
 }
 
@@ -185,7 +185,7 @@ async function main(): Promise<void> {
   const htmlOutputFile = path.join(distDir, 'index.html');
   const svgsDir = path.join(repoRootDir, '.svgs');
 
-  // Discover symbols from dualtone directory (reference variant)
+  // Discover symbols from dualtone directory (reference render mode)
   const dualtoneDir = path.join(svgsDir, 'dualtone');
   const symbolFileNames = fsSync
     .readdirSync(dualtoneDir)
@@ -201,37 +201,37 @@ async function main(): Promise<void> {
     componentNames[fileName] = kebabToPascalCase(fileName);
   }
 
-  // Process each variant: read SVGs, extract data + metadata
-  const allSymbolsData: Record<Variant, SymbolData> = {
+  // Process each render mode: read SVGs, extract data + metadata
+  const allSymbolsData: Record<RenderMode, SymbolData> = {
     dualtone: {},
     monochrome: {},
   };
-  const allViewBoxData: Record<Variant, SymbolData> = {
+  const allViewBoxData: Record<RenderMode, SymbolData> = {
     dualtone: {},
     monochrome: {},
   };
-  const allMetadata: Record<Variant, SymbolMetadataMap> = {
+  const allMetadata: Record<RenderMode, SymbolMetadataMap> = {
     dualtone: {},
     monochrome: {},
   };
 
-  for (const variant of VARIANTS) {
-    const variantSvgDir = path.join(svgsDir, variant);
-    if (!fsSync.existsSync(variantSvgDir)) {
-      console.warn(`⚠ Directory not found: ${variantSvgDir}`);
+  for (const renderMode of RENDER_MODES) {
+    const modeSvgDir = path.join(svgsDir, renderMode);
+    if (!fsSync.existsSync(modeSvgDir)) {
+      console.warn(`⚠ Directory not found: ${modeSvgDir}`);
       continue;
     }
 
     let count = 0;
     for (const fileName of symbolFileNames) {
-      const svgPath = path.join(variantSvgDir, `${fileName}.svg`);
+      const svgPath = path.join(modeSvgDir, `${fileName}.svg`);
       if (!fsSync.existsSync(svgPath)) continue;
 
       const { content, viewBox, metadata } = parseSvgFile(svgPath);
-      allSymbolsData[variant][fileName] = content;
-      allViewBoxData[variant][fileName] = viewBox;
+      allSymbolsData[renderMode][fileName] = content;
+      allViewBoxData[renderMode][fileName] = viewBox;
       if (metadata) {
-        allMetadata[variant][fileName] = {
+        allMetadata[renderMode][fileName] = {
           restricted: metadata.restricted,
           renderingMode: metadata.renderingMode,
           sfSymbolsVersion: metadata.sfSymbolsVersion,
@@ -241,7 +241,7 @@ async function main(): Promise<void> {
       count++;
     }
 
-    console.log(`✓ Processed ${variant}: ${count} symbols`);
+    console.log(`✓ Processed ${renderMode}: ${count} symbols`);
   }
 
   // Chunk the data into smaller JSON files
@@ -249,12 +249,12 @@ async function main(): Promise<void> {
   await fs.mkdir(chunksDir, { recursive: true });
 
   const chunksManifest: ChunksManifest = {};
-  for (const variant of VARIANTS) {
+  for (const renderMode of RENDER_MODES) {
     await writeChunks(
       distDir,
-      variant,
-      allSymbolsData[variant],
-      allViewBoxData[variant],
+      renderMode,
+      allSymbolsData[renderMode],
+      allViewBoxData[renderMode],
       chunksManifest,
     );
   }
@@ -280,7 +280,7 @@ async function main(): Promise<void> {
 
   // Create meta manifest
   const meta: MetaManifest = {
-    VARIANTS,
+    RENDER_MODES,
     symbolNames: componentNames,
     chunks: chunksManifest,
     categories,
@@ -400,7 +400,7 @@ async function main(): Promise<void> {
   ).toFixed(1);
   console.log(`\n✅ Generated ${htmlOutputFile}`);
   console.log(
-    `   ${symbolFileNames.length} symbols x ${VARIANTS.length} variants`,
+    `   ${symbolFileNames.length} symbols x ${RENDER_MODES.length} render modes`,
   );
   console.log(`   File size: ${fileSize} MB`);
 }
