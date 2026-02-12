@@ -260,11 +260,11 @@ Replace the current string-contains logic with `fuse.js` for fuzzy search, while
 - [x] 2.3 Create `src/lib/icons.ts` with wildcard import + metadata merge
 - [x] 2.4 Vite bundles 14,062 modules in 11.4s (28.2 MB / 6.6 MB gzip) - feasibility confirmed
 
-### Phase 3: State & Core Infrastructure
-- [ ] 3.1 Create Zustand store (`src/state/store.ts`)
-- [ ] 3.2 Implement theme hook (`useTheme.ts`) with localStorage persistence
-- [ ] 3.3 Implement fuse.js search hook (`useFuse.ts`)
-- [ ] 3.4 Create `App.tsx` with top-level layout structure
+### Phase 3: State & Core Infrastructure ✅
+- [x] 3.1 Create Zustand store (`src/state/store.ts`) with theme, variant, color, search, drawer, modal state
+- [x] 3.2 Implement theme hook (`useTheme.ts`) with localStorage persistence and DOM sync
+- [x] 3.3 Implement fuse.js search hook (`useFuse.ts`) with OR/AND operator support
+- [x] 3.4 Create `App.tsx` with top-level layout (header, grid stub, footer, stats bar)
 
 ### Phase 4: Components
 - [ ] 4.1 Header component (search input, variant selector, category dropdown)
