@@ -1,8 +1,8 @@
 import { useRef, useCallback } from 'react';
 
 import { useAnalytics } from '@/hooks/useAnalytics';
-import { useAppStore } from '@/state/store';
 import { useFilteredIcons } from '@/hooks/useFuse';
+import { useAppStore } from '@/state/store';
 
 export function SearchInput() {
   const analytics = useAnalytics();

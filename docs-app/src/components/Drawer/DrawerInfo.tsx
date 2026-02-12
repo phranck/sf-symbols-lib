@@ -1,7 +1,8 @@
 import { useCallback, memo } from 'react';
+
 import { useAnalytics } from '@/hooks/useAnalytics';
-import { useAppStore } from '@/state/store';
 import type { IconEntry } from '@/lib/icons';
+import { useAppStore } from '@/state/store';
 
 /**
  * Middle column of the drawer: icon metadata and copy buttons.

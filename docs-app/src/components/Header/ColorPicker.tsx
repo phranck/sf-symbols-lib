@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
 
 import { useAnalytics } from '@/hooks/useAnalytics';
-import { useAppStore, COLOR_PALETTE, THEME_COLOR } from '@/state/store';
+import { COLOR_PALETTE, THEME_COLOR, useAppStore } from '@/state/store';
 
 export function ColorPicker() {
   const analytics = useAnalytics();

@@ -56,6 +56,10 @@ export function Drawer() {
     [closeDrawer]
   );
 
+  const handleOpenCopyModal = useCallback(() => {
+    setCopyModalOpen(true);
+  }, [setCopyModalOpen]);
+
   if (!drawerOpen || !selectedIcon) {
     return null;
   }
@@ -65,10 +69,6 @@ export function Drawer() {
     renderMode === 'dualtone'
       ? selectedIcon.DualtoneIcon
       : selectedIcon.MonochromeIcon;
-
-  const handleOpenCopyModal = useCallback(() => {
-    setCopyModalOpen(true);
-  }, [setCopyModalOpen]);
 
   return (
     <div className="bottom-drawer" onClick={handleBackdropClick}>

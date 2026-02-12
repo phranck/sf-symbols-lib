@@ -7,10 +7,10 @@
 export function useAnalytics() {
   const isDev = process.env.NODE_ENV === 'development';
 
-  const trackEvent = (eventName: string, eventData?: Record<string, any>) => {
+  const trackEvent = (eventName: string, eventData?: Record<string, string | number>) => {
     if (typeof window === 'undefined') return;
 
-    const umami = (window as any).umami;
+    const umami = (window as { umami: { trackEvent: (name: string, data?: Record<string, string | number>) => void } }).umami;
     if (!umami) {
       if (isDev) {
         console.warn('[Analytics] Umami not loaded yet');
