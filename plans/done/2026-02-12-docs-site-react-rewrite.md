@@ -34,26 +34,26 @@ Replace the vanilla JS docs site with a React/Vite app that imports `sf-symbols-
 
 All features from the current vanilla JS site must be preserved:
 
-- [ ] Icon grid with responsive CSS grid layout
-- [ ] Search with OR (`|`) and AND (`&` / space) operators
-- [ ] Rendering mode selector (dualtone / monochrome)
-- [ ] Category filter dropdown
-- [ ] "Showing X / Total Y" counter
-- [ ] Light / Dark theme toggle (persisted in localStorage)
-- [ ] 42-color picker with "T" (theme/currentColor) option (persisted in localStorage)
-- [ ] Bottom drawer with 3-column layout (preview, info, code)
-- [ ] Syntax-highlighted React code preview in drawer
-- [ ] Copy-to-clipboard for symbol name, Apple name, and code snippet
-- [ ] About modal with 3 tabs (About / Search / Shortcuts)
-- [ ] Keyboard navigation (arrow keys, Enter, Escape, Cmd+F)
-- [ ] FLIP animation on grid re-renders (when < 300 visible)
-- [ ] Restricted-symbol info icons (574 Apple-restricted symbols)
-- [ ] Toast notifications for clipboard feedback
-- [ ] Progress indicator during initial load
-- [ ] Umami analytics integration
-- [ ] Custom domain (CNAME: sfsymbolslib.layered.work)
-- [ ] Responsive layout (drawer stacks vertically below 900px)
-- [ ] Scroll-margin for fixed header and open drawer
+- [x] Icon grid with responsive CSS grid layout
+- [x] Search with OR (`|`) and AND (`&` / space) operators
+- [x] Rendering mode selector (dualtone / monochrome)
+- [x] Category filter dropdown
+- [x] "Showing X / Total Y" counter
+- [x] Light / Dark theme toggle (persisted in localStorage)
+- [x] 42-color picker with "T" (theme/currentColor) option (persisted in localStorage)
+- [x] Bottom drawer with 3-column layout (preview, info, code)
+- [x] Syntax-highlighted React code preview in drawer
+- [x] Copy-to-clipboard for symbol name, Apple name, and code snippet
+- [x] About modal with 3 tabs (About / Search / Shortcuts)
+- [x] Keyboard navigation (arrow keys, Enter, Escape, Cmd+F)
+- [ ] FLIP animation on grid re-renders (when < 300 visible) - deferred (incompatible with virtual scrolling)
+- [x] Restricted-symbol info icons (574 Apple-restricted symbols)
+- [x] Toast notifications for clipboard feedback
+- [x] Progress indicator during initial load
+- [x] Umami analytics integration
+- [x] Custom domain (CNAME: sfsymbolslib.layered.work)
+- [x] Responsive layout (drawer stacks vertically below 900px)
+- [x] Scroll-margin for fixed header and open drawer
 
 ## Design
 
@@ -296,14 +296,16 @@ Replace the current string-contains logic with `fuse.js` for fuzzy search, while
 - [x] 6.5 Fix CI/CD: Add 14,016 generated icon files to git
 - [x] 6.6 Auto-fix ESLint warnings (30 remaining, acceptable)
 
-### Phase 7: Cleanup & Release (NEXT)
-- [ ] 7.1 Remove old `docs/scripts/`, `docs/styles/`, `docs/index.html` (keep docs/dist/)
-- [ ] 7.2 Remove `docs/data/` directory
-- [ ] 7.3 Remove `generate-docs-data.ts` script
-- [ ] 7.4 Remove chunk-related code from npm scripts
-- [ ] 7.5 Bump version to 2.0.0
-- [ ] 7.6 Publish to npm
-- [ ] 7.7 Update README and changelog
+### Phase 7: Cleanup & Release ✅
+- [x] 7.1 Remove old `docs/scripts/`, `docs/styles/`, `docs/index.html` (keep docs/dist/)
+- [x] 7.2 Remove `docs/data/` directory
+- [x] 7.3 Remove `generate-docs-data.ts` script
+- [x] 7.4 Move `docs-app/` into `docs/` (single directory for docs site)
+- [x] 7.5 Fix CI workflow (remove generate job, fix deps, add docs npm ci)
+- [x] 7.6 TypeScript refactorings (useClickOutside, useLatestRef, analytics module, icons merge)
+- [x] 7.7 Bump version to 2.0.0, then 2.0.1 (MIT license, badge fixes)
+- [x] 7.8 Publish to npm (v2.0.1)
+- [x] 7.9 Update README (project structure, MIT license, badge URL fix)
 
 ## Risks
 
@@ -366,4 +368,16 @@ Replace the current string-contains logic with `fuse.js` for fuzzy search, while
 - 512e5c1: Chore - Auto-fix ESLint import order warnings
 - 81285b2: Chore - Update WHATS-NEXT.md after Phase 6 completion
 
-**Next:** Phase 7 (Cleanup & Release)
+### ✅ Phase 7 Complete (2026-02-12)
+
+**Phase 7: Cleanup & Release** ✅
+- Removed old vanilla docs (scripts/, styles/, data/, markdown files)
+- Moved docs-app/ into docs/ (single directory)
+- Removed generate-docs-data.ts and execSync call
+- Fixed CI workflow (removed generate job, fixed dependencies)
+- TypeScript refactorings: useClickOutside, useLatestRef, analytics module, icons merge
+- Version bump to 2.0.0, then 2.0.1 (MIT license, badge fixes)
+- Published to npm (v2.0.1)
+- Updated README (project structure, MIT license, badge URL)
+
+**All 7 phases complete.** Plan moved to `plans/done/`.

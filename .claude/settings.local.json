@@ -82,7 +82,10 @@
       "Bash(done)",
       "Bash(node -e \"\nconst { catalog } = require\\(''''./src/lib/catalog.ts''''\\) || {};\n\")",
       "Bash(npx tsx:*)",
-      "Bash(test:*)"
+      "Bash(test:*)",
+      "Bash(npm version:*)",
+      "Bash(git stash:*)",
+      "Bash(git mv:*)"
     ]
   }
 }

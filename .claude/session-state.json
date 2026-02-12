@@ -1,43 +1,38 @@
 {
   "version": "1.0",
-  "timestamp": "2026-02-12T22:10:00+01:00",
+  "timestamp": "2026-02-12T22:35:00+01:00",
   "project_name": "sf-symbols-lib",
 
   "session": {
     "active_task": "None",
     "task_status": "pending",
     "current_focus": null,
-    "last_checkpoint": "Phase 7 complete. All 7 phases of docs-site-react-rewrite plan done. CI pipeline green (lint-and-typecheck, build, update-pages all pass). npm v2.0.0 published. TypeScript refactorings applied (useClickOutside, useLatestRef, analytics module, icons merge).",
+    "last_checkpoint": "v2.0.1 published to npm. MIT license added. CI badge URL and README div tag fixed. All 7 phases complete.",
     "phase": "7/7"
   },
 
   "blockers": [],
 
   "recent_actions": [
-    "Fixed CI workflow: removed generate job (SVGs gitignored), build depends on lint-and-typecheck, added docs npm ci",
-    "Committed and pushed all Phase 7 changes (99 files, -76k lines)",
-    "CI pipeline passed: lint-and-typecheck (2m14s), build (2m14s), update-pages (1m7s)",
-    "Extracted useClickOutside and useLatestRef hooks to reduce duplication",
-    "Replaced useAnalytics hook with direct analytics module export (8 consumers updated)",
-    "Merged loadIconModule into ensureModeLoaded in icons.ts",
-    "Moved docs-app/ into docs/ (single directory for docs site)",
-    "Removed old vanilla docs (scripts/, styles/, data/, markdown files)",
-    "Removed generate-docs-data.ts and execSync call from generate-sfsymbols.ts",
-    "Bumped version to 2.0.0"
+    "Bumped version to 2.0.1 (npm version patch), pushed commit + tag",
+    "Added MIT LICENSE file, license field in package.json",
+    "Fixed CI badge URL (LAYEREDwork -> phranck) in README",
+    "Fixed unclosed div tag in README footer",
+    "Changed license from CC-BY-NC-SA 4.0 to MIT in README badge and text"
   ],
 
   "git_state": {
     "branch": "main",
-    "commit_hash": "5a0f3ff",
+    "commit_hash": "39b48ab",
     "uncommitted_files": [
-      "plans/open/2026-02-12-docs-site-react-rewrite.md"
+      ".claude/settings.local.json"
     ],
     "staged_changes": []
   },
 
   "next_steps": [
-    "Verify live site at https://sfsymbolslib.layered.work after GitHub Pages deploy",
-    "Verify npm package shows v2.0.0 on npmjs.com",
+    "Verify live site at https://sfsymbolslib.layered.work",
+    "Verify npm shows v2.0.1 with updated README",
     "Move plan to done: git mv plans/open/2026-02-12-docs-site-react-rewrite.md plans/done/",
     "Accessibility improvements: aria-hidden, focusable='false', color prop",
     "Add 'use client' directive for Next.js RSC support"
