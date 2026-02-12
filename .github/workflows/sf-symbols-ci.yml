@@ -14,23 +14,8 @@ permissions:
   id-token: write
 
 jobs:
-  lint-and-typecheck:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    - uses: actions/setup-node@v4
-      with:
-        node-version: '22'
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run lint
-    - run: npm run typecheck
-
   generate:
     runs-on: ubuntu-latest
-    needs: lint-and-typecheck
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -70,9 +55,25 @@ jobs:
 
         git commit -m "Update SF Symbols components and badge"
         git push
-  build:
+
+  lint-and-typecheck:
     runs-on: ubuntu-latest
     needs: generate
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run lint
+    - run: npm run typecheck
+
+  build:
+    runs-on: ubuntu-latest
+    needs: lint-and-typecheck
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
