@@ -27,8 +27,27 @@ scripts/
 ├── shared/
 │   └── utils.ts              # Shared: kebabToPascalCase, parseSvgFile, VARIANTS
 ├── generate-sfsymbols.ts     # SVGs → React components
-└── generate-docs-data.ts     # SVGs → JSON chunks for docs site (to be replaced)
-docs/                         # Vanilla JS preview site (to be replaced by React app)
+├── generate-catalog.ts       # SVGs → docs-app/src/lib/catalog.ts (metadata)
+└── generate-docs-data.ts     # SVGs → JSON chunks for old docs site (to be removed)
+docs/                         # Vanilla JS preview site (being replaced by docs-app)
+docs-app/                     # New React/Vite docs site (in progress)
+├── src/
+│   ├── main.tsx              # Entry point
+│   ├── App.tsx               # Top-level layout
+│   ├── lib/
+│   │   ├── catalog.ts        # Generated: 7,007 icon metadata entries
+│   │   └── icons.ts          # Wildcard import + catalog merge
+│   ├── state/
+│   │   └── store.ts          # Zustand store (theme, variant, search, drawer)
+│   ├── hooks/
+│   │   ├── useTheme.ts       # DOM sync for dark mode and --symbol-color
+│   │   └── useFuse.ts        # fuse.js search with OR/AND operators
+│   ├── components/           # (Phase 4, not yet created)
+│   └── styles/               # Ported CSS (variables, app, drawer)
+├── public/                   # CNAME, markdown files
+├── vite.config.ts            # Builds to docs/dist/
+├── tsconfig.json
+└── package.json              # React 19, zustand 5, fuse.js 7, @tanstack/react-virtual 3
 .svgs/
 ├── dualtone/                 # Source SVGs (gitignored)
 └── monochrome/
@@ -118,5 +137,6 @@ Dot/dash-separated SVG filename → PascalCase with SF prefix:
 
 - **Branch:** main
 - **Tests:** N/A (no test suite)
-- **Build:** passing
-- **Blockers:** Large uncommitted diff on main (21 fixes + refactors)
+- **Build:** passing (library + docs-app)
+- **Docs Rewrite:** Phase 3/7 complete (scaffold, catalog, store, hooks, layout)
+- **Blockers:** None
