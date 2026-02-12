@@ -296,14 +296,16 @@ Replace the current string-contains logic with `fuse.js` for fuzzy search, while
 - [x] 6.5 Fix CI/CD: Add 14,016 generated icon files to git
 - [x] 6.6 Auto-fix ESLint warnings (30 remaining, acceptable)
 
-### Phase 7: Cleanup & Release (NEXT)
-- [ ] 7.1 Remove old `docs/scripts/`, `docs/styles/`, `docs/index.html` (keep docs/dist/)
-- [ ] 7.2 Remove `docs/data/` directory
-- [ ] 7.3 Remove `generate-docs-data.ts` script
-- [ ] 7.4 Remove chunk-related code from npm scripts
-- [ ] 7.5 Bump version to 2.0.0
-- [ ] 7.6 Publish to npm
-- [ ] 7.7 Update README and changelog
+### Phase 7: Cleanup & Release ✅
+- [x] 7.1 Remove old `docs/scripts/`, `docs/styles/`, `docs/index.html`, markdown files, `info.txt`, `CNAME`
+- [x] 7.2 Remove `docs/data/` directory
+- [x] 7.3 Remove `generate-docs-data.ts` script + `execSync` call in `generate-sfsymbols.ts`
+- [x] 7.4 Remove `docs:generate` npm script, update `docs:build` path
+- [x] 7.5 Move `docs-app/` to `docs/` (source + build output in one directory)
+- [x] 7.6 Update `vite.config.ts` output path, `generate-catalog.ts` output path
+- [x] 7.7 Bump version to 2.0.0
+- [x] 7.8 Update README project structure (remove `generate-docs-data.ts`, add `docs/` section)
+- [ ] 7.9 Publish to npm
 
 ## Risks
 
@@ -366,4 +368,12 @@ Replace the current string-contains logic with `fuse.js` for fuzzy search, while
 - 512e5c1: Chore - Auto-fix ESLint import order warnings
 - 81285b2: Chore - Update WHATS-NEXT.md after Phase 6 completion
 
-**Next:** Phase 7 (Cleanup & Release)
+**Phase 7: Cleanup & Release** ✅
+- Removed old vanilla JS docs site (scripts/, styles/, index.html, data/, markdown files)
+- Removed `generate-docs-data.ts` and its `execSync` call in `generate-sfsymbols.ts`
+- Moved `docs-app/` to `docs/` (source and build output in one directory)
+- Updated `vite.config.ts`, `generate-catalog.ts`, npm scripts, CI/CD paths
+- Bumped version to 2.0.0
+- Updated README project structure
+
+**Next:** Publish to npm (7.9)

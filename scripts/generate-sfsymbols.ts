@@ -1,4 +1,3 @@
-import { execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
@@ -278,10 +277,6 @@ async function generateSFSymbols() {
   // Step 3: Update README and package.json
   updateReadmeSymbolCount(symbolFileNames.length);
   updatePackageJsonSymbolCount(symbolFileNames.length);
-
-  // Step 4: Generate docs data
-  console.log('\n📄 Generating docs data and preview page...');
-  execSync('tsx ./scripts/generate-docs-data.ts', { stdio: 'inherit' });
 
   console.log(
     `\n📊 Summary: ${symbolFileNames.length} symbols x ${RENDER_MODES.length} render modes = ${totalProcessed} individual icon components\n`,

@@ -9,7 +9,7 @@ on:
     types: [published]
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
@@ -28,51 +28,9 @@ jobs:
     - run: npm run lint
     - run: npm run typecheck
 
-  generate:
-    runs-on: ubuntu-latest
-    needs: lint-and-typecheck
-    steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version: '22'
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run generate
-    - name: Commit updated files if changed
-      run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-
-        # collect changes relative to HEAD (if any) and also untracked files
-        changed=""
-        if git rev-parse --verify HEAD >/dev/null 2>&1; then
-          changed=$(git diff --name-only HEAD -- || true)
-        fi
-        untracked=$(git ls-files --others --exclude-standard || true)
-        all_changes=$(printf "%s\n%s" "$changed" "$untracked" | sort -u)
-
-        # filter for files we care about (any file under src/components or README.md)
-        matches=$(printf "%s" "$all_changes" | grep -E '^src/components/|^README.md' || true)
-
-        if [ -z "$matches" ]; then
-          echo "No changes in src/components or README.md to commit"
-          exit 0
-        fi
-
-        # stage deletions/adds/renames under the components dir and README
-        git add -A src/components README.md
-        # create commit if there are staged changes
-        if git diff --cached --quiet; then
-          echo "No staged changes to commit"
-          exit 0
-        fi
-
-        git commit -m "Update SF Symbols components and badge"
-        git push
   build:
     runs-on: ubuntu-latest
-    needs: generate
+    needs: lint-and-typecheck
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -99,6 +57,7 @@ jobs:
         node-version: '22'
         cache: 'npm'
     - run: npm ci
+    - run: cd docs && npm ci
     - uses: actions/download-artifact@v4
       with:
         name: package-dist

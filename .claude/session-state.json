@@ -1,40 +1,50 @@
 {
   "version": "1.0",
-  "timestamp": "2026-02-13T09:45:00+01:00",
+  "timestamp": "2026-02-13T04:20:00+01:00",
   "project_name": "sf-symbols-lib",
 
   "session": {
-    "active_task": "Docs Site React Rewrite (Phase 6: Analytics & Deploy next)",
+    "active_task": "Design & Layout Fixes (Header + Drawer 1:1 replication)",
     "task_status": "in_progress",
-    "current_focus": "Phase 5 complete; ready for Phase 6",
-    "last_checkpoint": "Phase 5 ✅ complete! Keyboard navigation (arrow keys, Enter), Cmd+F search focus, Toast feedback on all copy operations, Error handling, Progress indicator. Build: 14,094 modules, zero errors. Plan files updated.",
+    "current_focus": "docs-app/src/styles/app.css (Drawer CSS redesign)",
+    "last_checkpoint": "Fixed header label duplication (removed control-group wrappers from Select components). Fixed icon grid spacing (flex layout). Added complete drawer CSS for 3-column layout (Preview | Info | Code) with syntax highlighting colors (light + dark modes). Responsive behavior on <900px viewports.",
     "phase": "6/7"
   },
 
   "blockers": [],
 
   "recent_actions": [
-    "Phase 5 complete: Implemented all 8 features (keyboard nav, search focus, copy feedback, error handling, progress indicator)",
-    "Updated plans/open/2026-02-12-docs-site-react-rewrite.md with Phase 4 & 5 completion",
-    "Committed Phase 5 work with 2 focused commits (a70a757, 1f0776a, 000cceb)",
-    "Build verified: 14,094 modules, TypeScript clean, no warnings"
+    "Replaced drawer CSS structure completely: added .drawer-content, .drawer-header, .drawer-selected flex layout",
+    "Added syntax highlighting color variables for both light and dark themes",
+    "Added .drawer-preview, .drawer-info, .drawer-code styling with responsive behavior",
+    "Removed duplicate label wrappers from RenderModeSelect, CategorySelect, ColorPicker",
+    "Fixed header layout with proper label placement and right-aligned stats bar"
   ],
 
   "git_state": {
     "branch": "main",
-    "commit_hash": "000cceb",
+    "commit_hash": "fa0b024",
     "uncommitted_files": [
-      ".claude/session-state.json",
-      ".claude/settings.local.json"
+      ".claude/settings.local.json",
+      "docs-app/src/App.tsx",
+      "docs-app/src/components/Drawer/DrawerPreview.tsx",
+      "docs-app/src/components/Header/CategorySelect.tsx",
+      "docs-app/src/components/Header/ColorPicker.tsx",
+      "docs-app/src/components/Header/Header.tsx",
+      "docs-app/src/components/Header/RenderModeSelect.tsx",
+      "docs-app/src/components/IconGrid/IconGrid.tsx",
+      "docs-app/src/components/IconGrid/IconGridItem.tsx",
+      "docs-app/src/lib/icons.ts",
+      "docs-app/src/styles/app.css"
     ],
     "staged_changes": []
   },
 
   "next_steps": [
-    "Phase 6: Integrate Umami analytics for docs-app",
-    "Configure build output to docs/dist/ for GitHub Pages",
-    "Test custom domain deployment (CNAME)",
-    "Phase 7: Cleanup (remove old vanilla JS docs/)",
-    "Version bump to 2.0.0 and publish to npm"
+    "Verify drawer display in browser (3-column layout: Preview | Info | Code)",
+    "Test responsive behavior on <900px viewports (vertical stacking)",
+    "Test copy buttons and analytics tracking",
+    "Commit layout fixes (header + drawer CSS)",
+    "Phase 7: Cleanup & Release (remove old /docs/ files, version bump to 2.0.0)"
   ]
 }

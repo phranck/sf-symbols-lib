@@ -1,0 +1,185 @@
+/* Preview card - fixed at bottom, slides up over content */
+.preview-card {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  translate: -50% 0;
+  width: calc(100% - 3rem);
+  max-width: calc(9 * 120px + 8 * 16px + 6rem);
+  height: 250px;
+  border: 1px solid transparent;
+  border-top-color: var(--depth-border-top);
+  border-left-color: var(--depth-border-left);
+  border-right-color: var(--depth-border-right);
+  border-bottom-color: var(--depth-border-bottom);
+  border-radius: 1rem;
+  background: var(--bg-secondary);
+  box-sizing: border-box;
+  overflow: hidden;
+  z-index: 100;
+  box-shadow: var(--depth-shadow-elevated), var(--depth-inset-highlight), var(--depth-inset-shadow);
+
+  /* Slide animation: hidden below viewport */
+  transform: translateY(calc(100% + 3rem));
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+}
+
+.preview-card-open {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Content layout */
+.preview-card-content {
+  box-sizing: border-box;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+.preview-card-layout {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100%;
+  gap: 24px;
+}
+
+/* Code section: outer wrapper for positioning (no scroll) */
+.preview-card-code {
+  margin: 0;
+  flex: 1 1 50%;
+  max-width: 50%;
+  min-width: 28%;
+  align-self: stretch;
+  overflow: hidden;
+  padding-top: 0;
+  padding-bottom: 0;
+  position: relative;
+  border-left: 1px solid var(--border-subtle);
+}
+
+/* Inner scroll container */
+.preview-card-code-scroll {
+  height: 100%;
+  overflow: auto;
+}
+
+.preview-card-code pre {
+  margin: 0;
+}
+
+.codebox-bg {
+  background: var(--codebox-background);
+  padding: 0;
+  white-space: pre;
+  position: relative;
+  overflow-x: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Line numbers */
+.line-number {
+  display: inline-block;
+  min-width: 2.2rem;
+  text-align: right;
+  margin-right: 0.75rem;
+  color: var(--syntax-comment-color);
+  user-select: none;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Syntax highlighting */
+.syntax-keyword { color: var(--syntax-keyword-color); }
+.syntax-string { color: var(--syntax-string-color); }
+.syntax-component { color: var(--syntax-component-color); }
+.syntax-comment { color: var(--syntax-comment-color); font-style: italic; }
+.syntax-number { color: var(--syntax-number-color); }
+.syntax-constant { color: var(--syntax-constant-color); }
+.syntax-operator { color: var(--syntax-operator-color); }
+.syntax-property { color: var(--syntax-property-color); }
+.syntax-punctuation { color: var(--syntax-punctuation-color); }
+.syntax-punctuation-strong {
+  color: var(--syntax-punctuation-strong-color);
+  font-weight: 600;
+}
+
+/* Copy button pinned in code section corner (does not scroll with code) */
+.preview-card-code-copy {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 20;
+}
+
+/* Labels */
+.preview-card-label {
+  font-weight: 400;
+  color: var(--fg-muted);
+}
+
+
+/* Close button - hidden on desktop, visible on tablets & phones */
+.preview-card .close-btn {
+  display: none;
+}
+
+/* Responsive: tablet - no code preview, icon + info side by side */
+@media (max-width: 900px) {
+  .preview-card .close-btn {
+    display: block;
+  }
+
+  .preview-card-layout {
+    align-items: center;
+  }
+
+  .preview-card-code {
+    display: none;
+  }
+
+  .preview-card-info-row .icon-btn {
+    display: none;
+  }
+}
+
+/* Responsive: phone - no code preview, no copy buttons */
+@media (max-width: 480px) {
+  .preview-card {
+    bottom: 0.75rem;
+    width: calc(100% - 1.5rem);
+    height: auto;
+    max-height: 180px;
+    border-radius: 0.75rem;
+  }
+
+  .preview-card-layout {
+    flex-direction: row;
+    gap: 12px;
+    padding: 0.75rem;
+  }
+
+  .preview-card-code {
+    display: none;
+  }
+
+  .preview-card-info-row .icon-btn {
+    display: none;
+  }
+
+  .preview-card-left {
+    width: 100px;
+    height: 100px;
+    padding: 0.75rem;
+  }
+
+  .preview-card-info-value {
+    font-size: 1rem;
+  }
+}

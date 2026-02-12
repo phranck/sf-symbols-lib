@@ -300,10 +300,14 @@ sf-symbols-lib/
 │   └── index.ts               # Re-exports dualtone (generated)
 ├── scripts/
 │   ├── generate-sfsymbols.ts  # Icon component generator
-│   ├── generate-docs-data.ts  # Docs site data generator
+│   ├── generate-catalog.ts    # Docs site catalog generator
 │   └── shared/
 │       └── utils.ts           # Shared utilities (naming, SVG parsing)
-└── dist/                      # Build output
+├── docs/                      # React/Vite docs site (source + build)
+│   ├── src/                   # React app source
+│   ├── dist/                  # Build output (GitHub Pages)
+│   └── vite.config.ts
+└── dist/                      # Library build output
 ```
 
 ### Generated Files

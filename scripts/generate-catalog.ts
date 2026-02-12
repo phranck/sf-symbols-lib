@@ -1,11 +1,11 @@
 /**
- * Generate the icon catalog for the docs-app.
+ * Generate the icon catalog for the docs site.
  *
  * Reads SVG metadata from .svgs/dualtone/ and produces a TypeScript file
  * with all icon entries (name, pascalName, categories, restricted) plus
  * a sorted list of unique categories.
  *
- * Output: docs-app/src/lib/catalog.ts
+ * Output: docs/src/lib/catalog.ts
  *
  * Usage: tsx scripts/generate-catalog.ts
  */
@@ -97,7 +97,7 @@ function generateCatalog(): void {
   lines.push('');
 
   // Write output
-  const outputDir = path.join(process.cwd(), 'docs-app', 'src', 'lib');
+  const outputDir = path.join(process.cwd(), 'docs', 'src', 'lib');
   fs.mkdirSync(outputDir, { recursive: true });
 
   const outputPath = path.join(outputDir, 'catalog.ts');
