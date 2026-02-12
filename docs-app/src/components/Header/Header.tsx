@@ -1,12 +1,12 @@
 import { useFilteredIcons } from '@/hooks/useFuse';
 import { icons } from '@/lib/icons';
 
-import { SearchInput } from './SearchInput';
-import { RenderModeSelect } from './RenderModeSelect';
+import { AboutButton } from './AboutButton';
 import { CategorySelect } from './CategorySelect';
 import { ColorPicker } from './ColorPicker';
+import { RenderModeSelect } from './RenderModeSelect';
+import { SearchInput } from './SearchInput';
 import { ThemeToggle } from './ThemeToggle';
-import { AboutButton } from './AboutButton';
 
 export function Header() {
   const filteredIcons = useFilteredIcons();

@@ -1,7 +1,8 @@
 import { useCallback } from 'react';
+
 import { useAnalytics } from '@/hooks/useAnalytics';
-import { useAppStore } from '@/state/store';
 import { categories } from '@/lib/catalog';
+import { useAppStore } from '@/state/store';
 
 export function CategorySelect() {
   const analytics = useAnalytics();

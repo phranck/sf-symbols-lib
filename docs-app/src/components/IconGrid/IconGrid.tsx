@@ -5,13 +5,13 @@
  * ~100 regardless of total icon count (7,007). The grid is responsive:
  * column count is derived from container width and card size (140px + 16px gap).
  */
-import { useRef, useCallback, useState, useEffect } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
+import { useRef, useCallback, useState, useEffect } from 'react';
 
 import { useAnalytics } from '@/hooks/useAnalytics';
-import { useAppStore } from '@/state/store';
 import { useFilteredIcons } from '@/hooks/useFuse';
 import type { IconEntry } from '@/lib/icons';
+import { useAppStore } from '@/state/store';
 
 import { IconGridItem } from './IconGridItem';
 

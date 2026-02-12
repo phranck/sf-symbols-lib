@@ -11,8 +11,8 @@
  * When the query is empty, all icons (optionally filtered by category)
  * are returned.
  */
-import { useMemo } from 'react';
 import Fuse, { type IFuseOptions } from 'fuse.js';
+import { useMemo } from 'react';
 
 import { icons, type IconEntry } from '@/lib/icons';
 import { useAppStore } from '@/state/store';

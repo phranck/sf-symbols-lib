@@ -1,4 +1,5 @@
 import { memo } from 'react';
+
 import type { IconEntry } from '@/lib/icons';
 
 /**

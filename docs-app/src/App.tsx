@@ -5,15 +5,16 @@
  * Header, icon grid (main content), drawer, footer, and modals.
  */
 import { useCallback, useEffect } from 'react';
-import { useTheme } from '@/hooks/useTheme';
-import { useAppStore } from '@/state/store';
+
+import { Drawer } from '@/components/Drawer';
 import { Header } from '@/components/Header';
 import { IconGrid } from '@/components/IconGrid';
-import { Drawer } from '@/components/Drawer';
-import { CopyModal } from '@/components/Modals/CopyModal';
 import { AboutModal } from '@/components/Modals/AboutModal';
-import { Toast } from '@/components/Toast/Toast';
+import { CopyModal } from '@/components/Modals/CopyModal';
 import { ProgressIndicator } from '@/components/ProgressIndicator';
+import { Toast } from '@/components/Toast/Toast';
+import { useTheme } from '@/hooks/useTheme';
+import { useAppStore } from '@/state/store';
 
 export function App() {
   useTheme();

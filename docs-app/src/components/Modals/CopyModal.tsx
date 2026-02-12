@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
-import { useAppStore } from '@/state/store';
+
 import type { IconEntry } from '@/lib/icons';
+import { useAppStore } from '@/state/store';
 
 /**
  * Modal dialog with 3 copy options for the selected icon.

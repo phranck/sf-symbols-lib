@@ -1,8 +1,10 @@
 import { useEffect, useCallback } from 'react';
+
 import { useAppStore } from '@/state/store';
-import { DrawerPreview } from './DrawerPreview';
-import { DrawerInfo } from './DrawerInfo';
+
 import { DrawerCode } from './DrawerCode';
+import { DrawerInfo } from './DrawerInfo';
+import { DrawerPreview } from './DrawerPreview';
 
 /**
  * Bottom drawer container (Phase 4).
