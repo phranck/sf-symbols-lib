@@ -1,50 +1,45 @@
 {
   "version": "1.0",
-  "timestamp": "2026-02-13T04:20:00+01:00",
+  "timestamp": "2026-02-12T22:10:00+01:00",
   "project_name": "sf-symbols-lib",
 
   "session": {
-    "active_task": "Design & Layout Fixes (Header + Drawer 1:1 replication)",
-    "task_status": "in_progress",
-    "current_focus": "docs-app/src/styles/app.css (Drawer CSS redesign)",
-    "last_checkpoint": "Fixed header label duplication (removed control-group wrappers from Select components). Fixed icon grid spacing (flex layout). Added complete drawer CSS for 3-column layout (Preview | Info | Code) with syntax highlighting colors (light + dark modes). Responsive behavior on <900px viewports.",
-    "phase": "6/7"
+    "active_task": "None",
+    "task_status": "pending",
+    "current_focus": null,
+    "last_checkpoint": "Phase 7 complete. All 7 phases of docs-site-react-rewrite plan done. CI pipeline green (lint-and-typecheck, build, update-pages all pass). npm v2.0.0 published. TypeScript refactorings applied (useClickOutside, useLatestRef, analytics module, icons merge).",
+    "phase": "7/7"
   },
 
   "blockers": [],
 
   "recent_actions": [
-    "Replaced drawer CSS structure completely: added .drawer-content, .drawer-header, .drawer-selected flex layout",
-    "Added syntax highlighting color variables for both light and dark themes",
-    "Added .drawer-preview, .drawer-info, .drawer-code styling with responsive behavior",
-    "Removed duplicate label wrappers from RenderModeSelect, CategorySelect, ColorPicker",
-    "Fixed header layout with proper label placement and right-aligned stats bar"
+    "Fixed CI workflow: removed generate job (SVGs gitignored), build depends on lint-and-typecheck, added docs npm ci",
+    "Committed and pushed all Phase 7 changes (99 files, -76k lines)",
+    "CI pipeline passed: lint-and-typecheck (2m14s), build (2m14s), update-pages (1m7s)",
+    "Extracted useClickOutside and useLatestRef hooks to reduce duplication",
+    "Replaced useAnalytics hook with direct analytics module export (8 consumers updated)",
+    "Merged loadIconModule into ensureModeLoaded in icons.ts",
+    "Moved docs-app/ into docs/ (single directory for docs site)",
+    "Removed old vanilla docs (scripts/, styles/, data/, markdown files)",
+    "Removed generate-docs-data.ts and execSync call from generate-sfsymbols.ts",
+    "Bumped version to 2.0.0"
   ],
 
   "git_state": {
     "branch": "main",
-    "commit_hash": "fa0b024",
+    "commit_hash": "5a0f3ff",
     "uncommitted_files": [
-      ".claude/settings.local.json",
-      "docs-app/src/App.tsx",
-      "docs-app/src/components/Drawer/DrawerPreview.tsx",
-      "docs-app/src/components/Header/CategorySelect.tsx",
-      "docs-app/src/components/Header/ColorPicker.tsx",
-      "docs-app/src/components/Header/Header.tsx",
-      "docs-app/src/components/Header/RenderModeSelect.tsx",
-      "docs-app/src/components/IconGrid/IconGrid.tsx",
-      "docs-app/src/components/IconGrid/IconGridItem.tsx",
-      "docs-app/src/lib/icons.ts",
-      "docs-app/src/styles/app.css"
+      "plans/open/2026-02-12-docs-site-react-rewrite.md"
     ],
     "staged_changes": []
   },
 
   "next_steps": [
-    "Verify drawer display in browser (3-column layout: Preview | Info | Code)",
-    "Test responsive behavior on <900px viewports (vertical stacking)",
-    "Test copy buttons and analytics tracking",
-    "Commit layout fixes (header + drawer CSS)",
-    "Phase 7: Cleanup & Release (remove old /docs/ files, version bump to 2.0.0)"
+    "Verify live site at https://sfsymbolslib.layered.work after GitHub Pages deploy",
+    "Verify npm package shows v2.0.0 on npmjs.com",
+    "Move plan to done: git mv plans/open/2026-02-12-docs-site-react-rewrite.md plans/done/",
+    "Accessibility improvements: aria-hidden, focusable='false', color prop",
+    "Add 'use client' directive for Next.js RSC support"
   ]
 }

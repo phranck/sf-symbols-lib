@@ -2,6 +2,7 @@
   "name": "sf-symbols-lib",
   "version": "2.0.0",
   "description": "SF Symbols (7,007) React components library",
+  "license": "MIT",
   "type": "module",
   "sideEffects": false,
   "engines": {

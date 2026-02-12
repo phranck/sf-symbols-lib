@@ -1,6 +1,6 @@
-[![CI](https://github.com/LAYEREDwork/sf-symbols-lib/actions/workflows/sf-symbols-ci.yml/badge.svg)](https://github.com/LAYEREDwork/sf-symbols-lib/actions/workflows/sf-symbols-ci.yml)
+[![CI](https://github.com/phranck/sf-symbols-lib/actions/workflows/sf-symbols-ci.yml/badge.svg)](https://github.com/phranck/sf-symbols-lib/actions/workflows/sf-symbols-ci.yml)
 ![SF Symbols](https://img.shields.io/badge/SF%20Symbols-7007-blue?style=flat-square&logo=apple&logoColor=white)
-[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Mastodon: @phranck](https://img.shields.io/badge/Mastodon-@LAYERED-6364ff.svg?style=flat)](https://oldbytes.space/@LAYERED)
 
 # SF Symbols Library
@@ -340,10 +340,10 @@ For official SF Symbols documentation and guidelines, visit [Apple's SF Symbols 
 
 ## License
 
-This repository has been published under the [CC-BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) license.
+This repository has been published under the [MIT](./LICENSE) license.
 
 ---
 
 <div style="text-align: center;">
   Made with ❤️ by <a href="https://oldbytes.space/@LAYERED" target="_blank">@LAYERED</a>
-<div>
+</div>
