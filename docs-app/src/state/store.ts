@@ -53,6 +53,9 @@ interface AppState {
   // Toast
   toastMessage: string | null;
 
+  // Loading state
+  isLoadingInitial: boolean;
+
   // Actions: display
   setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
@@ -75,6 +78,9 @@ interface AppState {
 
   // Actions: toast
   setToastMessage: (message: string | null) => void;
+
+  // Actions: loading
+  setLoadingInitial: (loading: boolean) => void;
 }
 
 // ── Persistence helpers ─────────────────────────────────────────────────
@@ -112,6 +118,7 @@ export const useAppStore = create<AppState>()((set) => ({
   aboutModalOpen: false,
   copyModalOpen: false,
   toastMessage: null,
+  isLoadingInitial: true,
 
   // Display
   setTheme: (theme) => {
@@ -152,4 +159,7 @@ export const useAppStore = create<AppState>()((set) => ({
 
   // Toast
   setToastMessage: (toastMessage) => set({ toastMessage }),
+
+  // Loading
+  setLoadingInitial: (isLoadingInitial) => set({ isLoadingInitial }),
 }));

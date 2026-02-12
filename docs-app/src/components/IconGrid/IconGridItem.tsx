@@ -30,6 +30,7 @@ export const IconGridItem = memo(function IconGridItem({
       className={className}
       title={icon.name}
       data-sf-key={icon.name}
+      tabIndex={isFocused ? 0 : -1}
       onClick={() => onClick(icon)}
     >
       <Icon />

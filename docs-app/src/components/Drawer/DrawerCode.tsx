@@ -82,12 +82,20 @@ function generateHighlighted(name: string, pkg: string): string {
 
 export function DrawerCode({ pascalName, packagePath }: DrawerCodeProps) {
   const setCopyModalOpen = useAppStore((s) => s.setCopyModalOpen);
+  const setToastMessage = useAppStore((s) => s.setToastMessage);
 
   const handleCopy = useCallback(() => {
     const text = generatePlainText(pascalName, packagePath);
-    navigator.clipboard.writeText(text);
-    setCopyModalOpen(false);
-  }, [pascalName, packagePath, setCopyModalOpen]);
+    navigator.clipboard.writeText(text).then(
+      () => {
+        setToastMessage('Copied: Code snippet');
+        setCopyModalOpen(false);
+      },
+      () => {
+        setToastMessage('Copy failed. Try again.');
+      }
+    );
+  }, [pascalName, packagePath, setCopyModalOpen, setToastMessage]);
 
   return (
     <div className="drawer-code" style={{ position: 'relative' }}>

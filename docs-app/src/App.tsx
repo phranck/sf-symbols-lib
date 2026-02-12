@@ -4,7 +4,7 @@
  * Wires up the theme side-effect hook and renders the main structure:
  * Header, icon grid (main content), drawer, footer, and modals.
  */
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useTheme } from '@/hooks/useTheme';
 import { useAppStore } from '@/state/store';
 import { Header } from '@/components/Header';
@@ -13,6 +13,7 @@ import { Drawer } from '@/components/Drawer';
 import { CopyModal } from '@/components/Modals/CopyModal';
 import { AboutModal } from '@/components/Modals/AboutModal';
 import { Toast } from '@/components/Toast/Toast';
+import { ProgressIndicator } from '@/components/ProgressIndicator';
 
 export function App() {
   useTheme();
@@ -22,6 +23,7 @@ export function App() {
   const selectedIcon = useAppStore((s) => s.selectedIcon);
   const setAboutModalOpen = useAppStore((s) => s.setAboutModalOpen);
   const setCopyModalOpen = useAppStore((s) => s.setCopyModalOpen);
+  const setSearchQuery = useAppStore((s) => s.setSearchQuery);
 
   // Mutual exclusive: opening one closes the other
   const handleCopyModalOpen = useCallback(
@@ -60,8 +62,27 @@ export function App() {
     [handleCopyModalOpen, handleAboutModalOpen]
   );
 
+  // Handle Cmd+F / Ctrl+F to focus search input and clear search
+  useEffect(() => {
+    const handleSearchFocus = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'f') {
+        e.preventDefault();
+        setSearchQuery('');
+        const searchInput = document.getElementById('symbols-search') as HTMLInputElement | null;
+        if (searchInput) {
+          searchInput.focus();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleSearchFocus);
+    return () => document.removeEventListener('keydown', handleSearchFocus);
+  }, [setSearchQuery]);
+
   return (
     <>
+      <ProgressIndicator />
+
       <Header />
 
       <main style={{ flex: '1 1 auto', overflow: 'hidden' }}>

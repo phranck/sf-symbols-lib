@@ -39,24 +39,36 @@ export function CopyModal({ isOpen, onClose, icon }: CopyModalProps) {
 
   const handleCopySymbolName = useCallback(async () => {
     if (!icon) return;
-    await navigator.clipboard.writeText(icon.name);
-    setToastMessage(`Copied: ${icon.name}`);
+    try {
+      await navigator.clipboard.writeText(icon.name);
+      setToastMessage(`Copied: ${icon.name}`);
+    } catch {
+      setToastMessage('Copy failed. Try again.');
+    }
     onClose();
   }, [icon, setToastMessage, onClose]);
 
   const handleCopyAppleName = useCallback(async () => {
     if (!icon) return;
     const appleName = toAppleName(icon.name);
-    await navigator.clipboard.writeText(appleName);
-    setToastMessage(`Copied: ${appleName}`);
+    try {
+      await navigator.clipboard.writeText(appleName);
+      setToastMessage(`Copied: ${appleName}`);
+    } catch {
+      setToastMessage('Copy failed. Try again.');
+    }
     onClose();
   }, [icon, setToastMessage, onClose]);
 
   const handleCopyCode = useCallback(async () => {
     if (!icon) return;
     const code = generateCodeSnippet(icon.pascalName, renderMode);
-    await navigator.clipboard.writeText(code);
-    setToastMessage('Copied: Code snippet');
+    try {
+      await navigator.clipboard.writeText(code);
+      setToastMessage('Copied: Code snippet');
+    } catch {
+      setToastMessage('Copy failed. Try again.');
+    }
     onClose();
   }, [icon, renderMode, setToastMessage, onClose]);
 

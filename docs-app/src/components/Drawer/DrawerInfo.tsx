@@ -24,14 +24,22 @@ export const DrawerInfo = memo(function DrawerInfo({ icon }: DrawerInfoProps) {
   const setToastMessage = useAppStore((s) => s.setToastMessage);
 
   const handleCopySymbolName = useCallback(async () => {
-    await navigator.clipboard.writeText(icon.name);
-    setToastMessage(`Copied: ${icon.name}`);
+    try {
+      await navigator.clipboard.writeText(icon.name);
+      setToastMessage(`Copied: ${icon.name}`);
+    } catch {
+      setToastMessage('Copy failed. Try again.');
+    }
   }, [icon.name, setToastMessage]);
 
   const handleCopyAppleName = useCallback(async () => {
     const appleName = toAppleName(icon.name);
-    await navigator.clipboard.writeText(appleName);
-    setToastMessage(`Copied: ${appleName}`);
+    try {
+      await navigator.clipboard.writeText(appleName);
+      setToastMessage(`Copied: ${appleName}`);
+    } catch {
+      setToastMessage('Copy failed. Try again.');
+    }
   }, [icon.name, setToastMessage]);
 
   const appleName = toAppleName(icon.name);
