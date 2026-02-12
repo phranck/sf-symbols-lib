@@ -288,19 +288,22 @@ Replace the current string-contains logic with `fuse.js` for fuzzy search, while
 - [x] 5.7 Scroll-margin handling for fixed header and drawer (already in CSS)
 - [x] 5.8 Progress indicator during initial render (dynamic loading bar)
 
-### Phase 6: Analytics & Deploy
-- [ ] 6.1 Integrate Umami analytics
-- [ ] 6.2 Configure build output to `docs/dist/`
-- [ ] 6.3 Test GitHub Pages deployment
-- [ ] 6.4 Verify custom domain (CNAME)
+### Phase 6: Analytics & Deploy ✅
+- [x] 6.1 Integrate Umami analytics (script tag + 7 tracking hooks)
+- [x] 6.2 Configure build output to `docs/dist/` (verified)
+- [x] 6.3 Test GitHub Pages deployment (CI/CD pipeline)
+- [x] 6.4 Verify custom domain (CNAME) (confirmed in docs-app/public/)
+- [x] 6.5 Fix CI/CD: Add 14,016 generated icon files to git
+- [x] 6.6 Auto-fix ESLint warnings (30 remaining, acceptable)
 
-### Phase 7: Cleanup
-- [ ] 7.1 Remove old `docs/scripts/`, `docs/styles/`, `docs/index.html`
+### Phase 7: Cleanup & Release (NEXT)
+- [ ] 7.1 Remove old `docs/scripts/`, `docs/styles/`, `docs/index.html` (keep docs/dist/)
 - [ ] 7.2 Remove `docs/data/` directory
 - [ ] 7.3 Remove `generate-docs-data.ts` script
 - [ ] 7.4 Remove chunk-related code from npm scripts
-- [ ] 7.5 Update `to-dos.md` and `whats-next.md`
-- [ ] 7.6 Update README if needed
+- [ ] 7.5 Bump version to 2.0.0
+- [ ] 7.6 Publish to npm
+- [ ] 7.7 Update README and changelog
 
 ## Risks
 
@@ -311,7 +314,7 @@ Replace the current string-contains logic with `fuse.js` for fuzzy search, while
 
 ## Completed
 
-### ✅ Phases 1-5 Complete (2026-02-13)
+### ✅ Phases 1-6 Complete (2026-02-13)
 
 **Phase 1: Project Scaffolding** ✅
 - Vite + React + TypeScript setup
@@ -342,14 +345,25 @@ Replace the current string-contains logic with `fuse.js` for fuzzy search, while
 - Error handling for clipboard failures
 - Dynamic progress indicator for initial load
 
+**Phase 6: Analytics & Deploy** ✅
+- Umami analytics: script tag + 7 custom tracking hooks
+- Event tracking: icon copy (name/appleName/code), select, search, render mode, category, theme, color
+- npm scripts: added `docs:build` (cd docs-app && npm run build), updated `docs:preview`
+- GitHub Actions: updated `update-pages` job to use `docs:build`
+- CI/CD fix: added 14,016 generated icon files to git (src/dualtone/, src/monochrome/)
+- ESLint: auto-fixed import ordering, 30 warnings remaining (acceptable)
+
 **Build Status:**
-- ✓ 14,094 modules bundled in ~11 seconds
+- ✓ 14,095 modules bundled in ~11 seconds
 - ✓ No TypeScript errors
-- ✓ No console warnings
-- ✓ All Phase 5 features working
+- ✓ 30 ESLint warnings (import order + react-hooks, acceptable)
+- ✓ All Phase 6 features working
 
 **Commits:**
-- a70a757: Feat - Keyboard navigation & search focus
-- 1f0776a: Chore - WHATS-NEXT.md update
+- 05e9566: Feat - Add Umami analytics and update docs build
+- a396526: Fix - Resolve React Hooks and lint errors
+- fed522e: Chore - Add generated SF Symbol components to git
+- 512e5c1: Chore - Auto-fix ESLint import order warnings
+- 81285b2: Chore - Update WHATS-NEXT.md after Phase 6 completion
 
-**Next:** Phase 6 (Analytics & Deploy) + Phase 7 (Cleanup)
+**Next:** Phase 7 (Cleanup & Release)
