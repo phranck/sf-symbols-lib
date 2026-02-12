@@ -28,32 +28,24 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
-      '@typescript-eslint/no-explicit-any': 'off',
-      'no-useless-escape': 'off',
+      // Re-enabled: prefer explicit types over `any`
+      '@typescript-eslint/no-explicit-any': 'warn',
+      // Re-enabled: catch unnecessary escape characters in strings/regexes
+      'no-useless-escape': 'warn',
       'import/order': [
         'warn',
         {
           'groups': [
             'builtin',      // Node.js built-in modules
             'external',     // Third-party packages
-            'internal',     // @shared, @backend, @frontend imports
+            'internal',     // @/* path alias imports
             'parent',       // ../
             'sibling',      // ./
             'index'         // ./index
           ],
           'pathGroups': [
             {
-              'pattern': '@shared/**',
-              'group': 'internal',
-              'position': 'before'
-            },
-            {
-              'pattern': '@backend/**',
-              'group': 'internal',
-              'position': 'before'
-            },
-            {
-              'pattern': '@frontend/**',
+              'pattern': '@/**',
               'group': 'internal',
               'position': 'before'
             }

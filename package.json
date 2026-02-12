@@ -3,6 +3,7 @@
   "version": "1.1.3",
   "description": "SF Symbols (7,007) React components library",
   "type": "module",
+  "sideEffects": false,
   "engines": {
     "node": ">=22.0.0"
   },
@@ -13,13 +14,13 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./hierarchical": {
-      "types": "./dist/hierarchical/index.d.ts",
-      "import": "./dist/hierarchical/index.js"
+    "./dualtone": {
+      "types": "./dist/dualtone/index.d.ts",
+      "import": "./dist/dualtone/index.js"
     },
-    "./hierarchical/*": {
-      "types": "./dist/hierarchical/icons/*.d.ts",
-      "import": "./dist/hierarchical/icons/*.js"
+    "./dualtone/*": {
+      "types": "./dist/dualtone/icons/*.d.ts",
+      "import": "./dist/dualtone/icons/*.js"
     },
     "./monochrome": {
       "types": "./dist/monochrome/index.d.ts",
@@ -28,26 +29,6 @@
     "./monochrome/*": {
       "types": "./dist/monochrome/icons/*.d.ts",
       "import": "./dist/monochrome/icons/*.js"
-    },
-    "./palette": {
-      "types": "./dist/palette/index.d.ts",
-      "import": "./dist/palette/index.js"
-    },
-    "./palette/*": {
-      "types": "./dist/palette/icons/*.d.ts",
-      "import": "./dist/palette/icons/*.js"
-    },
-    "./multicolor": {
-      "types": "./dist/multicolor/index.d.ts",
-      "import": "./dist/multicolor/index.js"
-    },
-    "./multicolor/*": {
-      "types": "./dist/multicolor/icons/*.d.ts",
-      "import": "./dist/multicolor/icons/*.js"
-    },
-    "./compat": {
-      "types": "./dist/compat/index.d.ts",
-      "import": "./dist/compat/index.js"
     }
   },
   "repository": {
@@ -64,7 +45,7 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "generate": "tsx scripts/generate-sfsymbols.ts",
-    "clean": "rm -rf src/hierarchical src/monochrome src/palette src/multicolor src/compat src/components/sf-symbol-name.ts src/index.ts docs/dist dist",
+    "clean": "rm -rf src/dualtone src/monochrome src/index.ts docs/dist dist",
     "check": "npm run lint && npm run typecheck && npm run build",
     "docs:generate": "tsx scripts/generate-docs-data.ts",
     "docs:serve": "browser-sync start --server docs/dist --files docs/dist/index.html --no-open",

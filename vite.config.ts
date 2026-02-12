@@ -32,11 +32,8 @@ export default defineConfig({
     lib: {
       entry: {
         'index': resolve(__dirname, 'src/index.ts'),
-        'hierarchical/index': resolve(__dirname, 'src/hierarchical/index.tsx'),
+        'dualtone/index': resolve(__dirname, 'src/dualtone/index.tsx'),
         'monochrome/index': resolve(__dirname, 'src/monochrome/index.tsx'),
-        'palette/index': resolve(__dirname, 'src/palette/index.tsx'),
-        'multicolor/index': resolve(__dirname, 'src/multicolor/index.tsx'),
-        'compat/index': resolve(__dirname, 'src/compat/index.tsx'),
       },
       name: 'SFSymbolsLib',
       formats: ['es']
@@ -49,10 +46,6 @@ export default defineConfig({
         'react/jsx-dev-runtime',
       ],
       output: {
-        globals: {
-          react: 'React',
-          'react-dom': 'ReactDOM'
-        },
         // Preserve individual icon modules for tree-shaking
         preserveModules: true,
         preserveModulesRoot: 'src',
