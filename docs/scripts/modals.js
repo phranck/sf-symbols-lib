@@ -165,16 +165,16 @@ function processShortcuts() {
     const nodes = Array.from(p.childNodes);
     const rows = [];
 
-    for (let idx = 0; idx < nodes.length; idx++) {
-      const node = nodes[idx];
+    for (let nodeIndex = 0; nodeIndex < nodes.length; nodeIndex++) {
+      const node = nodes[nodeIndex];
       if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'CODE') {
         const codeText = node.textContent.trim();
 
         // Gather description nodes following this <code> until next <code>
         const descParts = [];
-        let j = idx + 1;
-        while (j < nodes.length && !(nodes[j].nodeType === Node.ELEMENT_NODE && nodes[j].tagName === 'CODE')) {
-          const followNode = nodes[j];
+        let lookAheadIndex = nodeIndex + 1;
+        while (lookAheadIndex < nodes.length && !(nodes[lookAheadIndex].nodeType === Node.ELEMENT_NODE && nodes[lookAheadIndex].tagName === 'CODE')) {
+          const followNode = nodes[lookAheadIndex];
           if (followNode.nodeType === Node.TEXT_NODE) {
             const cleaned = followNode.textContent.replace(/\s+/g, ' ').trim();
             if (cleaned) descParts.push(cleaned);
@@ -182,7 +182,7 @@ function processShortcuts() {
             const cleaned = followNode.textContent.replace(/\s+/g, ' ').trim();
             if (cleaned) descParts.push(cleaned);
           }
-          j++;
+          lookAheadIndex++;
         }
 
         const descText = descParts.join(' ').trim();
@@ -211,8 +211,8 @@ function processShortcuts() {
         row.appendChild(left);
         rows.push(row);
 
-        // advance idx to the last consumed node
-        idx = j - 1;
+        // advance nodeIndex to the last consumed node
+        nodeIndex = lookAheadIndex - 1;
       }
     }
 
@@ -228,8 +228,8 @@ function processShortcuts() {
  * Accepts tokens like 'ArrowUp', 'Arrow Up', 'Enter', 'Esc', 'Cmd', '⌘', 'Shift', 'Ctrl', 'Alt', 'F5', letters, etc.
  */
 function mapKeyToSymbol(token) {
-  const t = token.replace(/[^\w\d]/g, '').toLowerCase();
-  switch (t) {
+  const normalizedToken = token.replace(/[^\w\d]/g, '').toLowerCase();
+  switch (normalizedToken) {
     case 'arrowup':
     case 'uparrow':
     case 'up':

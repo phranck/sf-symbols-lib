@@ -1,17 +1,17 @@
 # NPM Commands Overview
 
-This file contains an automatic overview of all available `npm run` commands for the SF-Symbols-Lib project.
+This file contains an overview of all available `npm run` commands for the SF-Symbols-Lib project.
 
 ## Package Commands (for the React components library)
 
 | Command | Description | Full command |
 |---------|-------------|-------------|
-| `npm run build` | Builds the library (TypeScript + Vite + Declaration Files) | `tsc && vite build && tsc --emitDeclarationOnly` |
+| `npm run build` | Builds the library (TypeScript + Vite + Declaration Files + tsc-alias) | `tsc && vite build && tsc --emitDeclarationOnly && tsc-alias` |
 | `npm run dev` | Watch mode for development (continuous build) | `vite build --watch` |
 | `npm run lint` | ESLint linting for code quality | `eslint .` |
 | `npm run typecheck` | TypeScript type-checking without build | `tsc --noEmit` |
 | `npm run generate` | Generates SF Symbols from SVG files | `tsx scripts/generate-sfsymbols.ts` |
-| `npm run clean` | Cleans all generated files (src/ + dist/ + docs/dist/) | `rm -rf src/hierarchical src/monochrome src/components/sf-symbol-name.ts src/index.ts docs/dist dist` |
+| `npm run clean` | Cleans all generated files (src/ + dist/ + docs/dist/) | `rm -rf src/dualtone src/monochrome src/index.ts docs/dist dist` |
 | `npm run check` | Complete quality check (lint + typecheck + build) | `npm run lint && npm run typecheck && npm run build` |
 
 ## Preview Page Commands (for the GitHub Pages preview site)

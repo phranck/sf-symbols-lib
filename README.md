@@ -11,7 +11,7 @@ A React component library providing **7,007 Apple SF Symbols** as tree-shakeable
 
 - **7,007 Symbols** - Complete SF Symbols 7.3 collection
 - **Tree-Shakeable** - Each icon is a standalone component (~1.5 KB each)
-- **4 Variants** - Hierarchical, Monochrome, Palette, Multicolor
+- **2 Variants** - Dualtone (default), Monochrome
 - **Type-Safe** - Full TypeScript support with autocomplete
 - **Lightweight** - Only imported icons end up in your bundle
 - **React 18/19** - Works with both versions
@@ -29,7 +29,7 @@ npm install sf-symbols-lib
 ## Quick Start
 
 ```tsx
-import { SFCheckmarkCircleFill, SFPhone } from 'sf-symbols-lib/hierarchical';
+import { SFCheckmarkCircleFill, SFPhone } from 'sf-symbols-lib/dualtone';
 
 function App() {
   return (
@@ -48,7 +48,7 @@ Each icon is imported directly as a React component. Your bundler only includes 
 ### Basic Usage
 
 ```tsx
-import { SFCheckmark, SFCheckmarkCircleFill, SFTrash } from 'sf-symbols-lib/hierarchical';
+import { SFCheckmark, SFCheckmarkCircleFill, SFTrash } from 'sf-symbols-lib/dualtone';
 
 function MyComponent() {
   return (
@@ -66,17 +66,18 @@ function MyComponent() {
 Choose the variant that matches your design needs:
 
 ```tsx
-// Hierarchical - depth through layered opacity
-import { SFFolderFill } from 'sf-symbols-lib/hierarchical';
+// Dualtone (default) - depth through layered opacity
+import { SFFolderFill } from 'sf-symbols-lib/dualtone';
 
 // Monochrome - single color, clean look
 import { SFFolderFill } from 'sf-symbols-lib/monochrome';
+```
 
-// Palette - multiple distinct colors
-import { SFFolderFill } from 'sf-symbols-lib/palette';
+The default import (`sf-symbols-lib`) re-exports the dualtone variant:
 
-// Multicolor - original Apple-designed colors
-import { SFFolderFill } from 'sf-symbols-lib/multicolor';
+```tsx
+import { SFFolderFill } from 'sf-symbols-lib';
+// equivalent to: import { SFFolderFill } from 'sf-symbols-lib/dualtone';
 ```
 
 ### Direct File Imports
@@ -84,13 +85,13 @@ import { SFFolderFill } from 'sf-symbols-lib/multicolor';
 For faster build resolution in large projects, you can bypass the barrel export:
 
 ```tsx
-import { SFCheckmarkCircleFill } from 'sf-symbols-lib/hierarchical/icons/SFCheckmarkCircleFill';
+import { SFCheckmarkCircleFill } from 'sf-symbols-lib/dualtone/SFCheckmarkCircleFill';
 ```
 
 ### Styling
 
 ```tsx
-import { SFHeartFill, SFStar } from 'sf-symbols-lib/hierarchical';
+import { SFHeartFill, SFStar } from 'sf-symbols-lib/dualtone';
 
 function StyledSymbols() {
   return (
@@ -112,14 +113,14 @@ function StyledSymbols() {
 
 | Preset | Pixels |
 |--------|--------|
-| `xs`   | 16px   |
-| `sm`   | 20px   |
-| `md`   | 24px   |
-| `lg`   | 32px   |
-| `xl`   | 48px   |
+| `xs`   | 12px   |
+| `sm`   | 16px   |
+| `md`   | 20px   |
+| `lg`   | 24px (default) |
+| `xl`   | 32px   |
 
 ```tsx
-import { SFBellFill } from 'sf-symbols-lib/hierarchical';
+import { SFBellFill } from 'sf-symbols-lib/dualtone';
 
 function SizeExamples() {
   return (
@@ -140,7 +141,7 @@ function SizeExamples() {
 ### Using with Buttons
 
 ```tsx
-import { SFPlus, SFTrash, SFPencilLine } from 'sf-symbols-lib/hierarchical';
+import { SFPlus, SFTrash, SFPencilLine } from 'sf-symbols-lib/dualtone';
 
 function ButtonExamples() {
   return (
@@ -163,10 +164,27 @@ function ButtonExamples() {
 }
 ```
 
+### Global Defaults with Context
+
+Use `SFIconContext` to set default props for all icons in a subtree:
+
+```tsx
+import { SFIconContext, SFCheckmarkCircleFill, SFPhone } from 'sf-symbols-lib/dualtone';
+
+function App() {
+  return (
+    <SFIconContext.Provider value={{ size: 'sm', className: 'icon' }}>
+      <SFCheckmarkCircleFill />
+      <SFPhone />
+    </SFIconContext.Provider>
+  );
+}
+```
+
 ### Dynamic Icon Selection
 
 ```tsx
-import { SFFolder, SFFolderFill } from 'sf-symbols-lib/hierarchical';
+import { SFFolder, SFFolderFill } from 'sf-symbols-lib/dualtone';
 
 function DynamicIcon({ isOpen }: { isOpen: boolean }) {
   const Icon = isOpen ? SFFolderFill : SFFolder;
@@ -180,7 +198,7 @@ All icon components accept `SFIconProps`:
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number` | `'md'` | Size preset or exact pixels |
+| `size` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number` | `'lg'` | Size preset or exact pixels |
 | `className` | `string` | - | CSS class names |
 | `style` | `CSSProperties` | - | Inline styles |
 | `...rest` | `SVGAttributes` | - | Any valid SVG attribute |
@@ -195,7 +213,7 @@ All component names are PascalCase with an `SF` prefix:
 | `checkmark.circle` | `SFCheckmarkCircle` |
 | `checkmark.circle.fill` | `SFCheckmarkCircleFill` |
 | `square.and.arrow.up` | `SFSquareAndArrowUp` |
-| `0.circle.fill` | `SF00CircleFill` |
+| `0.circle.fill` | `SF0CircleFill` |
 
 ## Bundle Size
 
@@ -212,7 +230,7 @@ Only the icons you import are included in your production bundle.
 
 ## Migration from v1.x
 
-Version 2.0 introduces tree-shakeable icon components. The legacy API remains available through a compatibility layer but is deprecated and will be removed in v3.0.
+Version 2.0 introduces tree-shakeable icon components. The legacy enum-based API (`SFSymbol` + `SFSymbolName`) has been removed.
 
 ### Before (v1.x)
 
@@ -222,30 +240,15 @@ import { SFSymbol, SFSymbolName } from 'sf-symbols-lib';
 <SFSymbol name={SFSymbolName.SFCheckmarkCircleFill} size="lg" />
 ```
 
-This imports all 7,007 icons (~15 MB per variant) regardless of how many you use.
-
 ### After (v2.0)
 
 ```tsx
-import { SFCheckmarkCircleFill } from 'sf-symbols-lib/hierarchical';
+import { SFCheckmarkCircleFill } from 'sf-symbols-lib/dualtone';
 
 <SFCheckmarkCircleFill size="lg" />
 ```
 
 Only the imported icon (~1.5 KB) is included in your bundle.
-
-### Migration Steps
-
-1. **Replace imports** - Change from enum-based to direct component imports
-2. **Remove `name` prop** - Each icon is now its own component
-3. **Update `size` prop** - Uses string presets (`'xs'`, `'sm'`, `'md'`, `'lg'`, `'xl'`) or numbers
-
-The old API still works in v2.0 through the compat layer:
-
-```tsx
-// Still works, but shows deprecation warning in development
-import { SFSymbol, SFSymbolName } from 'sf-symbols-lib/compat';
-```
 
 For a detailed migration guide, see [MIGRATION.md](./MIGRATION.md).
 
@@ -283,23 +286,23 @@ npm run check
 ```
 sf-symbols-lib/
 ├── .svgs/                    # Source SVGs (gitignored)
-│   ├── hierarchical/         # 7,007 SVG files
-│   ├── monochrome/
-│   ├── palette/
-│   └── multicolor/
+│   ├── dualtone/             # 7,007 SVG files
+│   └── monochrome/
 ├── src/
 │   ├── common/
-│   │   ├── SFIcon.tsx        # Shared SVG renderer
+│   │   ├── SFIcon.tsx        # Shared SVG renderer (forwardRef)
+│   │   ├── context.ts        # SFIconContext (global defaults)
 │   │   └── types.ts          # SFIconProps, size presets
-│   ├── hierarchical/
+│   ├── dualtone/
 │   │   ├── index.tsx          # Barrel re-export (generated)
 │   │   └── icons/             # 7,007 components (generated)
 │   ├── monochrome/            # Same structure
-│   ├── palette/               # Same structure
-│   ├── multicolor/            # Same structure
-│   └── compat/                # Legacy API (deprecated)
+│   └── index.ts               # Re-exports dualtone (generated)
 ├── scripts/
-│   └── generate-sfsymbols.ts # Icon component generator
+│   ├── generate-sfsymbols.ts  # Icon component generator
+│   ├── generate-docs-data.ts  # Docs site data generator
+│   └── shared/
+│       └── utils.ts           # Shared utilities (naming, SVG parsing)
 └── dist/                      # Build output
 ```
 
@@ -307,11 +310,9 @@ sf-symbols-lib/
 
 The generator (`npm run generate`) creates:
 
-- `src/{variant}/icons/*.tsx` - Individual icon components (28,028 total)
+- `src/{variant}/icons/*.tsx` - Individual icon components (14,014 total)
 - `src/{variant}/index.tsx` - Barrel re-exports per variant
-- `src/compat/SFSymbol.tsx` - Legacy renderer with deprecation warning
-- `src/compat/{variant}/data.ts` - All icons in one object (legacy)
-- `src/components/sf-symbol-name.ts` - Symbol name enum
+- `src/index.ts` - Main entry (re-exports dualtone)
 
 ## Contributing
 

@@ -14,8 +14,8 @@ export const sfToastElement = document.getElementById('sf-toast');
 
 export let currentData = {};
 export let currentViewBox = {};
-export let allSymbolsData = { hierarchical: {}, monochrome: {}, palette: {}, multicolor: {} };
-export let allViewBoxData = { hierarchical: {}, monochrome: {}, palette: {}, multicolor: {} };
+export let allSymbolsData = { dualtone: {}, monochrome: {} };
+export let allViewBoxData = { dualtone: {}, monochrome: {} };
 export const state = {
 	// Currently selected Apple symbol key (null = none)
 	selectedSymbolKey: null,
@@ -26,6 +26,6 @@ export const state = {
 export let symbolNames = {};
 export let RENDERING_MODES = [];
 export let CHUNKS = {};
-export let chunksLoaded = { hierarchical: new Set(), monochrome: new Set(), palette: new Set(), multicolor: new Set() };
+export let chunksLoaded = { dualtone: new Set(), monochrome: new Set() };
 export let categories = [];
 export let symbolCategories = {};

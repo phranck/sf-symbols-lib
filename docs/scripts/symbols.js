@@ -21,19 +21,7 @@ function isDarkMode() {
 
 // Helper: Get current rendering mode
 function getCurrentRenderingMode() {
-  return renderingModeSelect?.value || 'hierarchical';
-}
-
-// Helper: Process multicolor content for light mode
-function processMulticolorContent(svgContent, renderingMode) {
-  if (renderingMode !== 'multicolor' || isDarkMode()) {
-    return svgContent;
-  }
-  // Light mode: convert white fills with opacity to black fills with opacity
-  return svgContent.replace(
-    /fill="white"\s+fill-opacity="([0-9.]+)"/g,
-    'fill="black" fill-opacity="$1"'
-  );
+  return renderingModeSelect?.value || 'dualtone';
 }
 
 // Helper: Create clipboard icon element (SF Symbol or Bootstrap fallback)
@@ -45,8 +33,8 @@ function createClipboardIcon() {
   span.style.height = '18px';
   
   if (currentData?.[clipboardKey]) {
-    const vb = currentViewBox[clipboardKey] || '0 0 24 24';
-    span.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" fill="currentColor" width="18" height="18">${currentData[clipboardKey]}</svg>`;
+    const viewBox = currentViewBox[clipboardKey] || '0 0 24 24';
+    span.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" fill="currentColor" width="18" height="18">${currentData[clipboardKey]}</svg>`;
   } else {
     span.innerHTML = '<i class="bi bi-clipboard" aria-hidden="true" style="font-size:16px; line-height:1;"></i>';
   }
@@ -111,9 +99,8 @@ export function renderSymbols() {
     card.dataset.sfKey = key;
     card.dataset.renderingMode = renderingMode;
 
-    const vb = currentViewBox[key] || '0 0 24 24';
-    const processedContent = processMulticolorContent(svgContent, renderingMode);
-    card.innerHTML = createSvgElement(processedContent, vb);
+    const viewBox = currentViewBox[key] || '0 0 24 24';
+    card.innerHTML = createSvgElement(svgContent, viewBox);
 
     // Add info icon for restricted symbols
     if (infoSymbols.has(key)) {
@@ -312,9 +299,8 @@ function createPreviewColumn(key, renderingMode) {
 
   if (currentData[key]) {
     previewBox.dataset.renderingMode = renderingMode;
-    const vb = currentViewBox[key] || '0 0 24 24';
-    const processedContent = processMulticolorContent(currentData[key], renderingMode);
-    previewBox.innerHTML = createSvgElement(processedContent, vb, '100%', '100%');
+    const viewBox = currentViewBox[key] || '0 0 24 24';
+    previewBox.innerHTML = createSvgElement(currentData[key], viewBox, '100%', '100%');
   } else {
     previewBox.textContent = 'SFSym';
     previewBox.style.fontSize = '18px';

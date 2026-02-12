@@ -62,10 +62,10 @@ document.addEventListener('keydown', (event) => {
 });
 
 // Close popovers when clicking outside
-document.addEventListener('click', (ev) => {
-  if (!ev.target.closest('.card-info-icon') && !ev.target.closest('.popover')) {
-    document.querySelectorAll('.popover').forEach(p => {
-      const popover = bootstrap.Popover.getInstance(p.previousElementSibling);
+document.addEventListener('click', (event) => {
+  if (!event.target.closest('.card-info-icon') && !event.target.closest('.popover')) {
+    document.querySelectorAll('.popover').forEach(popoverElement => {
+      const popover = bootstrap.Popover.getInstance(popoverElement.previousElementSibling);
       if (popover) popover.hide();
     });
   }
@@ -128,8 +128,8 @@ async function loadChunk(renderingMode, index) {
     chunksLoadedCount++;
     updateProgressBar(Math.min(100, Math.round((chunksLoadedCount / totalChunksToLoad) * 100)));
     updateData();
-  } catch (err) {
-    console.error('Failed to load chunk', url, err);
+  } catch (error) {
+    console.error('Failed to load chunk', url, error);
   }
 }
 
@@ -160,6 +160,17 @@ async function initChunkedData() {
       versionEl.textContent = meta.sfSymbolsVersion;
     }
     
+    // Populate rendering mode dropdown from meta.json variants
+    if (renderingModeSelect && RENDERING_MODES.length > 0) {
+      renderingModeSelect.innerHTML = '';
+      for (const mode of RENDERING_MODES) {
+        const option = document.createElement('option');
+        option.value = mode;
+        option.textContent = mode.charAt(0).toUpperCase() + mode.slice(1);
+        renderingModeSelect.appendChild(option);
+      }
+    }
+
     // Populate category dropdown
     if (categorySelect && categories.length > 0) {
       for (const category of categories) {
@@ -196,8 +207,8 @@ async function initChunkedData() {
     if (totalChunksToLoad > 0) {
       setTimeout(hideProgressBar, 300);
     }
-  } catch (err) {
-    console.error('Failed to load chunked meta:', err);
+  } catch (error) {
+    console.error('Failed to load chunked meta:', error);
   }
 }
 

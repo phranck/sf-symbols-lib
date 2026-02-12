@@ -49,14 +49,14 @@ export function initColorSelector() {
   });
 
   // Toggle dropdown
-  colorSelector.addEventListener('click', (e) => {
-    e.stopPropagation();
+  colorSelector.addEventListener('click', (event) => {
+    event.stopPropagation();
     colorSelector.classList.toggle('open');
   });
 
   // Close dropdown when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!colorSelector.contains(e.target)) {
+  document.addEventListener('click', (event) => {
+    if (!colorSelector.contains(event.target)) {
       closeColorDropdown();
     }
   });
@@ -101,11 +101,10 @@ export function closeColorDropdown() {
 
 // Update symbol color
 export function updateColor() {
-  // If using the special 'currentColor' token, set the color based on the current theme
+  // If using the special 'currentColor' token, derive the color from the active theme
   if (currentColor === 'currentColor') {
-    // Get the current theme-aware color from CSS variables
-    const isDarkMode = document.documentElement.classList.contains('soft-dark');
-    const themeColor = isDarkMode ? '#adbac7' : '#24292e';
+    const themeColor = getComputedStyle(document.documentElement)
+      .getPropertyValue('--fg-default').trim() || 'currentColor';
     document.documentElement.style.setProperty('--symbol-color', themeColor);
   } else {
     document.documentElement.style.setProperty('--symbol-color', currentColor);

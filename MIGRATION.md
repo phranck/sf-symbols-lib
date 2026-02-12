@@ -25,7 +25,7 @@ import { SFSymbol, SFSymbolName } from 'sf-symbols-lib';
 **After:**
 
 ```tsx
-import { SFCheckmarkCircleFill, SFPhone, SFTrash } from 'sf-symbols-lib/hierarchical';
+import { SFCheckmarkCircleFill, SFPhone, SFTrash } from 'sf-symbols-lib/dualtone';
 ```
 
 If you used a specific variant:
@@ -59,7 +59,7 @@ import { SFCheckmarkCircleFill } from 'sf-symbols-lib/monochrome';
 
 Key changes:
 - No `name` prop needed. Each icon is its own component.
-- No `variant` prop. The variant is determined by the import path (`sf-symbols-lib/hierarchical`, `sf-symbols-lib/monochrome`, etc.).
+- No `variant` prop. The variant is determined by the import path (`sf-symbols-lib/dualtone`, `sf-symbols-lib/monochrome`).
 - `size` accepts the same presets (`'xs'`, `'sm'`, `'md'`, `'lg'`, `'xl'`) or numbers.
 
 ### 3. Update Dynamic Icon Usage
@@ -76,7 +76,7 @@ const iconName = isActive ? SFSymbolName.SFCheckmarkCircleFill : SFSymbolName.SF
 **After:**
 
 ```tsx
-import { SFCheckmarkCircleFill, SFCircle } from 'sf-symbols-lib/hierarchical';
+import { SFCheckmarkCircleFill, SFCircle } from 'sf-symbols-lib/dualtone';
 
 const Icon = isActive ? SFCheckmarkCircleFill : SFCircle;
 <Icon size="md" />
@@ -101,9 +101,9 @@ const statusIcons: Record<Status, SFSymbolName> = {
 **After:**
 
 ```tsx
-import { SFCheckmarkCircleFill, SFCircle, SFXmarkCircleFill } from 'sf-symbols-lib/hierarchical';
+import { SFCheckmarkCircleFill, SFCircle, SFXmarkCircleFill } from 'sf-symbols-lib/dualtone';
 import { type ComponentType } from 'react';
-import { type SFIconProps } from 'sf-symbols-lib/hierarchical';
+import { type SFIconProps } from 'sf-symbols-lib/dualtone';
 
 const statusIcons: Record<Status, ComponentType<SFIconProps>> = {
   done: SFCheckmarkCircleFill,
@@ -121,7 +121,7 @@ const Icon = statusIcons[status];
 |-----------|-----------|-------|
 | `name` | removed | Each icon is its own component |
 | `variant` | removed | Determined by import path |
-| `size` | `size` | Same presets + numbers |
+| `size` | `size` | Same presets + numbers (default changed to `'lg'`) |
 | `className` | `className` | Unchanged |
 | `style` | `style` | Unchanged |
 | `color` | `style={{ color }}` | Use CSS instead |
@@ -129,17 +129,13 @@ const Icon = statusIcons[status];
 | `svgContent` | removed | Internal to each component |
 | `viewBox` | removed | Internal to each component |
 
-## Compatibility Layer
+## Breaking Changes in v2.0
 
-During the transition, the old API remains available:
-
-```tsx
-import { SFSymbol, SFSymbolName } from 'sf-symbols-lib/compat';
-```
-
-This works exactly like v1.x but shows a deprecation warning in development mode. The compat layer will be removed in v3.0.
-
-Note: The main entry point (`sf-symbols-lib`) re-exports the compat layer, so existing code continues to work without any changes until v3.0.
+- The `SFSymbol` component has been removed (no compatibility layer).
+- The `SFSymbolName` enum has been removed.
+- The `sf-symbols-lib/compat` entry point no longer exists.
+- The `palette` and `multicolor` variants have been removed. Only `dualtone` and `monochrome` are available.
+- The default import path now re-exports dualtone (previously hierarchical).
 
 ## Search and Replace Patterns
 
@@ -180,20 +176,13 @@ The new `SFIconProps` type is slightly different from `SFSymbolProps`. If you sp
 import { SFSymbolProps } from 'sf-symbols-lib';
 
 // After
-import { type SFIconProps } from 'sf-symbols-lib/hierarchical';
+import { type SFIconProps } from 'sf-symbols-lib/dualtone';
 ```
 
 ### Large barrel import warnings
 
-If your bundler warns about the barrel import (`sf-symbols-lib/hierarchical`), use direct file imports instead:
+If your bundler warns about the barrel import (`sf-symbols-lib/dualtone`), use direct file imports instead:
 
 ```tsx
-import { SFCheckmarkCircleFill } from 'sf-symbols-lib/hierarchical/icons/SFCheckmarkCircleFill';
+import { SFCheckmarkCircleFill } from 'sf-symbols-lib/dualtone/SFCheckmarkCircleFill';
 ```
-
-## Timeline
-
-| Version | Status |
-|---------|--------|
-| v2.0 | Both APIs available, legacy shows deprecation warning |
-| v3.0 | Compat layer removed, tree-shakeable API only |
