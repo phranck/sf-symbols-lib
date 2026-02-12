@@ -246,19 +246,19 @@ Replace the current string-contains logic with `fuse.js` for fuzzy search, while
 
 ## Implementation
 
-### Phase 1: Project Scaffolding
-- [ ] 1.1 Create `docs-app/` directory with Vite + React + TypeScript setup
-- [ ] 1.2 Configure `vite.config.ts` (output to `docs/dist/`, alias `sf-symbols-lib`)
-- [ ] 1.3 Set up `package.json` with dependencies (react, zustand, fuse.js, @tanstack/react-virtual)
-- [ ] 1.4 Set up `tsconfig.json` with path aliases
-- [ ] 1.5 Port CSS files from `docs/styles/` to `docs-app/src/styles/`
-- [ ] 1.6 Copy static assets (`CNAME`, markdown files) to `docs-app/public/`
+### Phase 1: Project Scaffolding ✅
+- [x] 1.1 Create `docs-app/` directory with Vite + React + TypeScript setup
+- [x] 1.2 Configure `vite.config.ts` (output to `docs/dist/`, alias `sf-symbols-lib`)
+- [x] 1.3 Set up `package.json` with dependencies (react, zustand, fuse.js, @tanstack/react-virtual)
+- [x] 1.4 Set up `tsconfig.json` with path aliases
+- [x] 1.5 Port CSS files from `docs/styles/` to `docs-app/src/styles/`
+- [x] 1.6 Copy static assets (`CNAME`, markdown files) to `docs-app/public/`
 
-### Phase 2: Catalog & Icon Loading
-- [ ] 2.1 Create catalog generator script (or extend `generate-sfsymbols.ts`) to produce `catalog.ts`
-- [ ] 2.2 Create `src/lib/catalog.ts` with icon metadata (name, pascalName, categories, restricted)
-- [ ] 2.3 Create `src/lib/icons.ts` with wildcard import + metadata merge
-- [ ] 2.4 Verify Vite can bundle all 14,014 components without OOM or excessive build time
+### Phase 2: Catalog & Icon Loading ✅
+- [x] 2.1 Create catalog generator script (`scripts/generate-catalog.ts`) to produce `catalog.ts`
+- [x] 2.2 Generate `src/lib/catalog.ts` with icon metadata (7,007 icons, 30 categories, 573 restricted)
+- [x] 2.3 Create `src/lib/icons.ts` with wildcard import + metadata merge
+- [x] 2.4 Vite bundles 14,062 modules in 11.4s (28.2 MB / 6.6 MB gzip) - feasibility confirmed
 
 ### Phase 3: State & Core Infrastructure
 - [ ] 3.1 Create Zustand store (`src/state/store.ts`)
