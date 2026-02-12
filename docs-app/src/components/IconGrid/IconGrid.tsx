@@ -8,6 +8,7 @@
 import { useRef, useCallback, useState, useEffect } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 
+import { useAnalytics } from '@/hooks/useAnalytics';
 import { useAppStore } from '@/state/store';
 import { useFilteredIcons } from '@/hooks/useFuse';
 import type { IconEntry } from '@/lib/icons';
@@ -41,6 +42,7 @@ function useColumnCount(containerRef: React.RefObject<HTMLDivElement | null>) {
 }
 
 export function IconGrid() {
+  const analytics = useAnalytics();
   const renderMode = useAppStore((s) => s.renderMode);
   const selectedIcon = useAppStore((s) => s.selectedIcon);
   const focusedIndex = useAppStore((s) => s.focusedIndex);
@@ -65,9 +67,10 @@ export function IconGrid() {
 
   const handleIconClick = useCallback(
     (icon: IconEntry) => {
+      analytics.trackIconSelect(icon.pascalName);
       openDrawer(icon);
     },
-    [openDrawer],
+    [openDrawer, analytics],
   );
 
   // Handle keyboard navigation: arrow keys to move focus, Enter to open drawer
@@ -122,10 +125,11 @@ export function IconGrid() {
       // Handle Enter key to open drawer
       if (isEnter && focusedIndex >= 0 && focusedIndex < filteredIcons.length) {
         e.preventDefault();
+        analytics.trackIconSelect(filteredIcons[focusedIndex].pascalName);
         openDrawer(filteredIcons[focusedIndex]);
       }
     },
-    [filteredIcons, focusedIndex, columns, setFocusedIndex, openDrawer],
+    [filteredIcons, focusedIndex, columns, setFocusedIndex, openDrawer, analytics],
   );
 
   // Signal end of initial loading once virtualizer is ready

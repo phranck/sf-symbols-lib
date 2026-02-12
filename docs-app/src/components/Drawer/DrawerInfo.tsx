@@ -1,4 +1,5 @@
 import { useCallback, memo } from 'react';
+import { useAnalytics } from '@/hooks/useAnalytics';
 import { useAppStore } from '@/state/store';
 import type { IconEntry } from '@/lib/icons';
 
@@ -21,26 +22,29 @@ function toAppleName(name: string): string {
 }
 
 export const DrawerInfo = memo(function DrawerInfo({ icon }: DrawerInfoProps) {
+  const analytics = useAnalytics();
   const setToastMessage = useAppStore((s) => s.setToastMessage);
 
   const handleCopySymbolName = useCallback(async () => {
     try {
       await navigator.clipboard.writeText(icon.name);
+      analytics.trackIconCopy(icon.name, 'name');
       setToastMessage(`Copied: ${icon.name}`);
     } catch {
       setToastMessage('Copy failed. Try again.');
     }
-  }, [icon.name, setToastMessage]);
+  }, [icon.name, setToastMessage, analytics]);
 
   const handleCopyAppleName = useCallback(async () => {
     const appleName = toAppleName(icon.name);
     try {
       await navigator.clipboard.writeText(appleName);
+      analytics.trackIconCopy(icon.name, 'appleName');
       setToastMessage(`Copied: ${appleName}`);
     } catch {
       setToastMessage('Copy failed. Try again.');
     }
-  }, [icon.name, setToastMessage]);
+  }, [icon.name, setToastMessage, analytics]);
 
   const appleName = toAppleName(icon.name);
 

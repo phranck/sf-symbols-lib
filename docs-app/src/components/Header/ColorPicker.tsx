@@ -1,8 +1,10 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
 
+import { useAnalytics } from '@/hooks/useAnalytics';
 import { useAppStore, COLOR_PALETTE, THEME_COLOR } from '@/state/store';
 
 export function ColorPicker() {
+  const analytics = useAnalytics();
   const iconColor = useAppStore((s) => s.iconColor);
   const setIconColor = useAppStore((s) => s.setIconColor);
   const [open, setOpen] = useState(false);
@@ -20,10 +22,11 @@ export function ColorPicker() {
     return () => document.removeEventListener('click', handleClickOutside);
   }, [handleClickOutside]);
 
-  const selectColor = (color: string) => {
+  const selectColor = useCallback((color: string) => {
+    analytics.trackColorPickerChange(color);
     setIconColor(color);
     setOpen(false);
-  };
+  }, [setIconColor, analytics]);
 
   const isThemeColor = iconColor === THEME_COLOR;
 

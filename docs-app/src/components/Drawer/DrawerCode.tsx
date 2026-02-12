@@ -6,6 +6,7 @@
  */
 import { useCallback } from 'react';
 
+import { useAnalytics } from '@/hooks/useAnalytics';
 import { useAppStore } from '@/state/store';
 
 interface DrawerCodeProps {
@@ -81,6 +82,7 @@ function generateHighlighted(name: string, pkg: string): string {
 }
 
 export function DrawerCode({ pascalName, packagePath }: DrawerCodeProps) {
+  const analytics = useAnalytics();
   const setCopyModalOpen = useAppStore((s) => s.setCopyModalOpen);
   const setToastMessage = useAppStore((s) => s.setToastMessage);
 
@@ -88,6 +90,7 @@ export function DrawerCode({ pascalName, packagePath }: DrawerCodeProps) {
     const text = generatePlainText(pascalName, packagePath);
     navigator.clipboard.writeText(text).then(
       () => {
+        analytics.trackIconCopy(pascalName, 'code');
         setToastMessage('Copied: Code snippet');
         setCopyModalOpen(false);
       },
@@ -95,7 +98,7 @@ export function DrawerCode({ pascalName, packagePath }: DrawerCodeProps) {
         setToastMessage('Copy failed. Try again.');
       }
     );
-  }, [pascalName, packagePath, setCopyModalOpen, setToastMessage]);
+  }, [pascalName, packagePath, setCopyModalOpen, setToastMessage, analytics]);
 
   return (
     <div className="drawer-code" style={{ position: 'relative' }}>
