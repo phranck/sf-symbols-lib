@@ -1,6 +1,6 @@
 [![CI](https://github.com/phranck/sf-symbols-lib/actions/workflows/sf-symbols-ci.yml/badge.svg)](https://github.com/phranck/sf-symbols-lib/actions/workflows/sf-symbols-ci.yml)
 ![SF Symbols](https://img.shields.io/badge/SF%20Symbols-7007-blue?style=flat-square&logo=apple&logoColor=white)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://layered.mit-license.org)
 [![Mastodon: @phranck](https://img.shields.io/badge/Mastodon-@LAYERED-6364ff.svg?style=flat)](https://oldbytes.space/@LAYERED)
 
 <img width="1552" height="847" alt="Xnapper-2026-04-24-14 14 57" src="https://github.com/user-attachments/assets/798ca295-9b51-4d02-a65c-22c21a0b2759" />
@@ -342,7 +342,7 @@ For official SF Symbols documentation and guidelines, visit [Apple's SF Symbols 
 
 ## License
 
-This repository has been published under the [MIT](./LICENSE) license.
+This repository has been published under the [MIT](https://layered.mit-license.org) license.
 
 ---
 
